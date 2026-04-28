@@ -779,7 +779,7 @@
       box-sizing: border-box;
       background: #fff;
       border-bottom: 1.5px solid #EEEEF5;
-      box-shadow: 0 2px 16px rgba(0,0,0,.08);
+      box-shadow: 0 2px 16px rgba(0, 0, 0, .08);
       padding: 10px 16px;
       flex-direction: row;
       align-items: center;
@@ -787,7 +787,11 @@
       gap: 12px;
       min-height: 68px;
     }
-    #offerBar.vis { display: flex; }
+
+    #offerBar.vis {
+      display: flex;
+    }
+
     #offerBar .ob-left {
       display: flex;
       flex-direction: column;
@@ -796,6 +800,7 @@
       flex: 1;
       min-width: 0;
     }
+
     #offerBar .ob-lbl {
       font-size: 10px;
       font-weight: 700;
@@ -804,6 +809,7 @@
       letter-spacing: .5px;
       white-space: nowrap;
     }
+
     #offerBar .ob-val {
       font-family: 'Inter', sans-serif;
       font-size: 30px;
@@ -812,6 +818,7 @@
       letter-spacing: -1.5px;
       line-height: 1;
     }
+
     #offerBar .ob-btn {
       flex-shrink: 0;
       font-family: 'Inter', sans-serif;
@@ -826,52 +833,144 @@
       cursor: pointer;
       white-space: nowrap;
       letter-spacing: .3px;
-      box-shadow: 0 4px 16px rgba(232,69,74,.4);
+      box-shadow: 0 4px 16px rgba(232, 69, 74, .4);
       transition: opacity .2s, transform .15s;
     }
-    #offerBar .ob-btn:hover { opacity: .9; transform: translateY(-1px); }
-    #offerBar .ob-btn:active { transform: scale(.97); }
 
-    .fin-body { padding: 0 18px }
+    #offerBar .ob-btn:hover {
+      opacity: .9;
+      transform: translateY(-1px);
+    }
+
+    #offerBar .ob-btn:active {
+      transform: scale(.97);
+    }
+
+    .fin-body {
+      padding: 0 18px
+    }
 
     /* Before / After section */
-    .ba-wrap { padding: 0; margin-bottom: 4px; }
+    .ba-wrap {
+      padding: 0;
+      margin-bottom: 4px;
+    }
+
     .ba-tabs {
-      display: grid; grid-template-columns: 1fr 1fr;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       margin: 16px 16px 0;
-      border: 2px solid var(--brd); border-radius: 14px; overflow: hidden;
+      border: 2px solid var(--brd);
+      border-radius: 14px;
+      overflow: hidden;
     }
+
     .ba-tab {
-      padding: 12px; text-align: center;
-      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
-      color: var(--sub); background: #fff; transition: all .2s;
+      padding: 12px;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--sub);
+      background: #fff;
+      transition: all .2s;
     }
-    .ba-tab.act { background: var(--rg); color: #fff; }
+
+    .ba-tab.act {
+      background: var(--rg);
+      color: #fff;
+    }
+
     .ba-imgs {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 0; margin: 10px 16px 0; border-radius: 16px; overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin: 10px 16px 0;
+      border-radius: 16px;
+      overflow: hidden;
       box-shadow: var(--sh1);
     }
-    .ba-img { width: 100%; height: 260px; object-fit: cover; object-position: top; display: block; }
+
+    .ba-img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+
     .ba-stats {
-      display: grid; grid-template-columns: 1fr 2px 1fr;
-      gap: 0; margin: 0 16px; padding: 14px 0;
+      display: grid;
+      grid-template-columns: 1fr 2px 1fr;
+      gap: 0;
+      margin: 0 16px;
+      padding: 14px 0;
       border-bottom: 1px solid var(--brd);
     }
-    .ba-stat-col { display: flex; flex-direction: column; padding: 0 12px; }
-    .ba-stat-col-r { align-items: flex-start; }
-    .ba-divider { background: var(--brd); width: 1px; }
-    .ba-stat-lbl { font-size: 11px; color: var(--sub); font-weight: 500; line-height: 1.4; }
-    .ba-stat-val { font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 800; color: var(--txt); margin-top: 1px; }
-    .ba-stat-val.red { color: var(--r); }
-    .ba-dots { display: flex; gap: 4px; margin-top: 8px; }
-    .ba-dot {
-      width: 28px; height: 5px; border-radius: 99px;
-      background: var(--brd); transition: background .2s;
+
+    .ba-stat-col {
+      display: flex;
+      flex-direction: column;
+      padding: 0 12px;
     }
-    .ba-dot.active { background: #ccc; }
-    .ba-dot.active.red { background: var(--r); }
-    .ba-note { font-size: 11px; color: var(--sub); text-align: center; padding: 10px 0 14px; font-style: italic; }
+
+    .ba-stat-col-r {
+      align-items: flex-start;
+    }
+
+    .ba-divider {
+      background: var(--brd);
+      width: 1px;
+    }
+
+    .ba-stat-lbl {
+      font-size: 11px;
+      color: var(--sub);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .ba-stat-val {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--txt);
+      margin-top: 1px;
+    }
+
+    .ba-stat-val.red {
+      color: var(--r);
+    }
+
+    .ba-dots {
+      display: flex;
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    .ba-dot {
+      width: 28px;
+      height: 5px;
+      border-radius: 99px;
+      background: var(--brd);
+      transition: background .2s;
+    }
+
+    .ba-dot.active {
+      background: #ccc;
+    }
+
+    .ba-dot.active.red {
+      background: var(--r);
+    }
+
+    .ba-note {
+      font-size: 11px;
+      color: var(--sub);
+      text-align: center;
+      padding: 10px 0 14px;
+      font-style: italic;
+    }
 
     /* Before/After */
     .ba-tabs {
@@ -1634,19 +1733,31 @@
           <div class="lopts" id="g2">
             <button class="lopt" data-v="Lose Weight" onclick="pickList(this,2)">
               <img class="lopt-img" src="images/q2_goal_1.png" alt="" />
-              <div class="lopt-tx"><div class="lopt-ttl">Lose Weight</div><div class="lopt-dsc">Reduce fat on belly, hips and arms</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Lose Weight</div>
+                <div class="lopt-dsc">Reduce fat on belly, hips and arms</div>
+              </div>
             </button>
             <button class="lopt" data-v="Tone My Body" onclick="pickList(this,2)">
               <img class="lopt-img" src="images/q2_goal_2.png" alt="" />
-              <div class="lopt-tx"><div class="lopt-ttl">Tone My Body</div><div class="lopt-dsc">Firm, defined and feminine figure</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Tone My Body</div>
+                <div class="lopt-dsc">Firm, defined and feminine figure</div>
+              </div>
             </button>
             <button class="lopt" data-v="Healthy Eating" onclick="pickList(this,2)">
               <img class="lopt-img" src="images/q2_goal_3.png" alt="" />
-              <div class="lopt-tx"><div class="lopt-ttl">Healthy Eating</div><div class="lopt-dsc">Control appetite and eat right</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Healthy Eating</div>
+                <div class="lopt-dsc">Control appetite and eat right</div>
+              </div>
             </button>
             <button class="lopt" data-v="Build Muscle" onclick="pickList(this,2)">
               <img class="lopt-img" src="images/q2_goal_4.png" alt="" />
-              <div class="lopt-tx"><div class="lopt-ttl">Build Muscle</div><div class="lopt-dsc">Increase strength and muscle volume</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Build Muscle</div>
+                <div class="lopt-dsc">Increase strength and muscle volume</div>
+              </div>
             </button>
           </div>
         </div>
@@ -1692,28 +1803,40 @@
             <div class="chkw" onclick="togChk(this,4)">
               <button class="lopt" data-v="Belly &amp; Waist">
                 <img class="lopt-img" src="images/q4_target_1.png" alt="" />
-                <div class="lopt-tx"><div class="lopt-ttl">Belly &amp; Waist</div><div class="lopt-dsc">Abs, sides, lower belly</div></div>
+                <div class="lopt-tx">
+                  <div class="lopt-ttl">Belly &amp; Waist</div>
+                  <div class="lopt-dsc">Abs, sides, lower belly</div>
+                </div>
               </button>
               <div class="chkbox">✓</div>
             </div>
             <div class="chkw" onclick="togChk(this,4)">
               <button class="lopt" data-v="Glutes">
                 <img class="lopt-img" src="images/q4_target_2.png" alt="" />
-                <div class="lopt-tx"><div class="lopt-ttl">Glutes</div><div class="lopt-dsc">Lift and round the booty</div></div>
+                <div class="lopt-tx">
+                  <div class="lopt-ttl">Glutes</div>
+                  <div class="lopt-dsc">Lift and round the booty</div>
+                </div>
               </button>
               <div class="chkbox">✓</div>
             </div>
             <div class="chkw" onclick="togChk(this,4)">
               <button class="lopt" data-v="Legs">
                 <img class="lopt-img" src="images/q4_target_3.png" alt="" />
-                <div class="lopt-tx"><div class="lopt-ttl">Legs</div><div class="lopt-dsc">Thighs, calves, inner legs</div></div>
+                <div class="lopt-tx">
+                  <div class="lopt-ttl">Legs</div>
+                  <div class="lopt-dsc">Thighs, calves, inner legs</div>
+                </div>
               </button>
               <div class="chkbox">✓</div>
             </div>
             <div class="chkw" onclick="togChk(this,4)">
               <button class="lopt" data-v="Arms &amp; Chest">
                 <img class="lopt-img" src="images/q4_target_4.png" alt="" />
-                <div class="lopt-tx"><div class="lopt-ttl">Arms &amp; Chest</div><div class="lopt-dsc">Triceps, shoulders, décolleté</div></div>
+                <div class="lopt-tx">
+                  <div class="lopt-ttl">Arms &amp; Chest</div>
+                  <div class="lopt-dsc">Triceps, shoulders, décolleté</div>
+                </div>
               </button>
               <div class="chkbox">✓</div>
             </div>
@@ -1772,19 +1895,31 @@
           <div class="lopts" id="g7">
             <button class="lopt" data-v="Sedentary" onclick="pickList(this,7)">
               <div class="lopt-ico">🛋️</div>
-              <div class="lopt-tx"><div class="lopt-ttl">Sedentary</div><div class="lopt-dsc">Office job, little movement during the day</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Sedentary</div>
+                <div class="lopt-dsc">Office job, little movement during the day</div>
+              </div>
             </button>
             <button class="lopt" data-v="Lightly Active" onclick="pickList(this,7)">
               <div class="lopt-ico">🚶</div>
-              <div class="lopt-tx"><div class="lopt-ttl">Lightly Active</div><div class="lopt-dsc">Walks, 1–2 workouts per week</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Lightly Active</div>
+                <div class="lopt-dsc">Walks, 1–2 workouts per week</div>
+              </div>
             </button>
             <button class="lopt" data-v="Moderately Active" onclick="pickList(this,7)">
               <div class="lopt-ico">🏋️</div>
-              <div class="lopt-tx"><div class="lopt-ttl">Moderately Active</div><div class="lopt-dsc">2–3 workouts per week</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Moderately Active</div>
+                <div class="lopt-dsc">2–3 workouts per week</div>
+              </div>
             </button>
             <button class="lopt" data-v="Very Active" onclick="pickList(this,7)">
               <div class="lopt-ico">⚡</div>
-              <div class="lopt-tx"><div class="lopt-ttl">Very Active</div><div class="lopt-dsc">4–5+ workouts per week</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Very Active</div>
+                <div class="lopt-dsc">4–5+ workouts per week</div>
+              </div>
             </button>
           </div>
         </div>
@@ -1800,19 +1935,31 @@
           <div class="lopts" id="g8">
             <button class="lopt" data-v="Less than 4 glasses" onclick="pickList(this,8)">
               <div class="lopt-ico"><i class="fa-solid fa-droplet"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">Less than 4 glasses</div><div class="lopt-dsc">Under 800 ml per day</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Less than 4 glasses</div>
+                <div class="lopt-dsc">Under 800 ml per day</div>
+              </div>
             </button>
             <button class="lopt" data-v="4–6 glasses" onclick="pickList(this,8)">
               <div class="lopt-ico"><i class="fa-solid fa-glass-water"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">4–6 glasses</div><div class="lopt-dsc">800–1200 ml per day</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">4–6 glasses</div>
+                <div class="lopt-dsc">800–1200 ml per day</div>
+              </div>
             </button>
             <button class="lopt" data-v="7–8 glasses" onclick="pickList(this,8)">
               <div class="lopt-ico"><i class="fa-solid fa-bottle-water"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">7–8 glasses</div><div class="lopt-dsc">1400–1600 ml per day</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">7–8 glasses</div>
+                <div class="lopt-dsc">1400–1600 ml per day</div>
+              </div>
             </button>
             <button class="lopt" data-v="More than 8 glasses" onclick="pickList(this,8)">
               <div class="lopt-ico"><i class="fa-solid fa-water"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">More than 8 glasses</div><div class="lopt-dsc">Over 1600 ml per day</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">More than 8 glasses</div>
+                <div class="lopt-dsc">Over 1600 ml per day</div>
+              </div>
             </button>
           </div>
         </div>
@@ -1827,15 +1974,23 @@
           <div class="lopts" id="g9">
             <button class="lopt" data-v="Yes, I have allergies" onclick="pickAllergy(this, 'yes')">
               <div class="lopt-ico"><i class="fa-solid fa-triangle-exclamation"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">Yes, I have allergies</div><div class="lopt-dsc">Intolerance to certain foods</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Yes, I have allergies</div>
+                <div class="lopt-dsc">Intolerance to certain foods</div>
+              </div>
             </button>
             <button class="lopt" data-v="No allergies" onclick="pickAllergy(this, 'no')">
               <div class="lopt-ico"><i class="fa-solid fa-circle-check"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">No, I don't</div><div class="lopt-dsc">I can eat any foods</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">No, I don't</div>
+                <div class="lopt-dsc">I can eat any foods</div>
+              </div>
             </button>
           </div>
           <div id="allergyWrap" style="display: none; margin-top: 16px; width: 100%;">
-            <input type="text" id="allergyInput" class="ninp" placeholder="E.g., peanuts, lactose..." style="width: 100%; height: 58px; font-size: 16px; font-weight: 500; text-align: left; padding: 0 16px;" oninput="checkAllergyInput()" />
+            <input type="text" id="allergyInput" class="ninp" placeholder="E.g., peanuts, lactose..."
+              style="width: 100%; height: 58px; font-size: 16px; font-weight: 500; text-align: left; padding: 0 16px;"
+              oninput="checkAllergyInput()" />
           </div>
         </div>
       </div>
@@ -1852,15 +2007,20 @@
               <div class="ld-ico"><i class="fa-solid fa-bullseye"></i></div>
               <div class="ld-info">
                 <div class="ld-row"><span>Analyzing your goals...</span><span class="ld-pct" id="lp0">0%</span></div>
-                <div class="ld-track"><div class="ld-fill" id="lf0"></div></div>
+                <div class="ld-track">
+                  <div class="ld-fill" id="lf0"></div>
+                </div>
               </div>
               <div class="ld-chk" id="lc0"></div>
             </div>
             <div class="ld-step">
               <div class="ld-ico"><i class="fa-solid fa-calculator"></i></div>
               <div class="ld-info">
-                <div class="ld-row"><span>Calculating calorie needs...</span><span class="ld-pct" id="lp1">0%</span></div>
-                <div class="ld-track"><div class="ld-fill" id="lf1"></div></div>
+                <div class="ld-row"><span>Calculating calorie needs...</span><span class="ld-pct" id="lp1">0%</span>
+                </div>
+                <div class="ld-track">
+                  <div class="ld-fill" id="lf1"></div>
+                </div>
               </div>
               <div class="ld-chk" id="lc1"></div>
             </div>
@@ -1868,15 +2028,20 @@
               <div class="ld-ico"><i class="fa-solid fa-bolt"></i></div>
               <div class="ld-info">
                 <div class="ld-row"><span>Optimizing your diet...</span><span class="ld-pct" id="lp2">0%</span></div>
-                <div class="ld-track"><div class="ld-fill" id="lf2"></div></div>
+                <div class="ld-track">
+                  <div class="ld-fill" id="lf2"></div>
+                </div>
               </div>
               <div class="ld-chk" id="lc2"></div>
             </div>
             <div class="ld-step">
               <div class="ld-ico"><i class="fa-solid fa-clipboard-list"></i></div>
               <div class="ld-info">
-                <div class="ld-row"><span>Generating your personal plan...</span><span class="ld-pct" id="lp3">0%</span></div>
-                <div class="ld-track"><div class="ld-fill" id="lf3"></div></div>
+                <div class="ld-row"><span>Generating your personal plan...</span><span class="ld-pct" id="lp3">0%</span>
+                </div>
+                <div class="ld-track">
+                  <div class="ld-fill" id="lf3"></div>
+                </div>
               </div>
               <div class="ld-chk" id="lc3"></div>
             </div>
@@ -1894,13 +2059,13 @@
             <!-- Headers -->
             <div class="ba-tabs">
               <div class="ba-tab" style="border:none;background:transparent;cursor:default;">Now</div>
-              <div class="ba-tab" style="border:none;background:transparent;cursor:default;color:var(--red);">Your Goal</div>
+              <div class="ba-tab" style="border:none;background:transparent;cursor:default;color:var(--red);">Your Goal
+              </div>
             </div>
             <!-- Image -->
             <div class="ba-imgs" style="display: block;">
               <img class="ba-img" src="images/fin_transformation.png" alt="Transformation"
-                style="height: auto; width: 100%; object-fit: cover;"
-                onerror="this.style.display='none'"/>
+                style="height: auto; width: 100%; object-fit: cover;" onerror="this.style.display='none'" />
             </div>
             <!-- Stats row -->
             <div class="ba-stats">
@@ -2050,27 +2215,45 @@
             <div class="reviews">
               <div class="rev">
                 <div class="rev-head">
-                  <div class="rev-av" style="background:#FFE8ED"><i class="fa-solid fa-user" style="color:#E8454A"></i></div>
-                  <div><div class="rev-name">Maria K.</div><div class="rev-stars">★★★★★</div></div>
+                  <div class="rev-av" style="background:#FFE8ED"><i class="fa-solid fa-user" style="color:#E8454A"></i>
+                  </div>
+                  <div>
+                    <div class="rev-name">Maria K.</div>
+                    <div class="rev-stars">★★★★★</div>
+                  </div>
                 </div>
-                <div class="rev-ttl"><i class="fa-solid fa-star" style="color:#F59E0B;margin-right:6px"></i>Incredibly convenient approach!</div>
-                <div class="rev-txt">I never thought changing my diet could be so easy. In just 2 weeks I lost 3 kg with zero hunger. Highly recommend!</div>
+                <div class="rev-ttl"><i class="fa-solid fa-star" style="color:#F59E0B;margin-right:6px"></i>Incredibly
+                  convenient approach!</div>
+                <div class="rev-txt">I never thought changing my diet could be so easy. In just 2 weeks I lost 3 kg with
+                  zero hunger. Highly recommend!</div>
               </div>
               <div class="rev">
                 <div class="rev-head">
-                  <div class="rev-av" style="background:#E8F4FF"><i class="fa-solid fa-user" style="color:#3B82F6"></i></div>
-                  <div><div class="rev-name">Elena V., 34</div><div class="rev-stars">★★★★★</div></div>
+                  <div class="rev-av" style="background:#E8F4FF"><i class="fa-solid fa-user" style="color:#3B82F6"></i>
+                  </div>
+                  <div>
+                    <div class="rev-name">Elena V., 34</div>
+                    <div class="rev-stars">★★★★★</div>
+                  </div>
                 </div>
-                <div class="rev-ttl"><i class="fa-solid fa-fire" style="color:#E8454A;margin-right:6px"></i>Results in just one week</div>
-                <div class="rev-txt">After having a baby I couldn't lose weight. This plan fit perfectly — it works with my schedule and food preferences. My belly is gone!</div>
+                <div class="rev-ttl"><i class="fa-solid fa-fire" style="color:#E8454A;margin-right:6px"></i>Results in
+                  just one week</div>
+                <div class="rev-txt">After having a baby I couldn't lose weight. This plan fit perfectly — it works with
+                  my schedule and food preferences. My belly is gone!</div>
               </div>
               <div class="rev">
                 <div class="rev-head">
-                  <div class="rev-av" style="background:#E8FFF0"><i class="fa-solid fa-user" style="color:#10B981"></i></div>
-                  <div><div class="rev-name">Tanya M., 48</div><div class="rev-stars">★★★★☆</div></div>
+                  <div class="rev-av" style="background:#E8FFF0"><i class="fa-solid fa-user" style="color:#10B981"></i>
+                  </div>
+                  <div>
+                    <div class="rev-name">Tanya M., 48</div>
+                    <div class="rev-stars">★★★★☆</div>
+                  </div>
                 </div>
-                <div class="rev-ttl"><i class="fa-solid fa-dumbbell" style="color:#E8454A;margin-right:6px"></i>Finally an approach for my age</div>
-                <div class="rev-txt">At 48 standard diets don't work. This plan accounts for my body's needs. Down 5 kg in a month stress-free!</div>
+                <div class="rev-ttl"><i class="fa-solid fa-dumbbell" style="color:#E8454A;margin-right:6px"></i>Finally
+                  an approach for my age</div>
+                <div class="rev-txt">At 48 standard diets don't work. This plan accounts for my body's needs. Down 5 kg
+                  in a month stress-free!</div>
               </div>
             </div>
 
@@ -2079,20 +2262,28 @@
             <div class="sec-ttl">Frequently Asked Questions</div>
             <div class="faq">
               <div class="faq-item">
-                <div class="faq-q" onclick="togFaq(this)">How long until I see results?<span class="faq-arr"><i class="fa-solid fa-chevron-down"></i></span></div>
-                <div class="faq-ans">First results are usually visible within 2 weeks of following the plan. Within a month most clients achieve -3 to -7 kg.</div>
+                <div class="faq-q" onclick="togFaq(this)">How long until I see results?<span class="faq-arr"><i
+                      class="fa-solid fa-chevron-down"></i></span></div>
+                <div class="faq-ans">First results are usually visible within 2 weeks of following the plan. Within a
+                  month most clients achieve -3 to -7 kg.</div>
               </div>
               <div class="faq-item">
-                <div class="faq-q" onclick="togFaq(this)">Do I need a gym membership?<span class="faq-arr"><i class="fa-solid fa-chevron-down"></i></span></div>
-                <div class="faq-ans">No! All exercises are adapted for home. You only need 20–30 minutes a day and the desire to change.</div>
+                <div class="faq-q" onclick="togFaq(this)">Do I need a gym membership?<span class="faq-arr"><i
+                      class="fa-solid fa-chevron-down"></i></span></div>
+                <div class="faq-ans">No! All exercises are adapted for home. You only need 20–30 minutes a day and the
+                  desire to change.</div>
               </div>
               <div class="faq-item">
-                <div class="faq-q" onclick="togFaq(this)">Can I follow it with food allergies?<span class="faq-arr"><i class="fa-solid fa-chevron-down"></i></span></div>
-                <div class="faq-ans">Yes! Your plan fully adapts to the dietary restrictions and allergies you indicated in the quiz.</div>
+                <div class="faq-q" onclick="togFaq(this)">Can I follow it with food allergies?<span class="faq-arr"><i
+                      class="fa-solid fa-chevron-down"></i></span></div>
+                <div class="faq-ans">Yes! Your plan fully adapts to the dietary restrictions and allergies you indicated
+                  in the quiz.</div>
               </div>
               <div class="faq-item">
-                <div class="faq-q" onclick="togFaq(this)">What if I quit halfway?<span class="faq-arr"><i class="fa-solid fa-chevron-down"></i></span></div>
-                <div class="faq-ans">We've built a micro-goal system. Weekly progress is tangible, and ongoing support helps you stay on track.</div>
+                <div class="faq-q" onclick="togFaq(this)">What if I quit halfway?<span class="faq-arr"><i
+                      class="fa-solid fa-chevron-down"></i></span></div>
+                <div class="faq-ans">We've built a micro-goal system. Weekly progress is tangible, and ongoing support
+                  helps you stay on track.</div>
               </div>
             </div>
 
@@ -2101,7 +2292,8 @@
             <div class="guarantee">
               <div class="guarantee-ico"><i class="fa-solid fa-shield-halved"></i></div>
               <div class="guarantee-ttl">30-Day Money Back Guarantee</div>
-              <div class="guarantee-txt">We're confident in your results. If you don't see changes within 30 days — we'll refund you, no questions asked.</div>
+              <div class="guarantee-txt">We're confident in your results. If you don't see changes within 30 days —
+                we'll refund you, no questions asked.</div>
             </div>
 
             <!-- Footer -->
@@ -2130,7 +2322,7 @@
   <script>
     // ⚠️ PLACE YOUR CLAUDE API KEY HERE ⚠️
     // For local testing. In production, do NOT store tokens in frontend JS!
-    const CLAUDE_API_KEY = "YOUR_CLAUDE_API_KEY";
+    const CLAUDE_API_KEY = "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";
 
     const TOTAL = 10;
     const A = {};
@@ -2197,12 +2389,12 @@
         if (cur === 5) A[5] = document.getElementById('inpW').value + ' ' + document.getElementById('uW').textContent;
         if (cur === 6) A[6] = document.getElementById('inpH').value + ' ' + document.getElementById('uH').textContent;
         if (cur === 9) {
-           const wrap = document.getElementById('allergyWrap');
-           if (wrap.style.display === 'block') {
-              A[9] = document.getElementById('allergyInput').value.trim() || 'Has allergies but not specified';
-           } else {
-              A[9] = 'No allergies';
-           }
+          const wrap = document.getElementById('allergyWrap');
+          if (wrap.style.display === 'block') {
+            A[9] = document.getElementById('allergyInput').value.trim() || 'Has allergies but not specified';
+          } else {
+            A[9] = 'No allergies';
+          }
         }
         show(cur + 1);
       }
@@ -2229,7 +2421,7 @@
       }
       refreshBtn(9);
     }
-    
+
     function checkAllergyInput() {
       const inp = document.getElementById('allergyInput');
       A[9] = inp.value.trim() ? inp.value.trim() : undefined;
@@ -2318,7 +2510,7 @@ Allergies/Food Intolerances: ${A[9]}
 Please provide the output in a clean HTML format suitable for displaying in a web app.`;
 
       console.log("Sending request to Claude API...");
-      
+
       try {
         const response = await fetch('https://api.anthropic.com/v1/messages', {
           method: 'POST',
@@ -2334,26 +2526,26 @@ Please provide the output in a clean HTML format suitable for displaying in a we
             messages: [{ role: "user", content: prompt }]
           })
         });
-        
+
         if (!response.ok) {
-           const err = await response.text();
-           console.error("API Error:", err);
-           alert("API Request Failed! See console for details. (Check CORS or API Key)");
-           return;
+          const err = await response.text();
+          console.error("API Error:", err);
+          alert("API Request Failed! See console for details. (Check CORS or API Key)");
+          return;
         }
-        
+
         const data = await response.json();
         console.log("Claude Response:", data);
         alert("Plan generated successfully! Check console for the response.");
-      } catch(e) {
+      } catch (e) {
         console.error("Fetch Error:", e);
         alert("Failed to connect to the API. This is likely due to browser CORS policies. You need a backend proxy.");
       }
     }
 
-    function doBuy() { 
-       alert('Payment successful! Generating your personal plan with AI...');
-       generatePlanWithClaude();
+    function doBuy() {
+      alert('Payment successful! Generating your personal plan with AI...');
+      generatePlanWithClaude();
     }
     A[5] = '65 kg'; A[6] = '170 cm';
     show(-1);
