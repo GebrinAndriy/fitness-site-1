@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>FitQuiz — Your Personal Fitness Plan</title>
+  <title>BildBody — Your Personal Fitness Plan</title>
 
   <!-- Premium Fonts -->
   <link
@@ -15,6 +15,10 @@
 
   <style>
     /* ── BASE ── */
+
+    body { overflow-x: hidden; width: 100%; }
+    .page { overflow-x: hidden; width: 100%; }
+
     *,
     *::before,
     *::after {
@@ -583,7 +587,65 @@
       text-align: center
     }
 
-    /* ── WELCOME ── */
+    /* ── SPLIT LAYOUT ── */
+    .split-scr { position: relative; height: 100vh; width: 100%; flex-direction: column; overflow: hidden; background: #fff;}
+    .split-bg { position: absolute; top: 0; right: 0; bottom: 0; width: 100%; height: 100%; object-fit: cover; object-position: right top; z-index: 0; }
+    .split-content { position: relative; z-index: 1; padding: 110px 24px 120px; display: flex; flex-direction: column; flex: 1; justify-content: center; background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 60%, rgba(255,255,255,0) 100%); }
+    .split-scr .lopts { width: 100%; max-width: 280px; }
+    .split-scr .lopt { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 12px; }
+    .split-scr .lopt.sel { background: #FFE8ED; border-color: var(--r); }
+    .split-scr .qtitle { margin-bottom: 24px; max-width: 280px; font-size: 26px; }
+
+    /* ── BMI SCREEN ── */
+    .bmi-wrap { margin-top: 10px; display: flex; flex-direction: column; }
+    .bmi-track-wrap { position: relative; margin: 30px 16px 40px; height: 40px; }
+    .bmi-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--sub); margin-bottom: 8px; padding: 0; }
+    .bmi-labels span { flex: 1; text-align: center; }
+    .bmi-track { height: 8px; border-radius: 4px; background: linear-gradient(90deg, #60A5FA 0%, #10B981 30%, #F59E0B 60%, #EF4444 80%, #991B1B 100%); position: relative; }
+    .bmi-track::before { content: ''; position: absolute; left: 16.6%; width: 1px; height: 16px; top: -4px; background: #fff; opacity: 0.5; }
+    .bmi-track::after { content: ''; position: absolute; left: 40%; width: 1px; height: 16px; top: -4px; background: #fff; opacity: 0.5; }
+    .bmi-marker { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; background: #fff; border: 3px solid #222; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: left 0.5s ease; z-index: 2; }
+    .bmi-bubble { position: absolute; top: -38px; left: 50%; transform: translateX(-50%); background: #222; color: #fff; padding: 4px 10px; border-radius: 99px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+    .bmi-bubble::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); border-width: 5px 5px 0; border-style: solid; border-color: #222 transparent transparent; }
+    .bmi-box { margin: 0 16px 24px; padding: 16px; border-radius: 14px; background: #FFE8ED; border: 1px solid #FBCED6; display: flex; gap: 12px; }
+    .bmi-box.good { background: #E8FFF0; border-color: #A7F3D0; }
+    .bmi-box-ico { font-size: 20px; color: var(--r); }
+    .bmi-box.good .bmi-box-ico { color: #10B981; }
+    .bmi-box-ttl { font-weight: 700; font-size: 14px; color: var(--r); margin-bottom: 4px;}
+    .bmi-box.good .bmi-box-ttl { color: #10B981; }
+    .bmi-box-txt { font-size: 12px; color: var(--sub); line-height: 1.4; }
+    .bmi-summary-wrap { position: relative; padding: 0 16px; margin-top: 10px; }
+    .bmi-summary-list { display: flex; flex-direction: column; gap: 16px; width: 60%; position: relative; z-index: 2; }
+    .bmi-sitem { display: flex; gap: 12px; align-items: center; }
+    .bmi-sitem-ico { width: 44px; height: 44px; border-radius: 50%; background: #F3F4F6; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--txt); }
+    .bmi-sitem-lbl { font-size: 11px; color: var(--sub); margin-bottom: 2px;}
+    .bmi-sitem-val { font-size: 13px; font-weight: 700; color: var(--txt); }
+    
+    .bmi-model-wrap { position: absolute; bottom: -10px; right: -10px; width: 140px; height: 140px; border-radius: 50%; overflow: hidden; z-index: 1; border: 4px solid #fff; box-shadow: 0 8px 24px rgba(0,0,0,0.08); background: #fff; }
+    .bmi-model { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    
+    @media(max-width:600px) {
+      .split-content { align-items: center; text-align: center; background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 70%, rgba(255,255,255,0) 100%); padding: 120px 24px 60px; justify-content: flex-start; }
+      .split-scr .lopts { max-width: 100%; margin: 0 auto; }
+      .split-scr .qtitle { margin: 0 auto 24px; }
+    }
+
+
+    
+    /* ── CARD GRID (Variety) ── */
+    .cgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .ccard { border: 2px solid var(--brd); border-radius: 16px; padding: 16px 12px; cursor: pointer; text-align: left; transition: all .2s; background: var(--bg); display: flex; flex-direction: column; gap: 12px; justify-content: space-between; box-shadow: var(--sh1); }
+    .ccard-ico { font-size: 28px; color: var(--r); }
+    .ccard-tx { font-weight: 700; font-size: 14px; color: var(--txt); line-height: 1.2; }
+    .ccard:hover, .ccard.sel { border-color: var(--r); background: #FFE8ED; transform: translateY(-3px); box-shadow: var(--sh2); }
+
+    /* ── WYGET (Final Screen) ── */
+    
+    
+    
+    
+    
+
     /* ── WELCOME ── */
     #scrW {
       display: none;
@@ -760,7 +822,8 @@
     #scrF {
       display: none;
       flex-direction: column;
-      padding-bottom: 0
+      padding-bottom: 0;
+      padding-top: 80px;
     }
 
     #scrF.on {
@@ -770,12 +833,12 @@
     /* ════ OFFER BAR ════ */
     #offerBar {
       display: none;
-      position: sticky;
-      top: 0;
+      position: fixed;
       left: 0;
       right: 0;
-      z-index: 100;
       width: 100%;
+      top: 0;
+      z-index: 100;
       box-sizing: border-box;
       background: #fff;
       border-bottom: 1.5px solid #EEEEF5;
@@ -1034,58 +1097,21 @@
     }
 
     /* Benefits */
-    .bens {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-bottom: 24px
-    }
+    .bens { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
 
-    .ben {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--brd);
-      transition: padding-left .2s;
-    }
+    .ben { display: flex; align-items: center; background: #fff; border-radius: 16px; padding: 12px; gap: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s; }
 
-    .ben:hover {
-      padding-left: 6px
-    }
+    .ben:hover { transform: translateX(4px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
 
-    .ben:last-child {
-      border-bottom: none
-    }
+    
 
-    .ben-img {
-      width: 96px;
-      height: 96px;
-      border-radius: 16px;
-      object-fit: cover;
-      object-position: center;
-      flex-shrink: 0;
-      box-shadow: var(--sh1)
-    }
+    .ben-img { width: 72px; height: 72px; object-fit: cover; border-radius: 12px; margin-bottom: 0; flex-shrink: 0; }
 
-    .ben-tx {
-      flex: 1
-    }
+    .ben-tx { display: flex; flex-direction: column; }
 
-    .ben-ttl {
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--txt);
-      margin-bottom: 4px
-    }
+    .ben-ttl { font-weight: 800; font-size: 15px; color: var(--txt); margin-bottom: 4px; line-height: 1.2; }
 
-    .ben-dsc {
-      font-size: 13px;
-      color: var(--r);
-      font-weight: 600;
-      line-height: 1.4
-    }
+    .ben-dsc { font-size: 13px; color: var(--sub); font-weight: 500; }
 
     /* Plan box premium */
     .plan-box {
@@ -1563,14 +1589,14 @@
     }
 
     /* ── RESPONSIVE ── */
-    @media(max-width:480px) {
+    @media(max-width:600px) {
       .botbar {
         left: 0;
         right: 0;
         max-width: none
       }
 
-      .offer-bar {
+      #offerBar {
         left: 0;
         right: 0;
         max-width: none
@@ -1583,7 +1609,7 @@
         transform: translateX(-50%)
       }
 
-      .offer-bar {
+      #offerBar {
         left: 50%;
         transform: translateX(-50%);
         max-width: 480px
@@ -1612,7 +1638,7 @@
         border-radius: 0 0 24px 24px
       }
 
-      .offer-bar {
+      #offerBar {
         max-width: 560px
       }
 
@@ -1634,7 +1660,7 @@
         max-width: 600px
       }
 
-      .offer-bar {
+      #offerBar {
         max-width: 600px
       }
     }
@@ -1652,7 +1678,7 @@
           <div class="prog-track">
             <div class="prog-fill" id="progFill"></div>
           </div>
-          <div class="prog-label" id="progLabel">1 / 10</div>
+          <div class="prog-label" id="progLabel">1 / 20</div>
         </div>
         <div class="segbar" id="segbar"></div>
       </div>
@@ -1672,7 +1698,7 @@
           style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:44px">
           <div class="w-logo">✦ FitQuiz</div>
           <div class="w-stat"><em>576,269</em> women</div>
-          <div class="w-stat-sub">achieved their dream body with FitQuiz</div>
+          <div class="w-stat-sub">achieved their dream body with BildBody</div>
           <div class="w-img-wrap">
             <div class="w-circle"></div>
             <!-- AI: три спортивні жінки разом, рожевий фон -->
@@ -1887,114 +1913,333 @@
       </div>
 
 
-      <!-- Q7: ACTIVITY -->
+            <!-- Q7: BMI SUMMARY -->
       <div class="scr" id="scr7">
+        <div class="scr-body" style="padding-bottom: 20px;">
+          <div class="qtitle">Here's your health profile</div>
+          <div class="qsub" style="font-weight: 700; font-size: 20px; color: var(--txt); margin-top: 20px;">Body Mass Index (BMI)</div>
+          
+          <div class="bmi-wrap">
+            <div class="bmi-track-wrap">
+              <div class="bmi-labels">
+                <span style="text-align:left">15</span>
+                <span>18.5</span>
+                <span>25</span>
+                <span>30</span>
+                <span style="text-align:right">40</span>
+              </div>
+              <div class="bmi-track">
+                <div class="bmi-marker" id="bmiMarker">
+                  <div class="bmi-bubble" id="bmiValText">You - 0</div>
+                </div>
+              </div>
+              <div class="bmi-labels" style="margin-top:8px;">
+                <span style="text-align:left">Underweight</span>
+                <span>Normal</span>
+                <span>Overweight</span>
+                <span style="text-align:right">Obese</span>
+              </div>
+            </div>
+
+            <div class="bmi-box" id="bmiWarningBox">
+              <div class="bmi-box-ico" id="bmiWarningIco"><i class="fa-solid fa-circle-exclamation"></i></div>
+              <div>
+                <div class="bmi-box-ttl" id="bmiWarningTtl">Unhealthy BMI Risks:</div>
+                <div class="bmi-box-txt" id="bmiWarningTxt">Hormonal imbalances, irregular menstrual cycle, increased risk of cardiovascular disease, type 2 diabetes, skin and hair problems</div>
+              </div>
+            </div>
+
+            <div class="bmi-summary-wrap">
+              <div class="bmi-model-wrap"><img src="images/bmi_model_1777382638155.png" class="bmi-model" alt="Model" /></div>
+              <div class="bmi-summary-list">
+                <div class="bmi-sitem">
+                  <div class="bmi-sitem-ico">👙</div>
+                  <div><div class="bmi-sitem-lbl">Body Type</div><div class="bmi-sitem-val" id="bmiBodyType">Mesomorph</div></div>
+                </div>
+                <div class="bmi-sitem">
+                  <div class="bmi-sitem-ico">🛋️</div>
+                  <div><div class="bmi-sitem-lbl">Lifestyle</div><div class="bmi-sitem-val" id="bmiLifestyle">Sedentary</div></div>
+                </div>
+                <div class="bmi-sitem">
+                  <div class="bmi-sitem-ico"><i class="fa-solid fa-heart-pulse"></i></div>
+                  <div><div class="bmi-sitem-lbl">Fitness Level</div><div class="bmi-sitem-val">Basic</div></div>
+                </div>
+                <div class="bmi-sitem">
+                  <div class="bmi-sitem-ico"><i class="fa-solid fa-fire"></i></div>
+                  <div><div class="bmi-sitem-lbl">Metabolism</div><div class="bmi-sitem-val">Moderate, responds well</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q8: ACTIVITY -->
+      <div class="scr" id="scr8">
         <div class="scr-body">
           <div class="qtitle">What is your activity level?</div>
           <div class="qsub">Be honest — this directly affects your calorie calculation</div>
-          <div class="lopts" id="g7">
-            <button class="lopt" data-v="Sedentary" onclick="pickList(this,7)">
-              <div class="lopt-ico">🛋️</div>
-              <div class="lopt-tx">
-                <div class="lopt-ttl">Sedentary</div>
-                <div class="lopt-dsc">Office job, little movement during the day</div>
-              </div>
+          <div class="lopts" id="g8">
+            <button class="lopt" data-v="Sedentary" onclick="pickList(this,8)">
+              <div class="lopt-ico"><i class="fa-solid fa-couch"></i></div>
+              <div class="lopt-tx"><div class="lopt-ttl">Sedentary</div><div class="lopt-dsc">Office job, little movement</div></div>
             </button>
-            <button class="lopt" data-v="Lightly Active" onclick="pickList(this,7)">
-              <div class="lopt-ico">🚶</div>
-              <div class="lopt-tx">
-                <div class="lopt-ttl">Lightly Active</div>
-                <div class="lopt-dsc">Walks, 1–2 workouts per week</div>
-              </div>
+            <button class="lopt" data-v="Lightly Active" onclick="pickList(this,8)">
+              <div class="lopt-ico"><i class="fa-solid fa-person-walking"></i></div>
+              <div class="lopt-tx"><div class="lopt-ttl">Lightly Active</div><div class="lopt-dsc">Walks, 1–2 workouts/week</div></div>
             </button>
-            <button class="lopt" data-v="Moderately Active" onclick="pickList(this,7)">
-              <div class="lopt-ico">🏋️</div>
-              <div class="lopt-tx">
-                <div class="lopt-ttl">Moderately Active</div>
-                <div class="lopt-dsc">2–3 workouts per week</div>
-              </div>
+            <button class="lopt" data-v="Moderately Active" onclick="pickList(this,8)">
+              <div class="lopt-ico"><i class="fa-solid fa-dumbbell"></i></div>
+              <div class="lopt-tx"><div class="lopt-ttl">Moderately Active</div><div class="lopt-dsc">2–3 workouts/week</div></div>
             </button>
-            <button class="lopt" data-v="Very Active" onclick="pickList(this,7)">
-              <div class="lopt-ico">⚡</div>
-              <div class="lopt-tx">
-                <div class="lopt-ttl">Very Active</div>
-                <div class="lopt-dsc">4–5+ workouts per week</div>
-              </div>
+            <button class="lopt" data-v="Very Active" onclick="pickList(this,8)">
+              <div class="lopt-ico"><i class="fa-solid fa-bolt"></i></div>
+              <div class="lopt-tx"><div class="lopt-ttl">Very Active</div><div class="lopt-dsc">4–5+ workouts/week</div></div>
             </button>
           </div>
         </div>
       </div>
 
-
-
-      <!-- Q8: WATER -->
-      <div class="scr" id="scr8">
+      <!-- Q9: WATER -->
+      <div class="scr" id="scr9">
         <div class="scr-body">
           <div class="qtitle">How much water do you drink per day?</div>
           <div class="qsub">Water is critical for metabolism and weight loss</div>
-          <div class="lopts" id="g8">
-            <button class="lopt" data-v="Less than 4 glasses" onclick="pickList(this,8)">
+          <div class="lopts" id="g9">
+            <button class="lopt" data-v="Less than 4 glasses" onclick="pickList(this,9)">
               <div class="lopt-ico"><i class="fa-solid fa-droplet"></i></div>
-              <div class="lopt-tx">
-                <div class="lopt-ttl">Less than 4 glasses</div>
-                <div class="lopt-dsc">Under 800 ml per day</div>
-              </div>
+              <div class="lopt-tx"><div class="lopt-ttl">Less than 4 glasses</div><div class="lopt-dsc">Under 800 ml</div></div>
             </button>
-            <button class="lopt" data-v="4–6 glasses" onclick="pickList(this,8)">
+            <button class="lopt" data-v="4–6 glasses" onclick="pickList(this,9)">
               <div class="lopt-ico"><i class="fa-solid fa-glass-water"></i></div>
-              <div class="lopt-tx">
-                <div class="lopt-ttl">4–6 glasses</div>
-                <div class="lopt-dsc">800–1200 ml per day</div>
-              </div>
+              <div class="lopt-tx"><div class="lopt-ttl">4–6 glasses</div><div class="lopt-dsc">800–1200 ml</div></div>
             </button>
-            <button class="lopt" data-v="7–8 glasses" onclick="pickList(this,8)">
+            <button class="lopt" data-v="7–8 glasses" onclick="pickList(this,9)">
               <div class="lopt-ico"><i class="fa-solid fa-bottle-water"></i></div>
-              <div class="lopt-tx">
-                <div class="lopt-ttl">7–8 glasses</div>
-                <div class="lopt-dsc">1400–1600 ml per day</div>
-              </div>
+              <div class="lopt-tx"><div class="lopt-ttl">7–8 glasses</div><div class="lopt-dsc">1400–1600 ml</div></div>
             </button>
-            <button class="lopt" data-v="More than 8 glasses" onclick="pickList(this,8)">
+            <button class="lopt" data-v="More than 8 glasses" onclick="pickList(this,9)">
               <div class="lopt-ico"><i class="fa-solid fa-water"></i></div>
-              <div class="lopt-tx">
-                <div class="lopt-ttl">More than 8 glasses</div>
-                <div class="lopt-dsc">Over 1600 ml per day</div>
-              </div>
+              <div class="lopt-tx"><div class="lopt-ttl">More than 8 glasses</div><div class="lopt-dsc">Over 1600 ml</div></div>
             </button>
           </div>
         </div>
       </div>
 
-
-      <!-- Q9: ALLERGY -->
-      <div class="scr" id="scr9">
+      <!-- Q10: ALLERGY -->
+      <div class="scr" id="scr10">
         <div class="scr-body">
           <div class="qtitle">Do you have any food allergies?</div>
           <div class="qsub">We'll take this into account when building your nutrition plan</div>
-          <div class="lopts" id="g9">
+          <div class="lopts" id="g10">
             <button class="lopt" data-v="Yes, I have allergies" onclick="pickAllergy(this, 'yes')">
               <div class="lopt-ico"><i class="fa-solid fa-triangle-exclamation"></i></div>
-              <div class="lopt-tx">
-                <div class="lopt-ttl">Yes, I have allergies</div>
-                <div class="lopt-dsc">Intolerance to certain foods</div>
-              </div>
+              <div class="lopt-tx"><div class="lopt-ttl">Yes, I have allergies</div><div class="lopt-dsc">Intolerance to foods</div></div>
             </button>
             <button class="lopt" data-v="No allergies" onclick="pickAllergy(this, 'no')">
               <div class="lopt-ico"><i class="fa-solid fa-circle-check"></i></div>
-              <div class="lopt-tx">
-                <div class="lopt-ttl">No, I don't</div>
-                <div class="lopt-dsc">I can eat any foods</div>
-              </div>
+              <div class="lopt-tx"><div class="lopt-ttl">No, I don't</div><div class="lopt-dsc">I can eat any foods</div></div>
             </button>
           </div>
           <div id="allergyWrap" style="display: none; margin-top: 16px; width: 100%;">
-            <input type="text" id="allergyInput" class="ninp" placeholder="E.g., peanuts, lactose..."
-              style="width: 100%; height: 58px; font-size: 16px; font-weight: 500; text-align: left; padding: 0 16px;"
-              oninput="checkAllergyInput()" />
+            <input type="text" id="allergyInput" class="ninp" placeholder="E.g., peanuts, lactose..." style="width: 100%; height: 58px; font-size: 16px; font-weight: 500; text-align: left; padding: 0 16px;" oninput="checkAllergyInput()" />
           </div>
         </div>
       </div>
 
+      <!-- Q11: SLEEP -->
+      <div class="scr split-scr" id="scr11">
+        <img class="split-bg" src="images/sleep_split_1777382589921.png" alt="Sleep" />
+        <div class="split-content">
+          <div class="qtitle">How much do you usually sleep?</div>
+          <div class="lopts" id="g11">
+            <button class="lopt" data-v="Less than 5 hours" onclick="pickList(this,11)"><div class="lopt-tx"><div class="lopt-ttl">Less than 5 hours</div></div></button>
+            <button class="lopt" data-v="5-6 hours" onclick="pickList(this,11)"><div class="lopt-tx"><div class="lopt-ttl">5-6 hours</div></div></button>
+            <button class="lopt" data-v="7-8 hours" onclick="pickList(this,11)"><div class="lopt-tx"><div class="lopt-ttl">7-8 hours</div></div></button>
+            <button class="lopt" data-v="More than 8 hours" onclick="pickList(this,11)"><div class="lopt-tx"><div class="lopt-ttl">More than 8 hours</div></div></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q12: STRESS -->
+      <div class="scr split-scr" id="scr12">
+        <img class="split-bg" src="images/stress_split_1777382607246.png" alt="Stress" />
+        <div class="split-content">
+          <div class="qtitle">How often do you feel stressed?</div>
+          <div class="lopts" id="g12">
+            <button class="lopt" data-v="Rarely" onclick="pickList(this,12)"><div class="lopt-tx"><div class="lopt-ttl">Rarely</div></div></button>
+            <button class="lopt" data-v="Sometimes" onclick="pickList(this,12)"><div class="lopt-tx"><div class="lopt-ttl">Sometimes</div></div></button>
+            <button class="lopt" data-v="Often" onclick="pickList(this,12)"><div class="lopt-tx"><div class="lopt-ttl">Often, daily</div></div></button>
+            <button class="lopt" data-v="Constantly" onclick="pickList(this,12)"><div class="lopt-tx"><div class="lopt-ttl">Constantly overwhelmed</div></div></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q13: CRAVINGS -->
+      <div class="scr split-scr" id="scr13">
+        <img class="split-bg" src="images/cravings_split_1777382623454.png" alt="Cravings" />
+        <div class="split-content">
+          <div class="qtitle">Do you have late night cravings?</div>
+          <div class="lopts" id="g13">
+            <button class="lopt" data-v="Never" onclick="pickList(this,13)"><div class="lopt-tx"><div class="lopt-ttl">No, I sleep well</div></div></button>
+            <button class="lopt" data-v="Rarely" onclick="pickList(this,13)"><div class="lopt-tx"><div class="lopt-ttl">Rarely</div></div></button>
+            <button class="lopt" data-v="Often" onclick="pickList(this,13)"><div class="lopt-tx"><div class="lopt-ttl">Yes, especially for sweets</div></div></button>
+            <button class="lopt" data-v="Always" onclick="pickList(this,13)"><div class="lopt-tx"><div class="lopt-ttl">Yes, I wake up to eat</div></div></button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Q14: BACK PAIN -->
+      <div class="scr" id="scr14">
+        <div class="scr-body">
+          <div class="qtitle">Do you experience back or joint pain?</div>
+          <div class="qsub">We will adjust the workouts to protect your joints</div>
+          <div class="igrid" id="g14">
+            <div class="icard" data-v="No pain" onclick="pickIcon(this,14)">
+              <i class="fa-solid fa-check icard-ico"></i>
+              <div class="icard-ttl">No pain</div>
+            </div>
+            <div class="icard" data-v="Lower back" onclick="pickIcon(this,14)">
+              <i class="fa-solid fa-bolt icard-ico"></i>
+              <div class="icard-ttl">Lower back</div>
+            </div>
+            <div class="icard" data-v="Knees" onclick="pickIcon(this,14)">
+              <i class="fa-solid fa-bone icard-ico"></i>
+              <div class="icard-ttl">Knee pain</div>
+            </div>
+            <div class="icard" data-v="Neck/Shoulders" onclick="pickIcon(this,14)">
+              <i class="fa-solid fa-person-praying icard-ico"></i>
+              <div class="icard-ttl">Neck/Shoulders</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q15: MEALS PER DAY -->
+      <div class="scr" id="scr15">
+        <div class="scr-body">
+          <div class="qtitle">How many meals do you eat a day?</div>
+          <div class="qsub">This helps us schedule your diet properly</div>
+          <div class="cgrid" id="g15">
+            <div class="ccard" data-v="1-2 meals" onclick="pickIcon(this,15)">
+              <i class="fa-solid fa-utensils ccard-ico"></i>
+              <div class="ccard-tx">1-2 meals</div>
+            </div>
+            <div class="ccard" data-v="3 meals" onclick="pickIcon(this,15)">
+              <i class="fa-solid fa-bowl-food ccard-ico"></i>
+              <div class="ccard-tx">3 meals (Standard)</div>
+            </div>
+            <div class="ccard" data-v="4+ meals" onclick="pickIcon(this,15)">
+              <i class="fa-solid fa-box ccard-ico"></i>
+              <div class="ccard-tx">4+ meals (Frequent)</div>
+            </div>
+            <div class="ccard" data-v="Chaotic" onclick="pickIcon(this,15)">
+              <i class="fa-solid fa-cookie-bite ccard-ico"></i>
+              <div class="ccard-tx">I snack all day</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q16: ENERGY DROPS -->
+      <div class="scr split-scr" id="scr16">
+        <img class="split-bg" src="images/energy_split.png" alt="Energy" />
+        <div class="split-content">
+          <div class="qtitle">Do you feel energy drops during the day?</div>
+          <div class="lopts" id="g16">
+            <button class="lopt" data-v="High energy" onclick="pickList(this,16)">
+              <div class="lopt-ico"><i class="fa-solid fa-battery-full"></i></div><div class="lopt-tx"><div class="lopt-ttl">No, consistent energy</div></div>
+            </button>
+            <button class="lopt" data-v="Afternoon crash" onclick="pickList(this,16)">
+              <div class="lopt-ico"><i class="fa-solid fa-arrow-trend-down"></i></div><div class="lopt-tx"><div class="lopt-ttl">Yes, afternoon crash</div></div>
+            </button>
+            <button class="lopt" data-v="Morning fatigue" onclick="pickList(this,16)">
+              <div class="lopt-ico"><i class="fa-solid fa-bed"></i></div><div class="lopt-tx"><div class="lopt-ttl">Hard to wake up</div></div>
+            </button>
+            <button class="lopt" data-v="Always tired" onclick="pickList(this,16)">
+              <div class="lopt-ico"><i class="fa-solid fa-battery-empty"></i></div><div class="lopt-tx"><div class="lopt-ttl">Constantly tired</div></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q17: FAST FOOD -->
+      <div class="scr" id="scr17">
+        <div class="scr-body">
+          <div class="qtitle">How often do you eat fast food or junk food?</div>
+          <div class="qsub">Be honest! We need to know your starting point</div>
+          <div class="igrid" id="g17">
+            <div class="icard" data-v="Rarely/Never" onclick="pickIcon(this,17)">
+              <i class="fa-solid fa-leaf icard-ico"></i>
+              <div class="icard-ttl">Rarely/Never</div>
+            </div>
+            <div class="icard" data-v="1-2 times a week" onclick="pickIcon(this,17)">
+              <i class="fa-solid fa-burger icard-ico"></i>
+              <div class="icard-ttl">1-2 times/week</div>
+            </div>
+            <div class="icard" data-v="3-4 times a week" onclick="pickIcon(this,17)">
+              <i class="fa-solid fa-pizza-slice icard-ico"></i>
+              <div class="icard-ttl">3-4 times/week</div>
+            </div>
+            <div class="icard" data-v="Almost daily" onclick="pickIcon(this,17)">
+              <i class="fa-solid fa-hotdog icard-ico"></i>
+              <div class="icard-ttl">Almost daily</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q18: VEGETABLES -->
+      <div class="scr" id="scr18">
+        <div class="scr-body">
+          <div class="qtitle">Do you eat enough vegetables?</div>
+          <div class="qsub">Fiber is essential for weight loss</div>
+          <div class="cgrid" id="g18">
+            <div class="ccard" data-v="Every meal" onclick="pickIcon(this,18)">
+              <i class="fa-solid fa-seedling ccard-ico"></i>
+              <div class="ccard-tx">Yes, with every meal</div>
+            </div>
+            <div class="ccard" data-v="1-2 servings" onclick="pickIcon(this,18)">
+              <i class="fa-solid fa-carrot ccard-ico"></i>
+              <div class="ccard-tx">1-2 servings a day</div>
+            </div>
+            <div class="ccard" data-v="Rarely" onclick="pickIcon(this,18)">
+              <i class="fa-solid fa-apple-whole ccard-ico"></i>
+              <div class="ccard-tx">Rarely eat veggies</div>
+            </div>
+            <div class="ccard" data-v="I hate veggies" onclick="pickIcon(this,18)">
+              <i class="fa-solid fa-ban ccard-ico" style="color:var(--txt)"></i>
+              <div class="ccard-tx">I don't like vegetables</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q19: TYPICAL DAY -->
+      <div class="scr" id="scr19">
+        <div class="scr-body">
+          <div class="qtitle">How would you describe your typical day?</div>
+          <div class="qsub">This helps us schedule your workouts</div>
+          <div class="cgrid" id="g19">
+            <div class="ccard" data-v="Office/Desk" onclick="pickIcon(this,19)">
+              <i class="fa-solid fa-laptop ccard-ico"></i>
+              <div class="ccard-tx">Sitting at a desk</div>
+            </div>
+            <div class="ccard" data-v="On my feet" onclick="pickIcon(this,19)">
+              <i class="fa-solid fa-person-walking ccard-ico"></i>
+              <div class="ccard-tx">Mostly on my feet</div>
+            </div>
+            <div class="ccard" data-v="Physical labor" onclick="pickIcon(this,19)">
+              <i class="fa-solid fa-box-open ccard-ico"></i>
+              <div class="ccard-tx">Heavy physical labor</div>
+            </div>
+            <div class="ccard" data-v="At home/Mixed" onclick="pickIcon(this,19)">
+              <i class="fa-solid fa-house ccard-ico"></i>
+              <div class="ccard-tx">At home / Mixed</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
       <!-- LOADING -->
@@ -2102,7 +2347,7 @@
             <div class="bens">
               <div class="ben">
                 <img class="ben-img"
-                  src="https://image.pollinations.ai/prompt/woman%20home%20workout%20dumbbell%20exercise%20fitness%20routine%20living%20room%20pink%20sportswear?width=200&height=140&nologo=true&seed=310&model=flux"
+                  src="images/ben1.png"
                   alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Effective Fat Burning</div>
@@ -2111,7 +2356,7 @@
               </div>
               <div class="ben">
                 <img class="ben-img"
-                  src="https://image.pollinations.ai/prompt/healthy%20meal%20prep%20containers%20weekly%20nutrition%20plan%20colorful%20food%20overhead%20view?width=200&height=140&nologo=true&seed=311&model=flux"
+                  src="images/ben2.png"
                   alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Personal Nutrition Plan</div>
@@ -2120,7 +2365,7 @@
               </div>
               <div class="ben">
                 <img class="ben-img"
-                  src="https://image.pollinations.ai/prompt/fresh%20water%20glass%20mint%20lemon%20hydration%20healthy%20lifestyle%20white%20background%20close%20up?width=200&height=140&nologo=true&seed=312&model=flux"
+                  src="images/ben3.png"
                   alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Hydration Plan</div>
@@ -2129,7 +2374,7 @@
               </div>
               <div class="ben">
                 <img class="ben-img"
-                  src="https://image.pollinations.ai/prompt/happy%20woman%20measuring%20waist%20tape%20weight%20loss%20success%20smiling%20pink%20top%20white%20background?width=200&height=140&nologo=true&seed=313&model=flux"
+                  src="images/ben4.png"
                   alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Visible results from week 2</div>
@@ -2138,7 +2383,7 @@
               </div>
               <div class="ben">
                 <img class="ben-img"
-                  src="https://image.pollinations.ai/prompt/happy%20woman%20meditation%20yoga%20peaceful%20wellness%20positive%20mood%20morning%20light%20white%20background?width=200&height=140&nologo=true&seed=314&model=flux"
+                  src="images/ben5.png"
                   alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Improved mood &amp; energy</div>
@@ -2164,6 +2409,20 @@
                   <div>
                     <div class="plan-meta-lbl">Weight</div>
                     <div class="plan-meta-val" id="planMetaWeight">65 kg</div>
+                  </div>
+                </div>
+                <div class="plan-meta-card">
+                  <div class="plan-meta-ico"><i class="fa-solid fa-utensils"></i></div>
+                  <div>
+                    <div class="plan-meta-lbl">Diet</div>
+                    <div class="plan-meta-val" id="planMetaDiet">Standard</div>
+                  </div>
+                </div>
+                <div class="plan-meta-card">
+                  <div class="plan-meta-ico"><i class="fa-solid fa-bolt"></i></div>
+                  <div>
+                    <div class="plan-meta-lbl">Activity</div>
+                    <div class="plan-meta-val" id="planMetaActivity">Moderate</div>
                   </div>
                 </div>
               </div>
@@ -2320,7 +2579,7 @@
   </div><!-- .page -->
 
   <script>
-    const TOTAL = 10;
+    const TOTAL = 20;
     const A = {};
     let cur = -1;
     let timerSec = 15 * 60, timerInt = null;
@@ -2344,11 +2603,11 @@
       if (pl) pl.textContent = (q + 1) + ' / ' + TOTAL;
     }
 
-    const SCREENS = ['scrW', 'scr0', 'scr1', 'scr2', 'scr3', 'scr4', 'scr5', 'scr6', 'scr7', 'scr8', 'scr9', 'scrL', 'scrF'];
+    const SCREENS = ['scrW', 'scr0', 'scr1', 'scr2', 'scr3', 'scr4', 'scr5', 'scr6', 'scr7', 'scr8', 'scr9', 'scr10', 'scr11', 'scr12', 'scr13', 'scr14', 'scr15', 'scr16', 'scr17', 'scr18', 'scr19', 'scrL', 'scrF'];
 
     function show(idx) {
       SCREENS.forEach(id => document.getElementById(id).classList.remove('on'));
-      const map = { '-1': 'scrW', 10: 'scrL', 11: 'scrF' };
+      const map = { '-1': 'scrW', 20: 'scrL', 21: 'scrF' };
       document.getElementById(map[idx] !== undefined ? map[idx] : 'scr' + idx).classList.add('on');
       cur = idx;
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2361,11 +2620,11 @@
         topbar.classList.add('vis'); offerBar.classList.remove('vis');
         updSegs(idx); refreshBtn(idx);
         botbar.style.display = 'block';
-      } else if (idx === 10) {
+      } else if (idx === 20) {
         topbar.classList.remove('vis'); offerBar.classList.remove('vis');
         botbar.style.display = 'none';
         startLoading();
-      } else if (idx === 11) {
+      } else if (idx === 21) {
         topbar.classList.remove('vis'); offerBar.classList.add('vis');
         botbar.style.display = 'none';
         buildPlanGoal(); startTimer();
@@ -2373,7 +2632,7 @@
     }
 
     function refreshBtn(q) {
-      if (q === 5 || q === 6) { mainBtn.disabled = false; }
+      if (q === 5 || q === 6 || q === 7) { mainBtn.disabled = false; }
       else if (q === 4) { mainBtn.disabled = !(Array.isArray(A[4]) && A[4].length > 0); }
       else { mainBtn.disabled = A[q] === undefined; }
       mainBtn.textContent = q < TOTAL - 1 ? 'NEXT STEP' : 'FINISH';
@@ -2383,13 +2642,13 @@
       if (cur === -1) { show(0); return; }
       if (cur >= 0 && cur < TOTAL) {
         if (cur === 5) A[5] = document.getElementById('inpW').value + ' ' + document.getElementById('uW').textContent;
-        if (cur === 6) A[6] = document.getElementById('inpH').value + ' ' + document.getElementById('uH').textContent;
-        if (cur === 9) {
+        if (cur === 6) { A[6] = document.getElementById('inpH').value + ' ' + document.getElementById('uH').textContent; calcBMI(); }
+        if (cur === 10) {
           const wrap = document.getElementById('allergyWrap');
           if (wrap.style.display === 'block') {
-            A[9] = document.getElementById('allergyInput').value.trim() || 'Has allergies but not specified';
+            A[10] = document.getElementById('allergyInput').value.trim() || 'Has allergies but not specified';
           } else {
-            A[9] = 'No allergies';
+            A[10] = 'No allergies';
           }
         }
         show(cur + 1);
@@ -2399,7 +2658,7 @@
     function goBack() { if (cur > 0) show(cur - 1); else if (cur === 0) show(-1); }
 
     function pickCard(c, q) { c.closest('.pgrid').querySelectorAll('.pcard').forEach(x => x.classList.remove('sel')); c.classList.add('sel'); A[q] = c.dataset.v; refreshBtn(q); }
-    function pickIcon(c, q) { c.closest('.igrid').querySelectorAll('.icard').forEach(x => x.classList.remove('sel')); c.classList.add('sel'); A[q] = c.dataset.v; refreshBtn(q); }
+    function pickIcon(c, q) { const p = c.closest('.igrid') || c.closest('.cgrid'); p.querySelectorAll('.icard, .ccard').forEach(x => x.classList.remove('sel')); c.classList.add('sel'); A[q] = c.dataset.v; refreshBtn(q); }
     function pickList(b, q) { b.closest('.lopts').querySelectorAll('.lopt').forEach(x => x.classList.remove('sel')); b.classList.add('sel'); A[q] = b.dataset.v; refreshBtn(q); }
 
     function pickAllergy(b, type) {
@@ -2409,19 +2668,19 @@
       const inp = document.getElementById('allergyInput');
       if (type === 'yes') {
         wrap.style.display = 'block';
-        A[9] = inp.value.trim() ? inp.value.trim() : undefined;
+        A[10] = inp.value.trim() ? inp.value.trim() : undefined;
         inp.focus();
       } else {
         wrap.style.display = 'none';
-        A[9] = 'No allergies';
+        A[10] = 'No allergies';
       }
-      refreshBtn(9);
+      refreshBtn(10);
     }
 
     function checkAllergyInput() {
       const inp = document.getElementById('allergyInput');
-      A[9] = inp.value.trim() ? inp.value.trim() : undefined;
-      refreshBtn(9);
+      A[10] = inp.value.trim() ? inp.value.trim() : undefined;
+      refreshBtn(10);
     }
 
     function togChk(w, q) {
@@ -2433,13 +2692,55 @@
       refreshBtn(q);
     }
 
+    function calcBMI() {
+      const wStr = A[5] || '65 kg', hStr = A[6] || '170 cm';
+      let w = parseFloat(wStr); if (wStr.includes('lbs')) w *= 0.453592;
+      let h = parseFloat(hStr); if (hStr.includes('ft')) h *= 30.48;
+      const bmi = w / ((h/100) * (h/100));
+      const val = bmi.toFixed(1);
+      
+      const m = document.getElementById('bmiMarker');
+      const t = document.getElementById('bmiValText');
+      if (t) t.textContent = "You - " + val;
+      
+      let pct = ((bmi - 15) / (40 - 15)) * 100;
+      pct = Math.max(0, Math.min(100, pct));
+      if (m) {
+        m.style.transition = 'none';
+        m.style.left = '0%';
+        setTimeout(() => {
+          m.style.transition = 'left 1.5s cubic-bezier(0.25, 1, 0.5, 1)';
+          m.style.left = pct + '%';
+        }, 50);
+      }
+      
+      const wb = document.getElementById('bmiWarningBox');
+      const wi = document.getElementById('bmiWarningIco');
+      const wt = document.getElementById('bmiWarningTtl');
+      const wx = document.getElementById('bmiWarningTxt');
+      
+      if (bmi < 18.5) {
+        wb.className = 'bmi-box'; wi.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+        wt.textContent = 'Underweight Risks:'; wx.textContent = 'Weakened immune system, fragile bones, feeling tired.';
+      } else if (bmi <= 25) {
+        wb.className = 'bmi-box good'; wi.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+        wt.textContent = 'Healthy BMI!'; wx.textContent = 'Your weight is in the normal range. Great job!';
+      } else {
+        wb.className = 'bmi-box'; wi.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+        wt.textContent = 'Unhealthy BMI Risks:'; wx.textContent = 'Hormonal imbalances, risk of cardiovascular disease, joint pain.';
+      }
+      
+      document.getElementById('bmiBodyType').textContent = A[3] || 'Not specified';
+      document.getElementById('bmiLifestyle').textContent = A[8] || 'Not specified';
+    }
+
     function stepN(t, d) { const i = document.getElementById(t === 'w' ? 'inpW' : 'inpH'); i.value = Math.min(parseInt(i.max), Math.max(parseInt(i.min), (parseInt(i.value) || 0) + d)); }
     function setU(t, u, btn) { btn.closest('.utog').querySelectorAll('.ubtn').forEach(b => b.classList.remove('on')); btn.classList.add('on'); document.getElementById(t === 'w' ? 'uW' : 'uH').textContent = t === 'w' ? (u === 'kg' ? 'kg' : 'lbs') : (u === 'cm' ? 'cm' : 'ft'); }
 
     function startLoading() {
       [{ f: 'lf0', p: 'lp0', c: 'lc0', d: 0, du: 1100 }, { f: 'lf1', p: 'lp1', c: 'lc1', d: 900, du: 1300 }, { f: 'lf2', p: 'lp2', c: 'lc2', d: 2000, du: 1100 }, { f: 'lf3', p: 'lp3', c: 'lc3', d: 3000, du: 900 }]
         .forEach(s => setTimeout(() => animBar(s.f, s.p, s.du, () => { document.getElementById(s.c).textContent = '✅'; }), s.d));
-      setTimeout(() => show(11), 4800);
+      setTimeout(() => show(21), 4800);
     }
 
     function animBar(fid, pid, dur, cb) {
@@ -2499,9 +2800,18 @@ Body Type: ${A[3]}
 Target Areas: ${A[4] ? A[4].join(', ') : 'None'}
 Weight: ${A[5]}
 Height: ${A[6]}
-Activity Level: ${A[7]}
-Water Intake: ${A[8]}
-Allergies/Food Intolerances: ${A[9]}
+Activity Level: ${A[8]}
+Water Intake: ${A[9]}
+Allergies/Food Intolerances: ${A[10]}
+Sleep Habits: ${A[11]}
+Stress Levels: ${A[12]}
+Late Night Cravings: ${A[13]}
+Joint Pain: ${A[14]}
+Meals per Day: ${A[15]}
+Energy Drops: ${A[16]}
+Fast Food Frequency: ${A[17]}
+Vegetable Intake: ${A[18]}
+Typical Day: ${A[19]}
 
 Please provide the output in a clean HTML format suitable for displaying in a web app.`;
 
