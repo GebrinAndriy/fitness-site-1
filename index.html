@@ -16,8 +16,15 @@
   <style>
     /* ── BASE ── */
 
-    body { overflow-x: hidden; width: 100%; }
-    .page { overflow-x: hidden; width: 100%; }
+    body {
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    .page {
+      overflow-x: hidden;
+      width: 100%;
+    }
 
     *,
     *::before,
@@ -588,63 +595,332 @@
     }
 
     /* ── SPLIT LAYOUT ── */
-    .split-scr { position: relative; height: 100vh; width: 100%; flex-direction: column; overflow: hidden; background: #fff;}
-    .split-bg { position: absolute; top: 0; right: 0; bottom: 0; width: 100%; height: 100%; object-fit: cover; object-position: right top; z-index: 0; }
-    .split-content { position: relative; z-index: 1; padding: 110px 24px 120px; display: flex; flex-direction: column; flex: 1; justify-content: center; background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 60%, rgba(255,255,255,0) 100%); }
-    .split-scr .lopts { width: 100%; max-width: 280px; }
-    .split-scr .lopt { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 12px; }
-    .split-scr .lopt.sel { background: #FFE8ED; border-color: var(--r); }
-    .split-scr .qtitle { margin-bottom: 24px; max-width: 280px; font-size: 26px; }
+    .split-scr {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      flex-direction: column;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .split-bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: right top;
+      z-index: 0;
+    }
+
+    .split-content {
+      position: relative;
+      z-index: 1;
+      padding: 110px 24px 120px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: center;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 60%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    .split-scr .lopts {
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .split-scr .lopt {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      margin-bottom: 12px;
+    }
+
+    .split-scr .lopt.sel {
+      background: #FFE8ED;
+      border-color: var(--r);
+    }
+
+    .split-scr .qtitle {
+      margin-bottom: 24px;
+      max-width: 280px;
+      font-size: 26px;
+    }
 
     /* ── BMI SCREEN ── */
-    .bmi-wrap { margin-top: 10px; display: flex; flex-direction: column; }
-    .bmi-track-wrap { position: relative; margin: 30px 16px 40px; height: 40px; }
-    .bmi-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--sub); margin-bottom: 8px; padding: 0; }
-    .bmi-labels span { flex: 1; text-align: center; }
-    .bmi-track { height: 8px; border-radius: 4px; background: linear-gradient(90deg, #60A5FA 0%, #10B981 30%, #F59E0B 60%, #EF4444 80%, #991B1B 100%); position: relative; }
-    .bmi-track::before { content: ''; position: absolute; left: 16.6%; width: 1px; height: 16px; top: -4px; background: #fff; opacity: 0.5; }
-    .bmi-track::after { content: ''; position: absolute; left: 40%; width: 1px; height: 16px; top: -4px; background: #fff; opacity: 0.5; }
-    .bmi-marker { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; background: #fff; border: 3px solid #222; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: left 0.5s ease; z-index: 2; }
-    .bmi-bubble { position: absolute; top: -38px; left: 50%; transform: translateX(-50%); background: #222; color: #fff; padding: 4px 10px; border-radius: 99px; font-size: 12px; font-weight: 700; white-space: nowrap; }
-    .bmi-bubble::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); border-width: 5px 5px 0; border-style: solid; border-color: #222 transparent transparent; }
-    .bmi-box { margin: 0 16px 24px; padding: 16px; border-radius: 14px; background: #FFE8ED; border: 1px solid #FBCED6; display: flex; gap: 12px; }
-    .bmi-box.good { background: #E8FFF0; border-color: #A7F3D0; }
-    .bmi-box-ico { font-size: 20px; color: var(--r); }
-    .bmi-box.good .bmi-box-ico { color: #10B981; }
-    .bmi-box-ttl { font-weight: 700; font-size: 14px; color: var(--r); margin-bottom: 4px;}
-    .bmi-box.good .bmi-box-ttl { color: #10B981; }
-    .bmi-box-txt { font-size: 12px; color: var(--sub); line-height: 1.4; }
-    .bmi-summary-wrap { position: relative; padding: 0 16px; margin-top: 10px; }
-    .bmi-summary-list { display: flex; flex-direction: column; gap: 16px; width: 60%; position: relative; z-index: 2; }
-    .bmi-sitem { display: flex; gap: 12px; align-items: center; }
-    .bmi-sitem-ico { width: 44px; height: 44px; border-radius: 50%; background: #F3F4F6; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--txt); }
-    .bmi-sitem-lbl { font-size: 11px; color: var(--sub); margin-bottom: 2px;}
-    .bmi-sitem-val { font-size: 13px; font-weight: 700; color: var(--txt); }
-    
-    .bmi-model-wrap { position: absolute; bottom: -10px; right: -10px; width: 140px; height: 140px; border-radius: 50%; overflow: hidden; z-index: 1; border: 4px solid #fff; box-shadow: 0 8px 24px rgba(0,0,0,0.08); background: #fff; }
-    .bmi-model { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
-    
-    @media(max-width:600px) {
-      .split-content { align-items: center; text-align: center; background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 70%, rgba(255,255,255,0) 100%); padding: 120px 24px 60px; justify-content: flex-start; }
-      .split-scr .lopts { max-width: 100%; margin: 0 auto; }
-      .split-scr .qtitle { margin: 0 auto 24px; }
+    .bmi-wrap {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bmi-track-wrap {
+      position: relative;
+      margin: 30px 16px 40px;
+      height: 40px;
+    }
+
+    .bmi-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--sub);
+      margin-bottom: 8px;
+      padding: 0;
+    }
+
+    .bmi-labels span {
+      flex: 1;
+      text-align: center;
+    }
+
+    .bmi-track {
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #60A5FA 0%, #10B981 30%, #F59E0B 60%, #EF4444 80%, #991B1B 100%);
+      position: relative;
+    }
+
+    .bmi-track::before {
+      content: '';
+      position: absolute;
+      left: 16.6%;
+      width: 1px;
+      height: 16px;
+      top: -4px;
+      background: #fff;
+      opacity: 0.5;
+    }
+
+    .bmi-track::after {
+      content: '';
+      position: absolute;
+      left: 40%;
+      width: 1px;
+      height: 16px;
+      top: -4px;
+      background: #fff;
+      opacity: 0.5;
+    }
+
+    .bmi-marker {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border: 3px solid #222;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      transition: left 0.5s ease;
+      z-index: 2;
+    }
+
+    .bmi-bubble {
+      position: absolute;
+      top: -38px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #222;
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .bmi-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 5px 5px 0;
+      border-style: solid;
+      border-color: #222 transparent transparent;
+    }
+
+    .bmi-box {
+      margin: 0 16px 24px;
+      padding: 16px;
+      border-radius: 14px;
+      background: #FFE8ED;
+      border: 1px solid #FBCED6;
+      display: flex;
+      gap: 12px;
+    }
+
+    .bmi-box.good {
+      background: #E8FFF0;
+      border-color: #A7F3D0;
+    }
+
+    .bmi-box-ico {
+      font-size: 20px;
+      color: var(--r);
+    }
+
+    .bmi-box.good .bmi-box-ico {
+      color: #10B981;
+    }
+
+    .bmi-box-ttl {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--r);
+      margin-bottom: 4px;
+    }
+
+    .bmi-box.good .bmi-box-ttl {
+      color: #10B981;
+    }
+
+    .bmi-box-txt {
+      font-size: 12px;
+      color: var(--sub);
+      line-height: 1.4;
+    }
+
+    .bmi-summary-wrap {
+      position: relative;
+      padding: 0 16px;
+      margin-top: 10px;
+    }
+
+    .bmi-summary-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 60%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .bmi-sitem {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .bmi-sitem-ico {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #F3F4F6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--txt);
+    }
+
+    .bmi-sitem-lbl {
+      font-size: 11px;
+      color: var(--sub);
+      margin-bottom: 2px;
+    }
+
+    .bmi-sitem-val {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--txt);
+    }
+
+    .bmi-model-wrap {
+      position: absolute;
+      bottom: -10px;
+      right: -10px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      overflow: hidden;
+      z-index: 1;
+      border: 4px solid #fff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      background: #fff;
+    }
+
+    .bmi-model {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    @media(max-width:480px) {
+      .split-content {
+        align-items: center;
+        text-align: center;
+        background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 70%, rgba(255, 255, 255, 0) 100%);
+        padding: 120px 24px 60px;
+        justify-content: flex-start;
+      }
+
+      .split-scr .lopts {
+        max-width: 100%;
+        margin: 0 auto;
+      }
+
+      .split-scr .qtitle {
+        margin: 0 auto 24px;
+      }
     }
 
 
-    
+
     /* ── CARD GRID (Variety) ── */
-    .cgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .ccard { border: 2px solid var(--brd); border-radius: 16px; padding: 16px 12px; cursor: pointer; text-align: left; transition: all .2s; background: var(--bg); display: flex; flex-direction: column; gap: 12px; justify-content: space-between; box-shadow: var(--sh1); }
-    .ccard-ico { font-size: 28px; color: var(--r); }
-    .ccard-tx { font-weight: 700; font-size: 14px; color: var(--txt); line-height: 1.2; }
-    .ccard:hover, .ccard.sel { border-color: var(--r); background: #FFE8ED; transform: translateY(-3px); box-shadow: var(--sh2); }
+    .cgrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .ccard {
+      border: 2px solid var(--brd);
+      border-radius: 16px;
+      padding: 16px 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: all .2s;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: space-between;
+      box-shadow: var(--sh1);
+    }
+
+    .ccard-ico {
+      font-size: 28px;
+      color: var(--r);
+    }
+
+    .ccard-tx {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--txt);
+      line-height: 1.2;
+    }
+
+    .ccard:hover,
+    .ccard.sel {
+      border-color: var(--r);
+      background: #FFE8ED;
+      transform: translateY(-3px);
+      box-shadow: var(--sh2);
+    }
 
     /* ── WYGET (Final Screen) ── */
-    
-    
-    
-    
-    
+
+
+
+
+
 
     /* ── WELCOME ── */
     #scrW {
@@ -822,8 +1098,7 @@
     #scrF {
       display: none;
       flex-direction: column;
-      padding-bottom: 0;
-      padding-top: 80px;
+      padding-bottom: 0
     }
 
     #scrF.on {
@@ -833,12 +1108,12 @@
     /* ════ OFFER BAR ════ */
     #offerBar {
       display: none;
-      position: fixed;
+      position: sticky;
+      top: 0;
       left: 0;
       right: 0;
-      width: 100%;
-      top: 0;
       z-index: 100;
+      width: 100%;
       box-sizing: border-box;
       background: #fff;
       border-bottom: 1.5px solid #EEEEF5;
@@ -1097,21 +1372,58 @@
     }
 
     /* Benefits */
-    .bens { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+    .bens {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 24px
+    }
 
-    .ben { display: flex; align-items: center; background: #fff; border-radius: 16px; padding: 12px; gap: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s; }
+    .ben {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--brd);
+      transition: padding-left .2s;
+    }
 
-    .ben:hover { transform: translateX(4px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+    .ben:hover {
+      padding-left: 6px
+    }
 
-    
+    .ben:last-child {
+      border-bottom: none
+    }
 
-    .ben-img { width: 72px; height: 72px; object-fit: cover; border-radius: 12px; margin-bottom: 0; flex-shrink: 0; }
+    .ben-img {
+      width: 96px;
+      height: 96px;
+      border-radius: 16px;
+      object-fit: cover;
+      object-position: center;
+      flex-shrink: 0;
+      box-shadow: var(--sh1)
+    }
 
-    .ben-tx { display: flex; flex-direction: column; }
+    .ben-tx {
+      flex: 1
+    }
 
-    .ben-ttl { font-weight: 800; font-size: 15px; color: var(--txt); margin-bottom: 4px; line-height: 1.2; }
+    .ben-ttl {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--txt);
+      margin-bottom: 4px
+    }
 
-    .ben-dsc { font-size: 13px; color: var(--sub); font-weight: 500; }
+    .ben-dsc {
+      font-size: 13px;
+      color: var(--r);
+      font-weight: 600;
+      line-height: 1.4
+    }
 
     /* Plan box premium */
     .plan-box {
@@ -1589,14 +1901,14 @@
     }
 
     /* ── RESPONSIVE ── */
-    @media(max-width:600px) {
+    @media(max-width:480px) {
       .botbar {
         left: 0;
         right: 0;
         max-width: none
       }
 
-      #offerBar {
+      .offer-bar {
         left: 0;
         right: 0;
         max-width: none
@@ -1609,7 +1921,7 @@
         transform: translateX(-50%)
       }
 
-      #offerBar {
+      .offer-bar {
         left: 50%;
         transform: translateX(-50%);
         max-width: 480px
@@ -1638,7 +1950,7 @@
         border-radius: 0 0 24px 24px
       }
 
-      #offerBar {
+      .offer-bar {
         max-width: 560px
       }
 
@@ -1660,7 +1972,7 @@
         max-width: 600px
       }
 
-      #offerBar {
+      .offer-bar {
         max-width: 600px
       }
     }
@@ -1696,7 +2008,7 @@
       <div class="scr" id="scrW">
         <div class="scr-body"
           style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:44px">
-          <div class="w-logo">✦ FitQuiz</div>
+          <div class="w-logo">✦ BildBody</div>
           <div class="w-stat"><em>576,269</em> women</div>
           <div class="w-stat-sub">achieved their dream body with BildBody</div>
           <div class="w-img-wrap">
@@ -1913,12 +2225,13 @@
       </div>
 
 
-            <!-- Q7: BMI SUMMARY -->
+      <!-- Q7: BMI SUMMARY -->
       <div class="scr" id="scr7">
         <div class="scr-body" style="padding-bottom: 20px;">
           <div class="qtitle">Here's your health profile</div>
-          <div class="qsub" style="font-weight: 700; font-size: 20px; color: var(--txt); margin-top: 20px;">Body Mass Index (BMI)</div>
-          
+          <div class="qsub" style="font-weight: 700; font-size: 20px; color: var(--txt); margin-top: 20px;">Body Mass
+            Index (BMI)</div>
+
           <div class="bmi-wrap">
             <div class="bmi-track-wrap">
               <div class="bmi-labels">
@@ -1945,28 +2258,42 @@
               <div class="bmi-box-ico" id="bmiWarningIco"><i class="fa-solid fa-circle-exclamation"></i></div>
               <div>
                 <div class="bmi-box-ttl" id="bmiWarningTtl">Unhealthy BMI Risks:</div>
-                <div class="bmi-box-txt" id="bmiWarningTxt">Hormonal imbalances, irregular menstrual cycle, increased risk of cardiovascular disease, type 2 diabetes, skin and hair problems</div>
+                <div class="bmi-box-txt" id="bmiWarningTxt">Hormonal imbalances, irregular menstrual cycle, increased
+                  risk of cardiovascular disease, type 2 diabetes, skin and hair problems</div>
               </div>
             </div>
 
             <div class="bmi-summary-wrap">
-              <div class="bmi-model-wrap"><img src="images/bmi_model_1777382638155.png" class="bmi-model" alt="Model" /></div>
+              <div class="bmi-model-wrap"><img src="images/bmi_model_1777382638155.png" class="bmi-model" alt="Model" />
+              </div>
               <div class="bmi-summary-list">
                 <div class="bmi-sitem">
                   <div class="bmi-sitem-ico">👙</div>
-                  <div><div class="bmi-sitem-lbl">Body Type</div><div class="bmi-sitem-val" id="bmiBodyType">Mesomorph</div></div>
+                  <div>
+                    <div class="bmi-sitem-lbl">Body Type</div>
+                    <div class="bmi-sitem-val" id="bmiBodyType">Mesomorph</div>
+                  </div>
                 </div>
                 <div class="bmi-sitem">
                   <div class="bmi-sitem-ico">🛋️</div>
-                  <div><div class="bmi-sitem-lbl">Lifestyle</div><div class="bmi-sitem-val" id="bmiLifestyle">Sedentary</div></div>
+                  <div>
+                    <div class="bmi-sitem-lbl">Lifestyle</div>
+                    <div class="bmi-sitem-val" id="bmiLifestyle">Sedentary</div>
+                  </div>
                 </div>
                 <div class="bmi-sitem">
                   <div class="bmi-sitem-ico"><i class="fa-solid fa-heart-pulse"></i></div>
-                  <div><div class="bmi-sitem-lbl">Fitness Level</div><div class="bmi-sitem-val">Basic</div></div>
+                  <div>
+                    <div class="bmi-sitem-lbl">Fitness Level</div>
+                    <div class="bmi-sitem-val">Basic</div>
+                  </div>
                 </div>
                 <div class="bmi-sitem">
                   <div class="bmi-sitem-ico"><i class="fa-solid fa-fire"></i></div>
-                  <div><div class="bmi-sitem-lbl">Metabolism</div><div class="bmi-sitem-val">Moderate, responds well</div></div>
+                  <div>
+                    <div class="bmi-sitem-lbl">Metabolism</div>
+                    <div class="bmi-sitem-val">Moderate, responds well</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1982,19 +2309,31 @@
           <div class="lopts" id="g8">
             <button class="lopt" data-v="Sedentary" onclick="pickList(this,8)">
               <div class="lopt-ico"><i class="fa-solid fa-couch"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">Sedentary</div><div class="lopt-dsc">Office job, little movement</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Sedentary</div>
+                <div class="lopt-dsc">Office job, little movement</div>
+              </div>
             </button>
             <button class="lopt" data-v="Lightly Active" onclick="pickList(this,8)">
               <div class="lopt-ico"><i class="fa-solid fa-person-walking"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">Lightly Active</div><div class="lopt-dsc">Walks, 1–2 workouts/week</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Lightly Active</div>
+                <div class="lopt-dsc">Walks, 1–2 workouts/week</div>
+              </div>
             </button>
             <button class="lopt" data-v="Moderately Active" onclick="pickList(this,8)">
               <div class="lopt-ico"><i class="fa-solid fa-dumbbell"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">Moderately Active</div><div class="lopt-dsc">2–3 workouts/week</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Moderately Active</div>
+                <div class="lopt-dsc">2–3 workouts/week</div>
+              </div>
             </button>
             <button class="lopt" data-v="Very Active" onclick="pickList(this,8)">
               <div class="lopt-ico"><i class="fa-solid fa-bolt"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">Very Active</div><div class="lopt-dsc">4–5+ workouts/week</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Very Active</div>
+                <div class="lopt-dsc">4–5+ workouts/week</div>
+              </div>
             </button>
           </div>
         </div>
@@ -2008,19 +2347,31 @@
           <div class="lopts" id="g9">
             <button class="lopt" data-v="Less than 4 glasses" onclick="pickList(this,9)">
               <div class="lopt-ico"><i class="fa-solid fa-droplet"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">Less than 4 glasses</div><div class="lopt-dsc">Under 800 ml</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Less than 4 glasses</div>
+                <div class="lopt-dsc">Under 800 ml</div>
+              </div>
             </button>
             <button class="lopt" data-v="4–6 glasses" onclick="pickList(this,9)">
               <div class="lopt-ico"><i class="fa-solid fa-glass-water"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">4–6 glasses</div><div class="lopt-dsc">800–1200 ml</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">4–6 glasses</div>
+                <div class="lopt-dsc">800–1200 ml</div>
+              </div>
             </button>
             <button class="lopt" data-v="7–8 glasses" onclick="pickList(this,9)">
               <div class="lopt-ico"><i class="fa-solid fa-bottle-water"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">7–8 glasses</div><div class="lopt-dsc">1400–1600 ml</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">7–8 glasses</div>
+                <div class="lopt-dsc">1400–1600 ml</div>
+              </div>
             </button>
             <button class="lopt" data-v="More than 8 glasses" onclick="pickList(this,9)">
               <div class="lopt-ico"><i class="fa-solid fa-water"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">More than 8 glasses</div><div class="lopt-dsc">Over 1600 ml</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">More than 8 glasses</div>
+                <div class="lopt-dsc">Over 1600 ml</div>
+              </div>
             </button>
           </div>
         </div>
@@ -2034,15 +2385,23 @@
           <div class="lopts" id="g10">
             <button class="lopt" data-v="Yes, I have allergies" onclick="pickAllergy(this, 'yes')">
               <div class="lopt-ico"><i class="fa-solid fa-triangle-exclamation"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">Yes, I have allergies</div><div class="lopt-dsc">Intolerance to foods</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Yes, I have allergies</div>
+                <div class="lopt-dsc">Intolerance to foods</div>
+              </div>
             </button>
             <button class="lopt" data-v="No allergies" onclick="pickAllergy(this, 'no')">
               <div class="lopt-ico"><i class="fa-solid fa-circle-check"></i></div>
-              <div class="lopt-tx"><div class="lopt-ttl">No, I don't</div><div class="lopt-dsc">I can eat any foods</div></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">No, I don't</div>
+                <div class="lopt-dsc">I can eat any foods</div>
+              </div>
             </button>
           </div>
           <div id="allergyWrap" style="display: none; margin-top: 16px; width: 100%;">
-            <input type="text" id="allergyInput" class="ninp" placeholder="E.g., peanuts, lactose..." style="width: 100%; height: 58px; font-size: 16px; font-weight: 500; text-align: left; padding: 0 16px;" oninput="checkAllergyInput()" />
+            <input type="text" id="allergyInput" class="ninp" placeholder="E.g., peanuts, lactose..."
+              style="width: 100%; height: 58px; font-size: 16px; font-weight: 500; text-align: left; padding: 0 16px;"
+              oninput="checkAllergyInput()" />
           </div>
         </div>
       </div>
@@ -2053,10 +2412,26 @@
         <div class="split-content">
           <div class="qtitle">How much do you usually sleep?</div>
           <div class="lopts" id="g11">
-            <button class="lopt" data-v="Less than 5 hours" onclick="pickList(this,11)"><div class="lopt-tx"><div class="lopt-ttl">Less than 5 hours</div></div></button>
-            <button class="lopt" data-v="5-6 hours" onclick="pickList(this,11)"><div class="lopt-tx"><div class="lopt-ttl">5-6 hours</div></div></button>
-            <button class="lopt" data-v="7-8 hours" onclick="pickList(this,11)"><div class="lopt-tx"><div class="lopt-ttl">7-8 hours</div></div></button>
-            <button class="lopt" data-v="More than 8 hours" onclick="pickList(this,11)"><div class="lopt-tx"><div class="lopt-ttl">More than 8 hours</div></div></button>
+            <button class="lopt" data-v="Less than 5 hours" onclick="pickList(this,11)">
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Less than 5 hours</div>
+              </div>
+            </button>
+            <button class="lopt" data-v="5-6 hours" onclick="pickList(this,11)">
+              <div class="lopt-tx">
+                <div class="lopt-ttl">5-6 hours</div>
+              </div>
+            </button>
+            <button class="lopt" data-v="7-8 hours" onclick="pickList(this,11)">
+              <div class="lopt-tx">
+                <div class="lopt-ttl">7-8 hours</div>
+              </div>
+            </button>
+            <button class="lopt" data-v="More than 8 hours" onclick="pickList(this,11)">
+              <div class="lopt-tx">
+                <div class="lopt-ttl">More than 8 hours</div>
+              </div>
+            </button>
           </div>
         </div>
       </div>
@@ -2067,10 +2442,26 @@
         <div class="split-content">
           <div class="qtitle">How often do you feel stressed?</div>
           <div class="lopts" id="g12">
-            <button class="lopt" data-v="Rarely" onclick="pickList(this,12)"><div class="lopt-tx"><div class="lopt-ttl">Rarely</div></div></button>
-            <button class="lopt" data-v="Sometimes" onclick="pickList(this,12)"><div class="lopt-tx"><div class="lopt-ttl">Sometimes</div></div></button>
-            <button class="lopt" data-v="Often" onclick="pickList(this,12)"><div class="lopt-tx"><div class="lopt-ttl">Often, daily</div></div></button>
-            <button class="lopt" data-v="Constantly" onclick="pickList(this,12)"><div class="lopt-tx"><div class="lopt-ttl">Constantly overwhelmed</div></div></button>
+            <button class="lopt" data-v="Rarely" onclick="pickList(this,12)">
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Rarely</div>
+              </div>
+            </button>
+            <button class="lopt" data-v="Sometimes" onclick="pickList(this,12)">
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Sometimes</div>
+              </div>
+            </button>
+            <button class="lopt" data-v="Often" onclick="pickList(this,12)">
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Often, daily</div>
+              </div>
+            </button>
+            <button class="lopt" data-v="Constantly" onclick="pickList(this,12)">
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Constantly overwhelmed</div>
+              </div>
+            </button>
           </div>
         </div>
       </div>
@@ -2081,14 +2472,30 @@
         <div class="split-content">
           <div class="qtitle">Do you have late night cravings?</div>
           <div class="lopts" id="g13">
-            <button class="lopt" data-v="Never" onclick="pickList(this,13)"><div class="lopt-tx"><div class="lopt-ttl">No, I sleep well</div></div></button>
-            <button class="lopt" data-v="Rarely" onclick="pickList(this,13)"><div class="lopt-tx"><div class="lopt-ttl">Rarely</div></div></button>
-            <button class="lopt" data-v="Often" onclick="pickList(this,13)"><div class="lopt-tx"><div class="lopt-ttl">Yes, especially for sweets</div></div></button>
-            <button class="lopt" data-v="Always" onclick="pickList(this,13)"><div class="lopt-tx"><div class="lopt-ttl">Yes, I wake up to eat</div></div></button>
+            <button class="lopt" data-v="Never" onclick="pickList(this,13)">
+              <div class="lopt-tx">
+                <div class="lopt-ttl">No, I sleep well</div>
+              </div>
+            </button>
+            <button class="lopt" data-v="Rarely" onclick="pickList(this,13)">
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Rarely</div>
+              </div>
+            </button>
+            <button class="lopt" data-v="Often" onclick="pickList(this,13)">
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Yes, especially for sweets</div>
+              </div>
+            </button>
+            <button class="lopt" data-v="Always" onclick="pickList(this,13)">
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Yes, I wake up to eat</div>
+              </div>
+            </button>
           </div>
         </div>
       </div>
-      
+
       <!-- Q14: BACK PAIN -->
       <div class="scr" id="scr14">
         <div class="scr-body">
@@ -2148,16 +2555,28 @@
           <div class="qtitle">Do you feel energy drops during the day?</div>
           <div class="lopts" id="g16">
             <button class="lopt" data-v="High energy" onclick="pickList(this,16)">
-              <div class="lopt-ico"><i class="fa-solid fa-battery-full"></i></div><div class="lopt-tx"><div class="lopt-ttl">No, consistent energy</div></div>
+              <div class="lopt-ico"><i class="fa-solid fa-battery-full"></i></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">No, consistent energy</div>
+              </div>
             </button>
             <button class="lopt" data-v="Afternoon crash" onclick="pickList(this,16)">
-              <div class="lopt-ico"><i class="fa-solid fa-arrow-trend-down"></i></div><div class="lopt-tx"><div class="lopt-ttl">Yes, afternoon crash</div></div>
+              <div class="lopt-ico"><i class="fa-solid fa-arrow-trend-down"></i></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Yes, afternoon crash</div>
+              </div>
             </button>
             <button class="lopt" data-v="Morning fatigue" onclick="pickList(this,16)">
-              <div class="lopt-ico"><i class="fa-solid fa-bed"></i></div><div class="lopt-tx"><div class="lopt-ttl">Hard to wake up</div></div>
+              <div class="lopt-ico"><i class="fa-solid fa-bed"></i></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Hard to wake up</div>
+              </div>
             </button>
             <button class="lopt" data-v="Always tired" onclick="pickList(this,16)">
-              <div class="lopt-ico"><i class="fa-solid fa-battery-empty"></i></div><div class="lopt-tx"><div class="lopt-ttl">Constantly tired</div></div>
+              <div class="lopt-ico"><i class="fa-solid fa-battery-empty"></i></div>
+              <div class="lopt-tx">
+                <div class="lopt-ttl">Constantly tired</div>
+              </div>
             </button>
           </div>
         </div>
@@ -2347,7 +2766,7 @@
             <div class="bens">
               <div class="ben">
                 <img class="ben-img"
-                  src="images/ben1.png"
+                  src="https://image.pollinations.ai/prompt/woman%20home%20workout%20dumbbell%20exercise%20fitness%20routine%20living%20room%20pink%20sportswear?width=200&height=140&nologo=true&seed=310&model=flux"
                   alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Effective Fat Burning</div>
@@ -2356,7 +2775,7 @@
               </div>
               <div class="ben">
                 <img class="ben-img"
-                  src="images/ben2.png"
+                  src="https://image.pollinations.ai/prompt/healthy%20meal%20prep%20containers%20weekly%20nutrition%20plan%20colorful%20food%20overhead%20view?width=200&height=140&nologo=true&seed=311&model=flux"
                   alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Personal Nutrition Plan</div>
@@ -2365,7 +2784,7 @@
               </div>
               <div class="ben">
                 <img class="ben-img"
-                  src="images/ben3.png"
+                  src="https://image.pollinations.ai/prompt/fresh%20water%20glass%20mint%20lemon%20hydration%20healthy%20lifestyle%20white%20background%20close%20up?width=200&height=140&nologo=true&seed=312&model=flux"
                   alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Hydration Plan</div>
@@ -2374,7 +2793,7 @@
               </div>
               <div class="ben">
                 <img class="ben-img"
-                  src="images/ben4.png"
+                  src="https://image.pollinations.ai/prompt/happy%20woman%20measuring%20waist%20tape%20weight%20loss%20success%20smiling%20pink%20top%20white%20background?width=200&height=140&nologo=true&seed=313&model=flux"
                   alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Visible results from week 2</div>
@@ -2383,7 +2802,7 @@
               </div>
               <div class="ben">
                 <img class="ben-img"
-                  src="images/ben5.png"
+                  src="https://image.pollinations.ai/prompt/happy%20woman%20meditation%20yoga%20peaceful%20wellness%20positive%20mood%20morning%20light%20white%20background?width=200&height=140&nologo=true&seed=314&model=flux"
                   alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Improved mood &amp; energy</div>
@@ -2409,20 +2828,6 @@
                   <div>
                     <div class="plan-meta-lbl">Weight</div>
                     <div class="plan-meta-val" id="planMetaWeight">65 kg</div>
-                  </div>
-                </div>
-                <div class="plan-meta-card">
-                  <div class="plan-meta-ico"><i class="fa-solid fa-utensils"></i></div>
-                  <div>
-                    <div class="plan-meta-lbl">Diet</div>
-                    <div class="plan-meta-val" id="planMetaDiet">Standard</div>
-                  </div>
-                </div>
-                <div class="plan-meta-card">
-                  <div class="plan-meta-ico"><i class="fa-solid fa-bolt"></i></div>
-                  <div>
-                    <div class="plan-meta-lbl">Activity</div>
-                    <div class="plan-meta-val" id="planMetaActivity">Moderate</div>
                   </div>
                 </div>
               </div>
@@ -2696,13 +3101,13 @@
       const wStr = A[5] || '65 kg', hStr = A[6] || '170 cm';
       let w = parseFloat(wStr); if (wStr.includes('lbs')) w *= 0.453592;
       let h = parseFloat(hStr); if (hStr.includes('ft')) h *= 30.48;
-      const bmi = w / ((h/100) * (h/100));
+      const bmi = w / ((h / 100) * (h / 100));
       const val = bmi.toFixed(1);
-      
+
       const m = document.getElementById('bmiMarker');
       const t = document.getElementById('bmiValText');
       if (t) t.textContent = "You - " + val;
-      
+
       let pct = ((bmi - 15) / (40 - 15)) * 100;
       pct = Math.max(0, Math.min(100, pct));
       if (m) {
@@ -2713,12 +3118,12 @@
           m.style.left = pct + '%';
         }, 50);
       }
-      
+
       const wb = document.getElementById('bmiWarningBox');
       const wi = document.getElementById('bmiWarningIco');
       const wt = document.getElementById('bmiWarningTtl');
       const wx = document.getElementById('bmiWarningTxt');
-      
+
       if (bmi < 18.5) {
         wb.className = 'bmi-box'; wi.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
         wt.textContent = 'Underweight Risks:'; wx.textContent = 'Weakened immune system, fragile bones, feeling tired.';
@@ -2729,7 +3134,7 @@
         wb.className = 'bmi-box'; wi.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
         wt.textContent = 'Unhealthy BMI Risks:'; wx.textContent = 'Hormonal imbalances, risk of cardiovascular disease, joint pain.';
       }
-      
+
       document.getElementById('bmiBodyType').textContent = A[3] || 'Not specified';
       document.getElementById('bmiLifestyle').textContent = A[8] || 'Not specified';
     }
