@@ -852,7 +852,7 @@
       object-position: center top;
     }
 
-    @media(max-width:480px) {
+    @media(max-width:600px) {
       .split-content {
         align-items: center;
         text-align: center;
@@ -1098,7 +1098,8 @@
     #scrF {
       display: none;
       flex-direction: column;
-      padding-bottom: 0
+      padding-bottom: 0;
+      padding-top: 80px;
     }
 
     #scrF.on {
@@ -1108,12 +1109,12 @@
     /* ════ OFFER BAR ════ */
     #offerBar {
       display: none;
-      position: sticky;
-      top: 0;
+      position: fixed;
       left: 0;
       right: 0;
-      z-index: 100;
       width: 100%;
+      top: 0;
+      z-index: 100;
       box-sizing: border-box;
       background: #fff;
       border-bottom: 1.5px solid #EEEEF5;
@@ -1375,54 +1376,55 @@
     .bens {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      margin-bottom: 24px
+      gap: 12px;
+      margin-bottom: 30px;
     }
 
     .ben {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--brd);
-      transition: padding-left .2s;
+      background: #fff;
+      border-radius: 16px;
+      padding: 12px;
+      gap: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .ben:hover {
-      padding-left: 6px
+      transform: translateX(4px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     }
 
-    .ben:last-child {
-      border-bottom: none
-    }
+
 
     .ben-img {
-      width: 96px;
-      height: 96px;
-      border-radius: 16px;
+      width: 72px;
+      height: 72px;
       object-fit: cover;
-      object-position: center;
+      border-radius: 12px;
+      margin-bottom: 0;
       flex-shrink: 0;
-      box-shadow: var(--sh1)
     }
 
     .ben-tx {
-      flex: 1
+      display: flex;
+      flex-direction: column;
     }
 
     .ben-ttl {
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
+      font-weight: 800;
+      font-size: 15px;
       color: var(--txt);
-      margin-bottom: 4px
+      margin-bottom: 4px;
+      line-height: 1.2;
     }
 
     .ben-dsc {
       font-size: 13px;
-      color: var(--r);
-      font-weight: 600;
-      line-height: 1.4
+      color: var(--sub);
+      font-weight: 500;
     }
 
     /* Plan box premium */
@@ -1901,14 +1903,14 @@
     }
 
     /* ── RESPONSIVE ── */
-    @media(max-width:480px) {
+    @media(max-width:600px) {
       .botbar {
         left: 0;
         right: 0;
         max-width: none
       }
 
-      .offer-bar {
+      #offerBar {
         left: 0;
         right: 0;
         max-width: none
@@ -1921,7 +1923,7 @@
         transform: translateX(-50%)
       }
 
-      .offer-bar {
+      #offerBar {
         left: 50%;
         transform: translateX(-50%);
         max-width: 480px
@@ -1950,7 +1952,7 @@
         border-radius: 0 0 24px 24px
       }
 
-      .offer-bar {
+      #offerBar {
         max-width: 560px
       }
 
@@ -1972,7 +1974,7 @@
         max-width: 600px
       }
 
-      .offer-bar {
+      #offerBar {
         max-width: 600px
       }
     }
@@ -2765,45 +2767,35 @@
             <div class="sec-ttl">What you'll get</div>
             <div class="bens">
               <div class="ben">
-                <img class="ben-img"
-                  src="https://image.pollinations.ai/prompt/woman%20home%20workout%20dumbbell%20exercise%20fitness%20routine%20living%20room%20pink%20sportswear?width=200&height=140&nologo=true&seed=310&model=flux"
-                  alt="" />
+                <img class="ben-img" src="images/ben1.png" alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Effective Fat Burning</div>
                   <div class="ben-dsc">200+ exercises for problem areas</div>
                 </div>
               </div>
               <div class="ben">
-                <img class="ben-img"
-                  src="https://image.pollinations.ai/prompt/healthy%20meal%20prep%20containers%20weekly%20nutrition%20plan%20colorful%20food%20overhead%20view?width=200&height=140&nologo=true&seed=311&model=flux"
-                  alt="" />
+                <img class="ben-img" src="images/ben2.png" alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Personal Nutrition Plan</div>
                   <div class="ben-dsc">Daily menu tailored to your calories</div>
                 </div>
               </div>
               <div class="ben">
-                <img class="ben-img"
-                  src="https://image.pollinations.ai/prompt/fresh%20water%20glass%20mint%20lemon%20hydration%20healthy%20lifestyle%20white%20background%20close%20up?width=200&height=140&nologo=true&seed=312&model=flux"
-                  alt="" />
+                <img class="ben-img" src="images/ben3.png" alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Hydration Plan</div>
                   <div class="ben-dsc">Optimal daily water intake</div>
                 </div>
               </div>
               <div class="ben">
-                <img class="ben-img"
-                  src="https://image.pollinations.ai/prompt/happy%20woman%20measuring%20waist%20tape%20weight%20loss%20success%20smiling%20pink%20top%20white%20background?width=200&height=140&nologo=true&seed=313&model=flux"
-                  alt="" />
+                <img class="ben-img" src="images/ben4.png" alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Visible results from week 2</div>
                   <div class="ben-dsc">Track your weight and body shape</div>
                 </div>
               </div>
               <div class="ben">
-                <img class="ben-img"
-                  src="https://image.pollinations.ai/prompt/happy%20woman%20meditation%20yoga%20peaceful%20wellness%20positive%20mood%20morning%20light%20white%20background?width=200&height=140&nologo=true&seed=314&model=flux"
-                  alt="" />
+                <img class="ben-img" src="images/ben5.png" alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Improved mood &amp; energy</div>
                   <div class="ben-dsc">Motivation and positive mindset</div>
@@ -2830,6 +2822,20 @@
                     <div class="plan-meta-val" id="planMetaWeight">65 kg</div>
                   </div>
                 </div>
+                <div class="plan-meta-card">
+                  <div class="plan-meta-ico"><i class="fa-solid fa-utensils"></i></div>
+                  <div>
+                    <div class="plan-meta-lbl">Diet</div>
+                    <div class="plan-meta-val" id="planMetaDiet">Standard</div>
+                  </div>
+                </div>
+                <div class="plan-meta-card">
+                  <div class="plan-meta-ico"><i class="fa-solid fa-bolt"></i></div>
+                  <div>
+                    <div class="plan-meta-lbl">Activity</div>
+                    <div class="plan-meta-val" id="planMetaActivity">Moderate</div>
+                  </div>
+                </div>
               </div>
               <!-- Timer + Price row -->
               <div class="plan-timer-row">
@@ -2840,7 +2846,6 @@
                 <div style="text-align:right">
                   <div class="plan-lbl">Price:</div>
                   <div class="plan-price">$9.99</div>
-                  <div class="plan-price-sub">per week</div>
                 </div>
               </div>
               <button class="plan-cta" onclick="doBuy()">GET MY PLAN</button>
