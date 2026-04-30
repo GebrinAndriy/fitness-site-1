@@ -718,11 +718,11 @@
 
 
       <!-- CLEAN LOADING PAGE FOR TESTS -->
-    <div class="scr" id="scrTestLoading" style="background: #fff; z-index: 9999;">
-      <div class="scr-body" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center;">
+    <div class="scr" id="scrTestLoading" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 999999; display: none;">
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 24px;">
         <div class="test-spinner"></div>
-        <h2 style="margin-top: 24px; font-weight: 800; color: #1a1a2e;">Generating Your Plan...</h2>
-        <p style="color: #666; margin-top: 8px;">Our AI is working. Please wait about 2 minutes.</p>
+        <h2 style="margin-top: 28px; font-weight: 800; color: #1a1a2e; font-size: 24px;">Finalizing Your Plan...</h2>
+        <p style="color: #666; margin-top: 10px; font-size: 16px;">We are preparing your personalized strategy. Please wait about 2 minutes.</p>
       </div>
     </div>
 
@@ -1080,8 +1080,8 @@
     </div>
 
     <!-- SUCCESS PAGE (Post Payment) -->
-    <div class="scr" id="scrSuccess" style="background: #fff;">
-      <div class="scr-body" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 24px; text-align: center; box-sizing: border-box;">
+    <div class="scr" id="scrSuccess" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 999999; display: none;">
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 40px 24px; text-align: center; box-sizing: border-box;">
         <div class="success-icon">
           <i class="fa-solid fa-circle-check"></i>
         </div>

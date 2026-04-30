@@ -22,21 +22,11 @@ const offerBar = document.getElementById('offerBar');
 const segbar = document.getElementById('segbar');
 for (let i = 0; i < TOTAL; i++) { const s = document.createElement('div'); s.className = 'seg'; s.id = 's' + i; segbar.appendChild(s); }
 
-function updSegs(q) {
-  // Legacy segbar (hidden, kept for JS compatibility)
-  for (let i = 0; i < TOTAL; i++) { const s = document.getElementById('s' + i); if (s) s.className = 'seg' + (i < q ? ' done' : i === q ? ' cur' : ''); }
-  // New premium progress bar
-  const pf = document.getElementById('progFill');
-  const pl = document.getElementById('progLabel');
-  if (pf) pf.style.width = ((q + 1) / TOTAL * 100).toFixed(1) + '%';
-  if (pl) pl.textContent = (q + 1) + ' / ' + TOTAL;
-}
-
-const SCREENS = ['scrW', 'scr0', 'scr1', 'scr2', 'scr3', 'scr4', 'scr5', 'scr6', 'scr7', 'scr8', 'scr9', 'scr10', 'scr11', 'scr12', 'scr13', 'scr14', 'scr15', 'scr16', 'scr17', 'scr18', 'scr19', 'scrEmail', 'scrL', 'scrF', 'scrSuccess'];
+const SCREENS = ['scrW', 'scr0', 'scr1', 'scr2', 'scr3', 'scr4', 'scr5', 'scr6', 'scr7', 'scr8', 'scr9', 'scr10', 'scr11', 'scr12', 'scr13', 'scr14', 'scr15', 'scr16', 'scr17', 'scr18', 'scr19', 'scrEmail', 'scrL', 'scrF', 'scrSuccess', 'scrTestLoading'];
 
 function show(idx) {
   SCREENS.forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('on'); });
-  const map = { '-1': 'scrW', 20: 'scrEmail', 21: 'scrL', 22: 'scrF', 'Success': 'scrSuccess' };
+  const map = { '-1': 'scrW', 20: 'scrEmail', 21: 'scrL', 22: 'scrF', 'Success': 'scrSuccess', 'TestLoading': 'scrTestLoading' };
   const target = map[idx] !== undefined ? map[idx] : 'scr' + idx;
   const el = document.getElementById(target);
   if (el) el.classList.add('on');

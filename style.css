@@ -2088,3 +2088,9 @@ button {
   100% { transform: rotate(360deg); }
 }
 
+
+/* Force screens to behave correctly with .on class */
+.scr { display: none !important; }
+.scr.on { display: block !important; }
+#scrTestLoading.on, #scrSuccess.on { display: flex !important; }
+
