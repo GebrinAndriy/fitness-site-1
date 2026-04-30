@@ -367,7 +367,8 @@ async function testEmailDelivery() {
   const name = prompt("Please enter your name for the test:", "Customer") || "Customer";
   if (!email) return;
   
-  alert("Testing email delivery... Please wait about 10-20 seconds. Check Vercel logs if it fails.");
+  // Show loading screen
+  show('L'); 
   
   try {
     const response = await fetch('/api/webhook', {
