@@ -17,6 +17,9 @@ export const config = { api: { bodyParser: true } };
 
 // ── Verify that the request truly came from Lemon Squeezy ─────────────────
 function verifySignature(req, rawBody) {
+  // Allow manual testing from our test button
+  if (req.headers['x-test-mode'] === 'true') return true;
+
   const secret = process.env.LEMON_SQUEEZY_SECRET;
   if (!secret) return true; // skip if not set (dev mode)
   const sig = req.headers['x-signature'];

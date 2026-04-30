@@ -362,5 +362,43 @@ function doBuy() {
   alert('Payment successful! Generating your personal plan with AI...');
   generatePlanWithClaude();
 }
+async function testEmailDelivery() {
+  const email = A.email || prompt("Please enter email to receive the test plan:");
+  if (!email) return;
+  
+  alert("Testing email delivery... Please wait about 10-20 seconds. Check Vercel logs if it fails.");
+  
+  try {
+    const response = await fetch('/api/webhook', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-event-name': 'order_created',
+        'x-test-mode': 'true' 
+      },
+      body: JSON.stringify({
+        data: {
+          attributes: {
+            user_email: email,
+            user_name: "Tester",
+            custom_data: {
+              data: JSON.stringify(A)
+            }
+          }
+        }
+      })
+    });
+    
+    const result = await response.json();
+    if (response.ok) {
+      alert("✅ Test signal sent successfully! Check your email (" + email + ") in a minute.");
+    } else {
+      alert("❌ Test failed: " + (result.error || "Unknown error"));
+    }
+  } catch (e) {
+    alert("❌ Error connecting to backend: " + e.message);
+  }
+}
+
 A[5] = '65 kg'; A[6] = '170 cm';
 show(-1);
