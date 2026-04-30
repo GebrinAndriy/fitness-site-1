@@ -95,11 +95,12 @@ export default async function handler(req, res) {
 
   try {
     // ── 0. Check for required environment variables ─────────────────────
-    if (!process.env.ANTHROPIC_API_KEY) throw new Error("Missing ANTHROPIC_API_KEY on server");
+    const apiKey = (process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || "").trim();
+    if (!apiKey) throw new Error("Missing ANTHROPIC_API_KEY or CLAUDE_API_KEY on server");
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) throw new Error("Missing email credentials on server");
 
     // ── 1. Generate the plan with Claude ──────────────────────────────────
-    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+    const client = new Anthropic({ apiKey: apiKey });
 
     const prompt = `You are an expert nutritionist and certified fitness coach.
 Generate a detailed, personalized 7-day diet and workout plan in clean HTML format (h2, h3, ul, p tags — no markdown).
