@@ -364,6 +364,7 @@ function doBuy() {
 }
 async function testEmailDelivery() {
   const email = A.email || prompt("Please enter email to receive the test plan:");
+  const name = prompt("Please enter your name for the test:", "Customer") || "Customer";
   if (!email) return;
   
   alert("Testing email delivery... Please wait about 10-20 seconds. Check Vercel logs if it fails.");
@@ -380,7 +381,7 @@ async function testEmailDelivery() {
         data: {
           attributes: {
             user_email: email,
-            user_name: "Tester",
+            user_name: name,
             custom_data: {
               data: JSON.stringify(A)
             }
@@ -391,7 +392,7 @@ async function testEmailDelivery() {
     
     const result = await response.json();
     if (response.ok) {
-      alert("✅ Test signal sent successfully! Check your email (" + email + ") in a minute.");
+      show('Success');
     } else {
       alert("❌ Test failed: " + (result.error || "Unknown error"));
     }

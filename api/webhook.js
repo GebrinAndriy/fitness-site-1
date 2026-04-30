@@ -135,14 +135,14 @@ Keep the tone warm, supportive and motivating.`;
       messages: [{ role: 'user', content: prompt }],
     });
 
-    const planHtml = wrapHtml(message.content[0].text, customerName);
+    // Clean markdown code blocks if present
+    let cleanContent = message.content[0].text.replace(/```html/g, '').replace(/```/g, '').trim();
+
+    const planHtml = wrapHtml(cleanContent, customerName);
 
     // ── 2. Convert HTML → PDF using a lightweight approach ────────────────
     // Vercel serverless functions cannot run Puppeteer (too heavy).
-    // We use the free html-pdf-node package which uses Chrome remotely,
-    // OR you can use the Browserless.io API (free tier available).
     // For simplicity here we send the HTML as an inline email.
-    // Swap the attachment block below with a real PDF library if needed.
 
     // ── 3. Send email via Gmail (App Password required) ───────────────────
     const transporter = nodemailer.createTransport({
@@ -158,26 +158,29 @@ Keep the tone warm, supportive and motivating.`;
       to: customerEmail,
       subject: `🔥 Your Personal BildBody Plan is Ready, ${customerName}!`,
       html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
-          <div style="background:linear-gradient(135deg,#E8454A,#FF8A6E);padding:30px;text-align:center;border-radius:12px 12px 0 0;">
-            <h1 style="color:#fff;margin:0;font-size:28px;text-transform:uppercase;">BILDBODY</h1>
-            <p style="color:rgba(255,255,255,.85);margin:6px 0 0;">Your Personal Plan Is Ready!</p>
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;border:1px solid #eee;border-radius:12px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#E8454A,#FF8A6E);padding:40px 20px;text-align:center;">
+            <h1 style="color:#fff;margin:0;font-size:32px;letter-spacing:2px;">BILDBODY</h1>
+            <p style="color:rgba(255,255,255,.9);margin:10px 0 0;font-size:16px;">YOUR TRANSFORMATION STARTS NOW</p>
           </div>
-          <div style="background:#fff;padding:30px;border:1px solid #eee;border-radius:0 0 12px 12px;">
-            <p>Hi <strong>${customerName}</strong> 👋</p>
-            <p>Your personalized fitness and nutrition plan has been generated just for you. It is attached to this email as an HTML file — open it in any browser to read and print it.</p>
-            <p style="color:#E8454A;font-weight:bold;">Your transformation starts TODAY. You've got this! 💪</p>
-            <p style="font-size:12px;color:#aaa;margin-top:24px;">Questions? Reply to this email anytime.<br>© ${new Date().getFullYear()} BildBody</p>
+          <div style="padding:30px;line-height:1.6;color:#333;">
+            <p style="font-size:18px;">Hi <strong>${customerName}</strong>! 👋</p>
+            <p>Your personalized fitness and nutrition plan is ready. We've analyzed your goals and created a roadmap specifically for you.</p>
+            <hr style="border:0;border-top:1px solid #eee;margin:25px 0;">
+            
+            <div style="background:#f9f9f9;padding:20px;border-radius:8px;margin-bottom:25px;">
+              ${cleanContent}
+            </div>
+
+            <p style="text-align:center;margin-top:30px;">
+              <a href="javascript:window.print()" style="background:#E8454A;color:#fff;padding:14px 28px;text-decoration:none;border-radius:30px;font-weight:bold;display:inline-block;">📥 SAVE OR PRINT PLAN</a>
+            </p>
+          </div>
+          <div style="background:#f4f4f4;padding:20px;text-align:center;font-size:12px;color:#888;">
+            <p>© 2026 BildBody Fitness. All rights reserved.<br>Questions? Just reply to this email.</p>
           </div>
         </div>
       `,
-      attachments: [
-        {
-          filename: 'BildBody_Personal_Plan.html',
-          content: planHtml,
-          contentType: 'text/html',
-        },
-      ],
     });
 
     return res.status(200).json({ ok: true, email: customerEmail });
