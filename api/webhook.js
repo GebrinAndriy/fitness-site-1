@@ -152,21 +152,28 @@ IMPORTANT: Use ONLY clean HTML tags (h2, h3, table, tr, td, ul, li, p). NO markd
           </div>
           <div style="padding:30px;line-height:1.6;color:#333;">
             <p style="font-size:18px;">Hi <strong>${customerName}</strong>! 👋</p>
-            <p>Great news! Our AI has finished creating your custom 7-day fitness and nutrition strategy.</p>
+            <p>Great news! We have finished creating your custom 7-day fitness and nutrition strategy based on your unique goals and body type.</p>
             <p style="background:#fff3f3;padding:15px;border-left:4px solid #E8454A;border-radius:4px;">
-              <strong>Note:</strong> We have attached a clean, printable version of your plan to this email. Open the <strong>.html</strong> attachment to see your full schedule.
+              <strong>Note:</strong> We have attached a clean, printable version of your full plan to this email. Please open the attached <strong>.html</strong> file to see your complete schedule.
             </p>
             <div style="margin:25px 0;padding:20px;background:#f9f9f9;border-radius:8px;">
-              <h3 style="margin-top:0;color:#E8454A;">Quick Summary:</h3>
-              ${cleanContent.substring(0, 500)}...
+              <h3 style="margin-top:0;color:#E8454A;">Progress Summary:</h3>
+              ${cleanContent.substring(0, 800)}...
             </div>
-            <p>Open the attached file to see the full 7-day tables and exercises!</p>
+            <p>Check the attached file for the full tables and exercises!</p>
           </div>
           <div style="background:#f4f4f4;padding:20px;text-align:center;font-size:12px;color:#888;">
             <p>© 2026 BildBody Fitness. All rights reserved.</p>
           </div>
         </div>
       `,
+      attachments: [
+        {
+          filename: `Plan_${customerName}.html`,
+          content: planHtml,
+          contentType: 'text/html'
+        }
+      ]
     });
 
     return res.status(200).json({ ok: true, email: customerEmail });
