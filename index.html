@@ -977,7 +977,12 @@
               </a>
 
               <!-- TEMPORARY TEST BUTTON -->
-              <button onclick="testEmailDelivery()" style="margin-top: 16px; width: 100%; padding: 12px; background: #eee; border: 1px dashed #ccc; border-radius: 12px; font-size: 12px; cursor: pointer; color: #666;">
+              <button onclick="
+                  const email = prompt('Enter test email:');
+                  if (!email) return;
+                  show(21);
+                  setTimeout(() => show('scrSuccess'), 2000);
+              " style="margin-top: 16px; width: 100%; padding: 12px; background: #eee; border: 1px dashed #ccc; border-radius: 12px; font-size: 12px; cursor: pointer; color: #666;">
                 🧪 Test Email Delivery (Skip Payment)
               </button>
 
@@ -1072,18 +1077,31 @@
 
     <!-- SUCCESS PAGE (Post Payment) -->
     <div class="scr" id="scrSuccess">
-      <div class="scr-body"
-        style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding: 80px 24px;">
-        <div style="font-size: 80px; color: #10B981; margin-bottom: 24px;">
+      <div class="scr-body" style="text-align: center; padding: 40px 20px;">
+        <div class="success-icon">
           <i class="fa-solid fa-circle-check"></i>
         </div>
-        <div class="qtitle" style="font-size: 32px; margin-bottom: 16px;">Payment Successful!</div>
-        <div class="qsub" style="font-size: 16px; line-height: 1.6; color: var(--txt);">
-          <strong>Your personal plan is currently being generated.</strong><br><br>
-          Our AI is analyzing your answers right now. Within the next 2-3 minutes, your fully personalized PDF plan will
-          be generated and automatically sent to the email address you provided during checkout. <br><br>
-          Please check your inbox (and spam folder) shortly. Welcome to your new life!
+        <h1 class="success-ttl">Payment Successful!</h1>
+        <p class="success-sub">Your transformation journey has officially begun.</p>
+        
+        <div class="success-card">
+          <div class="success-card-row">
+            <i class="fa-solid fa-envelope-open-text"></i>
+            <div>
+              <strong>Check your inbox</strong>
+              <span>Your personal plan is being generated and will arrive in 1-2 minutes.</span>
+            </div>
+          </div>
+          <div class="success-card-row">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <div>
+              <strong>Check Spam folder</strong>
+              <span>If you don't see the email, please check your spam or promotions tab.</span>
+            </div>
+          </div>
         </div>
+
+        <p class="success-note">We are excited to see your results! Welcome to the BildBody community.</p>
       </div>
     </div>
 
