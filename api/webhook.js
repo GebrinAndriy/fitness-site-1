@@ -180,9 +180,9 @@ IMPORTANT:
       `,
       attachments: [
         {
-          filename: `Plan_${customerName}.html`,
-          content: planHtml,
-          contentType: 'text/html'
+          filename: `BildBody_Plan_${customerName}.pdf`,
+          content: pdfBuffer,
+          contentType: 'application/pdf'
         }
       ]
     });
