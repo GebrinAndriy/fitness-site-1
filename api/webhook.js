@@ -102,41 +102,56 @@ export default async function handler(req, res) {
     // ── 1. Generate the plan with Claude ──────────────────────────────────
     const client = new Anthropic({ apiKey: apiKey });
 
-    const prompt = `You are an expert nutritionist and certified fitness coach.
-Generate a VERY DETAILED, personalized 7-day diet and workout plan.
+    const prompt = `You are an expert nutritionist and fitness coach.
+Generate a concise but complete 7-day personal diet and workout plan for ${customerName}.
 User Data:
-- Name: ${customerName}
-- Main goal: ${quizData[2] || 'Lose Weight'}
-- Body type: ${quizData[3] || 'Average'}
-- Target areas: ${quizData[4] ? (Array.isArray(quizData[4]) ? quizData[4].join(', ') : quizData[4]) : 'All body'}
-- Weight: ${quizData[5] || '70 kg'}, Height: ${quizData[6] || '165 cm'}
-- Activity: ${quizData[8] || 'Lightly Active'}
+- Goal: ${quizData[2] || 'Weight Loss'}
+- Weight: ${quizData[5] || '70kg'}, Height: ${quizData[6] || '165cm'}
+- Activity: ${quizData[8] || 'Active'}
 
-STRUCTURE OF THE RESPONSE:
-1. EXHAUSTIVE 7-DAY MEAL PLAN (Table format: Day, Breakfast, Lunch, Dinner, Snack). Include specific meals and portions.
-2. FULL 7-DAY WORKOUT PLAN (Table or list format: Exercise, Sets, Reps, Notes).
-3. Daily calorie and macro targets.
-4. Professional tips for success.
-
-IMPORTANT: Use ONLY clean HTML tags (h2, h3, table, tr, td, ul, li, p). NO markdown, NO code blocks. Return ONLY the HTML content.`;
+IMPORTANT: 
+- Provide exactly 7 days of meals and a 4-day workout cycle.
+- Keep descriptions short to fit the response limit.
+- Use plain text with clear headers (e.g., DAY 1, MEALS, WORKOUT). 
+- Do NOT use HTML tags or markdown code blocks.`;
 
     const message = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 4096,
+      max_tokens: 3500,
       messages: [{ role: 'user', content: prompt }],
     });
 
-    // Clean markdown code blocks if present
-    let cleanContent = message.content[0].text.replace(/```html/g, '').replace(/```/g, '').trim();
+    const planText = message.content[0].text.trim();
 
-    const planHtml = wrapHtml(cleanContent, customerName);
+    // ── 2. Generate PDF using PDFKit ──────────────────────────────────────
+    const PDFDocument = require('pdfkit');
+    const doc = new PDFDocument({ margin: 50 });
+    let buffers = [];
+    doc.on('data', buffers.push.bind(buffers));
+    
+    const pdfPromise = new Promise((resolve) => {
+      doc.on('end', () => {
+        resolve(Buffer.concat(buffers));
+      });
+    });
 
-    // ── 3. Send email via Gmail (App Password required) ───────────────────
+    // Design the PDF
+    doc.fillColor('#E8454A').fontSize(26).text('BILDBODY', { align: 'center' });
+    doc.fillColor('#333333').fontSize(14).text('YOUR PERSONAL TRANSFORMATION PLAN', { align: 'center' });
+    doc.moveDown();
+    doc.fillColor('#000000').fontSize(18).text(`Prepared for: ${customerName}`, { align: 'left' });
+    doc.moveDown();
+    doc.fontSize(12).lineGap(4).text(planText);
+    doc.end();
+
+    const pdfBuffer = await pdfPromise;
+
+    // ── 3. Send email ───────────────────
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS, // Gmail App Password
+        pass: process.env.EMAIL_PASS,
       },
     });
 
@@ -148,19 +163,15 @@ IMPORTANT: Use ONLY clean HTML tags (h2, h3, table, tr, td, ul, li, p). NO markd
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;border:1px solid #eee;border-radius:12px;overflow:hidden;background:#fff;">
           <div style="background:linear-gradient(135deg,#E8454A,#FF8A6E);padding:40px 20px;text-align:center;">
             <h1 style="color:#fff;margin:0;font-size:32px;">BILDBODY</h1>
-            <p style="color:rgba(255,255,255,.9);margin:10px 0 0;">YOUR PERSONAL TRANSFORMATION PLAN</p>
           </div>
           <div style="padding:30px;line-height:1.6;color:#333;">
             <p style="font-size:18px;">Hi <strong>${customerName}</strong>! 👋</p>
-            <p>Great news! We have finished creating your custom 7-day fitness and nutrition strategy based on your unique goals and body type.</p>
-            <p style="background:#fff3f3;padding:15px;border-left:4px solid #E8454A;border-radius:4px;">
-              <strong>Note:</strong> We have attached a clean, printable version of your full plan to this email. Please open the attached <strong>.html</strong> file to see your complete schedule.
+            <p>We have finished creating your custom 7-day fitness and nutrition strategy.</p>
+            <p style="background:#f0fdf4;padding:15px;border-left:4px solid #10B981;border-radius:4px;color:#166534;">
+              ✅ <strong>Your PDF Plan is attached!</strong><br>
+              Open the attached file to see your full schedule. You can save it to your phone or print it.
             </p>
-            <div style="margin:25px 0;padding:20px;background:#f9f9f9;border-radius:8px;">
-              <h3 style="margin-top:0;color:#E8454A;">Progress Summary:</h3>
-              ${cleanContent.substring(0, 800)}...
-            </div>
-            <p>Check the attached file for the full tables and exercises!</p>
+            <p>We are excited to see your progress!</p>
           </div>
           <div style="background:#f4f4f4;padding:20px;text-align:center;font-size:12px;color:#888;">
             <p>© 2026 BildBody Fitness. All rights reserved.</p>
