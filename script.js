@@ -368,7 +368,7 @@ async function testEmailDelivery() {
   if (!email) return;
   
   // Show loading screen
-  show('L'); 
+  show("TestLoading"); 
   
   try {
     const response = await fetch('/api/webhook', {
