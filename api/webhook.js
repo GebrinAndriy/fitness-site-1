@@ -103,31 +103,22 @@ export default async function handler(req, res) {
     const client = new Anthropic({ apiKey: apiKey });
 
     const prompt = `You are an expert nutritionist and certified fitness coach.
-Generate a detailed, personalized 7-day diet and workout plan in clean HTML format (h2, h3, ul, p tags — no markdown).
-Use the following client data:
-- Gender: ${quizData[0] || 'Female'}
-- Age: ${quizData[1] || '30–39'}
+Generate a VERY DETAILED, personalized 7-day diet and workout plan.
+User Data:
+- Name: ${customerName}
 - Main goal: ${quizData[2] || 'Lose Weight'}
 - Body type: ${quizData[3] || 'Average'}
 - Target areas: ${quizData[4] ? (Array.isArray(quizData[4]) ? quizData[4].join(', ') : quizData[4]) : 'All body'}
-- Current weight: ${quizData[5] || '70 kg'}
-- Height: ${quizData[6] || '165 cm'}
-- Activity level: ${quizData[8] || 'Lightly Active'}
-- Daily water intake: ${quizData[9] || '1–2 glasses'}
-- Food allergies: ${quizData[10] || 'None'}
-- Sleep: ${quizData[11] || '6–7 hours'}
-- Stress level: ${quizData[12] || 'Moderate'}
-- Meals per day: ${quizData[15] || '3'}
+- Weight: ${quizData[5] || '70 kg'}, Height: ${quizData[6] || '165 cm'}
+- Activity: ${quizData[8] || 'Lightly Active'}
 
-Include:
-1. A brief personal introduction (2–3 sentences mentioning their goal and body type).
-2. Daily calorie target and macros (protein / carbs / fats).
-3. 7-day meal plan table (breakfast, lunch, dinner, snack).
-4. 7-day workout schedule with exercise names, sets, reps.
-5. Hydration and sleep tips.
-6. Motivational closing paragraph.
+STRUCTURE OF THE RESPONSE:
+1. EXHAUSTIVE 7-DAY MEAL PLAN (Table format: Day, Breakfast, Lunch, Dinner, Snack). Include specific meals and portions.
+2. FULL 7-DAY WORKOUT PLAN (Table or list format: Exercise, Sets, Reps, Notes).
+3. Daily calorie and macro targets.
+4. Professional tips for success.
 
-Keep the tone warm, supportive and motivating.`;
+IMPORTANT: Use ONLY clean HTML tags (h2, h3, table, tr, td, ul, li, p). NO markdown, NO code blocks. Return ONLY the HTML content.`;
 
     const message = await client.messages.create({
       model: 'claude-sonnet-4-6',
@@ -140,10 +131,6 @@ Keep the tone warm, supportive and motivating.`;
 
     const planHtml = wrapHtml(cleanContent, customerName);
 
-    // ── 2. Convert HTML → PDF using a lightweight approach ────────────────
-    // Vercel serverless functions cannot run Puppeteer (too heavy).
-    // For simplicity here we send the HTML as an inline email.
-
     // ── 3. Send email via Gmail (App Password required) ───────────────────
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -154,30 +141,29 @@ Keep the tone warm, supportive and motivating.`;
     });
 
     await transporter.sendMail({
-      from: `"BildBody" <${process.env.EMAIL_USER}>`,
+      from: `"BildBody Fitness" <${process.env.EMAIL_USER}>`,
       to: customerEmail,
-      subject: `🔥 Your Personal BildBody Plan is Ready, ${customerName}!`,
+      subject: `🔥 Your 7-Day Personal Plan is Ready, ${customerName}!`,
       html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;border:1px solid #eee;border-radius:12px;overflow:hidden;">
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;border:1px solid #eee;border-radius:12px;overflow:hidden;background:#fff;">
           <div style="background:linear-gradient(135deg,#E8454A,#FF8A6E);padding:40px 20px;text-align:center;">
-            <h1 style="color:#fff;margin:0;font-size:32px;letter-spacing:2px;">BILDBODY</h1>
-            <p style="color:rgba(255,255,255,.9);margin:10px 0 0;font-size:16px;">YOUR TRANSFORMATION STARTS NOW</p>
+            <h1 style="color:#fff;margin:0;font-size:32px;">BILDBODY</h1>
+            <p style="color:rgba(255,255,255,.9);margin:10px 0 0;">YOUR PERSONAL TRANSFORMATION PLAN</p>
           </div>
           <div style="padding:30px;line-height:1.6;color:#333;">
             <p style="font-size:18px;">Hi <strong>${customerName}</strong>! 👋</p>
-            <p>Your personalized fitness and nutrition plan is ready. We've analyzed your goals and created a roadmap specifically for you.</p>
-            <hr style="border:0;border-top:1px solid #eee;margin:25px 0;">
-            
-            <div style="background:#f9f9f9;padding:20px;border-radius:8px;margin-bottom:25px;">
-              ${cleanContent}
-            </div>
-
-            <p style="text-align:center;margin-top:30px;">
-              <a href="javascript:window.print()" style="background:#E8454A;color:#fff;padding:14px 28px;text-decoration:none;border-radius:30px;font-weight:bold;display:inline-block;">📥 SAVE OR PRINT PLAN</a>
+            <p>Great news! Our AI has finished creating your custom 7-day fitness and nutrition strategy.</p>
+            <p style="background:#fff3f3;padding:15px;border-left:4px solid #E8454A;border-radius:4px;">
+              <strong>Note:</strong> We have attached a clean, printable version of your plan to this email. Open the <strong>.html</strong> attachment to see your full schedule.
             </p>
+            <div style="margin:25px 0;padding:20px;background:#f9f9f9;border-radius:8px;">
+              <h3 style="margin-top:0;color:#E8454A;">Quick Summary:</h3>
+              ${cleanContent.substring(0, 500)}...
+            </div>
+            <p>Open the attached file to see the full 7-day tables and exercises!</p>
           </div>
           <div style="background:#f4f4f4;padding:20px;text-align:center;font-size:12px;color:#888;">
-            <p>© 2026 BildBody Fitness. All rights reserved.<br>Questions? Just reply to this email.</p>
+            <p>© 2026 BildBody Fitness. All rights reserved.</p>
           </div>
         </div>
       `,
