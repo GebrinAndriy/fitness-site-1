@@ -94,6 +94,10 @@ export default async function handler(req, res) {
   }
 
   try {
+    // ── 0. Check for required environment variables ─────────────────────
+    if (!process.env.ANTHROPIC_API_KEY) throw new Error("Missing ANTHROPIC_API_KEY on server");
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) throw new Error("Missing email credentials on server");
+
     // ── 1. Generate the plan with Claude ──────────────────────────────────
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -125,7 +129,7 @@ Include:
 Keep the tone warm, supportive and motivating.`;
 
     const message = await client.messages.create({
-      model: 'claude-opus-4-5',
+      model: 'claude-3-5-sonnet-20240620',
       max_tokens: 4096,
       messages: [{ role: 'user', content: prompt }],
     });
