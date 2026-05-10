@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
   <!-- Lemon Squeezy -->
-  <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
+  <script src="https://js.stripe.com/v3/" defer></script>
 
   <link rel="stylesheet" href="style.css">
 </head>
@@ -44,21 +44,6 @@
         <button class="ob-btn" onclick="scrollToPay()">GET MY PLAN</button>
       </div>
 
-      <!-- WELCOME -->
-      <div class="scr" id="scrW">
-        <div class="scr-body"
-          style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:44px">
-          <div class="w-logo">✦ BildBody</div>
-          <div class="w-stat"><em>576,269</em> women</div>
-          <div class="w-stat-sub">achieved their dream body with BildBody</div>
-          <div class="w-img-wrap">
-            <div class="w-circle"></div>
-            <!-- AI: три спортивні жінки разом, рожевий фон -->
-            <img class="w-img" src="images/welcome.png" alt="Fitness women" />
-          </div>
-        </div>
-      </div>
-
       <!-- Q0: GENDER -->
       <div class="scr" id="scr0">
         <div class="scr-body">
@@ -77,6 +62,21 @@
         </div>
       </div>
 
+      <!-- WELCOME -->
+      <div class="scr" id="scrW">
+        <div class="scr-body"
+          style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:44px">
+          <div class="w-logo">✦ BildBody</div>
+          <div class="w-stat"><em>576,269</em> people</div>
+          <div class="w-stat-sub">achieved their dream body with BildBody</div>
+          <div class="w-img-wrap">
+            <div class="w-circle"></div>
+            <!-- AI: три спортивні жінки разом, рожевий фон -->
+            <img class="w-img dyn-img" src="images/welcome.png" data-female-src="images/welcome.png" data-male-src="images/welcome_male.png" alt="Fitness people" />
+          </div>
+        </div>
+      </div>
+
       <!-- Q1: AGE GROUP -->
       <div class="scr" id="scr1">
         <div class="scr-body">
@@ -84,19 +84,19 @@
           <div class="qsub">Age directly affects your metabolism and optimal nutrition plan</div>
           <div class="pgrid c2" id="g1">
             <div class="pcard" data-v="18–29 years" onclick="pickCard(this,1)">
-              <img src="images/q1_age_20.png" alt="18-29" />
+              <img class="dyn-img" src="images/q1_age_20.png" data-female-src="images/q1_age_20.png" data-male-src="images/q1_age_20_male.png" alt="18-29" />
               <div class="albl">18–29 years ›</div>
             </div>
             <div class="pcard" data-v="30–39 years" onclick="pickCard(this,1)">
-              <img src="images/q1_age_35.png" alt="30-39" />
+              <img class="dyn-img" src="images/q1_age_35.png" data-female-src="images/q1_age_35.png" data-male-src="images/q1_age_35_male.png" alt="30-39" />
               <div class="albl">30–39 years ›</div>
             </div>
             <div class="pcard" data-v="40–49 years" onclick="pickCard(this,1)">
-              <img src="images/q1_age_45.png" alt="40-49" />
+              <img class="dyn-img" src="images/q1_age_45.png" data-female-src="images/q1_age_45.png" data-male-src="images/q1_age_45_male.png" alt="40-49" />
               <div class="albl">40–49 years ›</div>
             </div>
             <div class="pcard" data-v="50+ years" onclick="pickCard(this,1)">
-              <img src="images/q1_age_55.png" alt="50+" />
+              <img class="dyn-img" src="images/q1_age_55.png" data-female-src="images/q1_age_55.png" data-male-src="images/q1_age_55_male.png" alt="50+" />
               <div class="albl">50+ years ›</div>
             </div>
           </div>
@@ -110,28 +110,28 @@
           <div class="qsub">Choose what best matches your desires</div>
           <div class="lopts" id="g2">
             <button class="lopt" data-v="Lose Weight" onclick="pickList(this,2)">
-              <img class="lopt-img" src="images/q2_goal_1.png" alt="" />
+              <img class="lopt-img dyn-img" src="images/q2_goal_1.png" data-female-src="images/q2_goal_1.png" data-male-src="images/q2_goal_1_male.png" alt="" />
               <div class="lopt-tx">
                 <div class="lopt-ttl">Lose Weight</div>
                 <div class="lopt-dsc">Reduce fat on belly, hips and arms</div>
               </div>
             </button>
             <button class="lopt" data-v="Tone My Body" onclick="pickList(this,2)">
-              <img class="lopt-img" src="images/q2_goal_2.png" alt="" />
+              <img class="lopt-img dyn-img" src="images/q2_goal_2.png" data-female-src="images/q2_goal_2.png" data-male-src="images/q2_goal_2_male.png" alt="" />
               <div class="lopt-tx">
                 <div class="lopt-ttl">Tone My Body</div>
                 <div class="lopt-dsc">Firm, defined and feminine figure</div>
               </div>
             </button>
             <button class="lopt" data-v="Healthy Eating" onclick="pickList(this,2)">
-              <img class="lopt-img" src="images/q2_goal_3.png" alt="" />
+              <img class="lopt-img dyn-img" src="images/q2_goal_3.png" data-female-src="images/q2_goal_3.png" data-male-src="images/q2_goal_3_male.png" alt="" />
               <div class="lopt-tx">
                 <div class="lopt-ttl">Healthy Eating</div>
                 <div class="lopt-dsc">Control appetite and eat right</div>
               </div>
             </button>
             <button class="lopt" data-v="Build Muscle" onclick="pickList(this,2)">
-              <img class="lopt-img" src="images/q2_goal_4.png" alt="" />
+              <img class="lopt-img dyn-img" src="images/q2_goal_4.png" data-female-src="images/q2_goal_4.png" data-male-src="images/q2_goal_4_male.png" alt="" />
               <div class="lopt-tx">
                 <div class="lopt-ttl">Build Muscle</div>
                 <div class="lopt-dsc">Increase strength and muscle volume</div>
@@ -149,22 +149,22 @@
           <div class="qsub">This helps us find the most effective approach for you</div>
           <div class="igrid" id="g3">
             <div class="icard" data-v="Slim" onclick="pickIcon(this,3)">
-              <img class="icard-img" src="images/q3_body_slim_1777379362834.png" alt="Slim" />
+              <img class="icard-img dyn-img" src="images/q3_body_slim_1777379362834.png" data-female-src="images/q3_body_slim_1777379362834.png" data-male-src="images/q3_body_slim_male.png" alt="Slim" />
               <div class="icard-ttl">Slim</div>
               <div class="icard-dsc">Lean figure, want to gain tone</div>
             </div>
             <div class="icard" data-v="Average" onclick="pickIcon(this,3)">
-              <img class="icard-img" src="images/q3_body_average_1777379375866.png" alt="Average" />
+              <img class="icard-img dyn-img" src="images/q3_body_average_1777379375866.png" data-female-src="images/q3_body_average_1777379375866.png" data-male-src="images/q3_body_average_male.png" alt="Average" />
               <div class="icard-ttl">Average</div>
               <div class="icard-dsc">Normal build, want to tone up</div>
             </div>
             <div class="icard" data-v="Overweight" onclick="pickIcon(this,3)">
-              <img class="icard-img" src="images/q3_body_overweight_1777379392522.png" alt="Overweight" />
+              <img class="icard-img dyn-img" src="images/q3_body_overweight_1777379392522.png" data-female-src="images/q3_body_overweight_1777379392522.png" data-male-src="images/q3_body_overweight_male.png" alt="Overweight" />
               <div class="icard-ttl">Overweight</div>
               <div class="icard-dsc">Carrying extra weight, want to slim down</div>
             </div>
             <div class="icard" data-v="Obese" onclick="pickIcon(this,3)">
-              <img class="icard-img" src="images/q3_body_obese_1777379405771.png" alt="Obese" />
+              <img class="icard-img dyn-img" src="images/q3_body_obese_1777379405771.png" data-female-src="images/q3_body_obese_1777379405771.png" data-male-src="images/q3_body_obese_male.png" alt="Obese" />
               <div class="icard-ttl">Obese</div>
               <div class="icard-dsc">Need serious lifestyle changes</div>
             </div>
@@ -180,7 +180,7 @@
           <div class="lopts" id="g4">
             <div class="chkw" onclick="togChk(this,4,event)">
               <button class="lopt" data-v="Belly &amp; Waist">
-                <img class="lopt-img" src="images/q4_target_1.png" alt="" />
+                <img class="lopt-img dyn-img" src="images/q4_target_1.png" data-female-src="images/q4_target_1.png" data-male-src="images/q4_target_1_male.png" alt="" />
                 <div class="lopt-tx">
                   <div class="lopt-ttl">Belly &amp; Waist</div>
                   <div class="lopt-dsc">Abs, sides, lower belly</div>
@@ -190,7 +190,7 @@
             </div>
             <div class="chkw" onclick="togChk(this,4,event)">
               <button class="lopt" data-v="Glutes">
-                <img class="lopt-img" src="images/q4_target_2.png" alt="" />
+                <img class="lopt-img dyn-img" src="images/q4_target_2.png" data-female-src="images/q4_target_2.png" data-male-src="images/q4_target_2_male.png" alt="" />
                 <div class="lopt-tx">
                   <div class="lopt-ttl">Glutes</div>
                   <div class="lopt-dsc">Lift and round the booty</div>
@@ -200,7 +200,7 @@
             </div>
             <div class="chkw" onclick="togChk(this,4,event)">
               <button class="lopt" data-v="Legs">
-                <img class="lopt-img" src="images/q4_target_3.png" alt="" />
+                <img class="lopt-img dyn-img" src="images/q4_target_3.png" data-female-src="images/q4_target_3.png" data-male-src="images/q4_target_3_male.png" alt="" />
                 <div class="lopt-tx">
                   <div class="lopt-ttl">Legs</div>
                   <div class="lopt-dsc">Thighs, calves, inner legs</div>
@@ -210,7 +210,7 @@
             </div>
             <div class="chkw" onclick="togChk(this,4,event)">
               <button class="lopt" data-v="Arms &amp; Chest">
-                <img class="lopt-img" src="images/q4_target_4.png" alt="" />
+                <img class="lopt-img dyn-img" src="images/q4_target_4.png" data-female-src="images/q4_target_4.png" data-male-src="images/q4_target_4_male.png" alt="" />
                 <div class="lopt-tx">
                   <div class="lopt-ttl">Arms &amp; Chest</div>
                   <div class="lopt-dsc">Triceps, shoulders, décolleté</div>
@@ -304,7 +304,7 @@
             </div>
 
             <div class="bmi-summary-wrap">
-              <div class="bmi-model-wrap"><img src="images/bmi_model_1777382638155.png" class="bmi-model" alt="Model" />
+              <div class="bmi-model-wrap"><img src="images/bmi_model_1777382638155.png" class="bmi-model dyn-img" data-female-src="images/bmi_model_1777382638155.png" data-male-src="images/bmi_model_male.png" alt="Model" />
               </div>
               <div class="bmi-summary-list">
                 <div class="bmi-sitem">
@@ -448,7 +448,7 @@
 
       <!-- Q11: SLEEP -->
       <div class="scr split-scr" id="scr11">
-        <img class="split-bg" src="images/sleep_split_1777382589921.png" alt="Sleep" />
+        <img class="split-bg dyn-img" src="images/sleep_split_1777382589921.png" data-female-src="images/sleep_split_1777382589921.png" data-male-src="images/sleep_split_male.png" alt="Sleep" />
         <div class="split-content">
           <div class="qtitle">How much do you usually sleep?</div>
           <div class="lopts" id="g11">
@@ -478,7 +478,7 @@
 
       <!-- Q12: STRESS -->
       <div class="scr split-scr" id="scr12">
-        <img class="split-bg" src="images/stress_split_1777382607246.png" alt="Stress" />
+        <img class="split-bg dyn-img" src="images/stress_split_1777382607246.png" data-female-src="images/stress_split_1777382607246.png" data-male-src="images/stress_split_male.png" alt="Stress" />
         <div class="split-content">
           <div class="qtitle">How often do you feel stressed?</div>
           <div class="lopts" id="g12">
@@ -508,7 +508,7 @@
 
       <!-- Q13: CRAVINGS -->
       <div class="scr split-scr" id="scr13">
-        <img class="split-bg" src="images/cravings_split_1777382623454.png" alt="Cravings" />
+        <img class="split-bg dyn-img" src="images/cravings_split_1777382623454.png" data-female-src="images/cravings_split_1777382623454.png" data-male-src="images/cravings_split_male.png" alt="Cravings" />
         <div class="split-content">
           <div class="qtitle">Do you have late night cravings?</div>
           <div class="lopts" id="g13">
@@ -590,7 +590,7 @@
 
       <!-- Q16: ENERGY DROPS -->
       <div class="scr split-scr" id="scr16">
-        <img class="split-bg" src="images/energy_split.png" alt="Energy" />
+        <img class="split-bg dyn-img" src="images/energy_split.png" data-female-src="images/energy_split.png" data-male-src="images/energy_split_male.png" alt="Energy" />
         <div class="split-content">
           <div class="qtitle">Do you feel energy drops during the day?</div>
           <div class="lopts" id="g16">
@@ -792,7 +792,7 @@
             <div style="display: flex; justify-content: space-around; gap: 8px;">
               <div style="text-align: center; flex: 1;">
                 <div style="font-size: 22px; font-weight: 900; color: #fff; line-height: 1;">50K+</div>
-                <div style="font-size: 10px; color: rgba(255,255,255,.55); margin-top: 3px;">Women transformed</div>
+                <div class="dyn-text" data-female-text="Women transformed" data-male-text="Men transformed" style="font-size: 10px; color: rgba(255,255,255,.55); margin-top: 3px;">Women transformed</div>
               </div>
               <div style="width: 1px; background: rgba(255,255,255,.1);"></div>
               <div style="text-align: center; flex: 1;">
@@ -817,7 +817,7 @@
             </div>
             <!-- Image -->
             <div class="ba-imgs" style="display: block;">
-              <img class="ba-img" src="images/fin_transformation.png" alt="Transformation"
+              <img class="ba-img dyn-img" src="images/fin_transformation.png" data-female-src="images/fin_transformation.png" data-male-src="images/fin_transformation_male.png" alt="Transformation"
                 style="height: auto; width: 100%; object-fit: cover;" onerror="this.style.display='none'" />
             </div>
             <!-- Stats row -->
@@ -862,7 +862,7 @@
             <div class="sec-ttl">What you'll get</div>
             <div class="bens">
               <div class="ben">
-                <img class="ben-img" src="images/ben1.png" alt="" />
+                <img class="ben-img dyn-img" src="images/ben1.png" data-female-src="images/ben1.png" data-male-src="images/ben1_male.png" alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Effective Fat Burning</div>
                   <div class="ben-dsc">200+ exercises for problem areas</div>
@@ -883,14 +883,14 @@
                 </div>
               </div>
               <div class="ben">
-                <img class="ben-img" src="images/ben4.png" alt="" />
+                <img class="ben-img dyn-img" src="images/ben4.png" data-female-src="images/ben4.png" data-male-src="images/ben4_male.png" alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Visible results from week 2</div>
                   <div class="ben-dsc">Track your weight and body shape</div>
                 </div>
               </div>
               <div class="ben">
-                <img class="ben-img" src="images/ben5.png" alt="" />
+                <img class="ben-img dyn-img" src="images/ben5.png" data-female-src="images/ben5.png" data-male-src="images/ben5_male.png" alt="" />
                 <div class="ben-tx">
                   <div class="ben-ttl">Improved mood &amp; energy</div>
                   <div class="ben-dsc">Motivation and positive mindset</div>
@@ -952,7 +952,7 @@
                   <div class="plan-price">$9.99</div>
                 </div>
               </div>
-              <a href="https://store.lemonsqueezy.com/checkout/buy/YOUR_PRODUCT_ID" class="lemonsqueezy-button plan-cta"
+              <a href="https://buy.stripe.com/test_4gMbIU4qE3Tm8g59TpcEw00" class="stripe-button plan-cta"
                 style="display:flex; justify-content:center; align-items:center; text-decoration:none;">GET MY PLAN</a>
             </div>
 
@@ -979,7 +979,7 @@
 
               <!-- Lemon Squeezy Button -->
               <!-- IMPORTANT: Replace the href below with your actual Lemon Squeezy product checkout link -->
-              <a href="https://store.lemonsqueezy.com/checkout/buy/YOUR_PRODUCT_ID" class="lemonsqueezy-button gpay-btn"
+              <a href="https://buy.stripe.com/test_4gMbIU4qE3Tm8g59TpcEw00" class="stripe-button gpay-btn"
                 style="text-decoration:none">
                 <i class="fa-solid fa-lock" style="font-size:18px"></i>
                 <span>Secure Checkout</span>
@@ -999,28 +999,39 @@
             <!-- Reviews -->
             <div class="sec-ttl">Success Stories</div>
             <div class="reviews-slider" id="autoSlider">
-              <div class="review-slide">
-                <img src="images/review_1.png" alt="Success Story 1">
+              <div class="review-slide dyn-review" data-f-title="I never thought it could be so easy!" data-m-title="Finally a plan that works!" data-f-body="In just 3 weeks I completely transformed my body. The plan was so easy to follow and the results speak for themselves. Highly recommend! ⭐⭐⭐⭐⭐" data-m-body="The workout routine was intense but exactly what I needed. I lost the belly and gained muscle mass. Awesome! ⭐⭐⭐⭐⭐">
+                <img src="images/review_1.png" class="dyn-img" data-female-src="images/review_1.png" data-male-src="images/review_1_male.png" alt="Success Story 1">
                 <div class="review-text">
                   <div class="review-text-title">"I never thought it could be so easy!"</div>
-                  <div class="review-text-body">In just 3 weeks I completely transformed my body. The plan was so easy
-                    to follow and the results speak for themselves. Highly recommend! ⭐⭐⭐⭐⭐</div>
+                  <div class="review-text-body">In just 3 weeks I completely transformed my body. The plan was so easy to follow and the results speak for themselves. Highly recommend! ⭐⭐⭐⭐⭐</div>
                 </div>
               </div>
-              <div class="review-slide">
-                <img src="images/review_2.png" alt="Success Story 2">
+              <div class="review-slide dyn-review" data-f-title="My belly is completely gone." data-m-title="My abs are finally showing." data-f-body="After trying everything, this is the only thing that worked. It adapted perfectly to my lifestyle and I lost 5kg without feeling hungry! ⭐⭐⭐⭐⭐" data-m-body="I've been trying to lose this gut for years. This personalized plan finally gave me the structure I needed. Down 6kg! ⭐⭐⭐⭐⭐">
+                <img src="images/review_2.png" class="dyn-img" data-female-src="images/review_2.png" data-male-src="images/review_2_male.png" alt="Success Story 2">
                 <div class="review-text">
                   <div class="review-text-title">"My belly is completely gone."</div>
-                  <div class="review-text-body">After trying everything, this is the only thing that worked. It adapted
-                    perfectly to my lifestyle and I lost 5kg without feeling hungry! ⭐⭐⭐⭐⭐</div>
+                  <div class="review-text-body">After trying everything, this is the only thing that worked. It adapted perfectly to my lifestyle and I lost 5kg without feeling hungry! ⭐⭐⭐⭐⭐</div>
                 </div>
               </div>
-              <div class="review-slide">
-                <img src="images/review_3.png" alt="Success Story 3">
+              <div class="review-slide dyn-review" data-f-title="Finally, real results!" data-m-title="More energy and strength!" data-f-body="The targeted exercises shaped my body exactly where I wanted. I have more energy than ever and I love what I see in the mirror. ⭐⭐⭐⭐⭐" data-m-body="I feel stronger and much more active. The meal plan was super easy to stick to, even with a busy schedule. Highly recommended! ⭐⭐⭐⭐⭐">
+                <img src="images/review_3.png" class="dyn-img" data-female-src="images/review_3.png" data-male-src="images/review_3_male.png" alt="Success Story 3">
                 <div class="review-text">
                   <div class="review-text-title">"Finally, real results!"</div>
-                  <div class="review-text-body">The targeted exercises shaped my body exactly where I wanted. I have
-                    more energy than ever and I love what I see in the mirror. ⭐⭐⭐⭐⭐</div>
+                  <div class="review-text-body">The targeted exercises shaped my body exactly where I wanted. I have more energy than ever and I love what I see in the mirror. ⭐⭐⭐⭐⭐</div>
+                </div>
+              </div>
+              <div class="review-slide dyn-review" data-f-title="Best decision of the year." data-m-title="A complete transformation." data-f-body="I feel so much more confident in my clothes now. The recipes were delicious and the exercises were fast but effective. ⭐⭐⭐⭐⭐" data-m-body="I've built muscle and lost the fat I couldn't get rid of. The tailored approach makes a huge difference. ⭐⭐⭐⭐⭐">
+                <img src="images/review_4.png" class="dyn-img" data-female-src="images/review_4.png" data-male-src="images/review_4_male.png" alt="Success Story 4">
+                <div class="review-text">
+                  <div class="review-text-title">"Best decision of the year."</div>
+                  <div class="review-text-body">I feel so much more confident in my clothes now. The recipes were delicious and the exercises were fast but effective. ⭐⭐⭐⭐⭐</div>
+                </div>
+              </div>
+              <div class="review-slide dyn-review" data-f-title="I feel like a new person." data-m-title="Back in shape!" data-f-body="After having kids, I struggled with my weight. This plan was gentle yet so effective. I'm finally back to my pre-pregnancy weight! ⭐⭐⭐⭐⭐" data-m-body="At 45, I thought my best years were behind me. This program proved me wrong. I'm back in shape and feel 10 years younger! ⭐⭐⭐⭐⭐">
+                <img src="images/review_5.png" class="dyn-img" data-female-src="images/review_5.png" data-male-src="images/review_5_male.png" alt="Success Story 5">
+                <div class="review-text">
+                  <div class="review-text-title">"I feel like a new person."</div>
+                  <div class="review-text-body">After having kids, I struggled with my weight. This plan was gentle yet so effective. I'm finally back to my pre-pregnancy weight! ⭐⭐⭐⭐⭐</div>
                 </div>
               </div>
             </div>

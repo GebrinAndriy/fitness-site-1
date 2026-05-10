@@ -1,12 +1,12 @@
 // api/webhook.js — Vercel serverless function
-// Triggered by Lemon Squeezy webhook on successful order.
+// Triggered by Stripe webhook on successful order.
 // Generates a personalized PDF plan via Claude and emails it.
 //
 // Required environment variables (set in Vercel dashboard):
-//   ANTHROPIC_API_KEY   — your Claude API key
-//   EMAIL_USER          — your Gmail address (e.g. youremail@gmail.com)
-//   EMAIL_PASS          — Gmail App Password (NOT your regular password!)
-//   LEMON_SQUEEZY_SECRET — webhook secret from Lemon Squeezy (for verification)
+//   ANTHROPIC_API_KEY     — your Claude API key
+//   EMAIL_USER            — your Gmail address (e.g. youremail@gmail.com)
+//   EMAIL_PASS            — Gmail App Password (NOT your regular password!)
+//   STRIPE_WEBHOOK_SECRET — webhook secret from Stripe (for verification)
 
 import Anthropic from '@anthropic-ai/sdk';
 import nodemailer from 'nodemailer';
@@ -15,16 +15,29 @@ import { createHmac } from 'crypto';
 // ── Vercel config: allow larger body for webhook payloads ──────────────────
 export const config = { api: { bodyParser: true } };
 
-// ── Verify that the request truly came from Lemon Squeezy ─────────────────
+// ── Verify that the request truly came from Stripe ─────────────────────────
 function verifySignature(req, rawBody) {
   // Allow manual testing from our test button
   if (req.headers['x-test-mode'] === 'true') return true;
 
-  const secret = process.env.LEMON_SQUEEZY_SECRET;
+  const secret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!secret) return true; // skip if not set (dev mode)
-  const sig = req.headers['x-signature'];
-  const expected = createHmac('sha256', secret).update(rawBody).digest('hex');
-  return sig === expected;
+  
+  const sigHeader = req.headers['stripe-signature'];
+  if (!sigHeader) return false;
+  
+  const parsedSig = sigHeader.split(',').reduce((acc, part) => {
+    const [key, value] = part.split('=');
+    acc[key] = value;
+    return acc;
+  }, {});
+  
+  if (!parsedSig.t || !parsedSig.v1) return false;
+  
+  const signedPayload = `${parsedSig.t}.${rawBody}`;
+  const expectedSig = createHmac('sha256', secret).update(signedPayload).digest('hex');
+  
+  return expectedSig === parsedSig.v1;
 }
 
 // ── Build an HTML page for the plan (will become PDF) ─────────────────────
@@ -70,27 +83,35 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Invalid signature' });
   }
 
-  // Only handle successful orders
-  const eventName = req.headers['x-event-name'];
-  if (eventName !== 'order_created') return res.status(200).json({ ok: true, skipped: true });
+  const event = req.body;
+  const isTest = req.headers['x-test-mode'] === 'true';
 
-  const order = req.body?.data?.attributes;
-  if (!order) return res.status(400).json({ error: 'Missing order data' });
+  // Allow custom test event name or require Stripe checkout.session.completed
+  if (!isTest && event.type !== 'checkout.session.completed') {
+    return res.status(200).json({ ok: true, skipped: true });
+  }
 
-  const customerEmail = order.user_email || order.customer_email;
-  const customerName = order.user_name || 'there';
+  const session = event.data?.object || event.data?.attributes || event.data; // fallback for tests
+  if (!session) return res.status(400).json({ error: 'Missing session data' });
 
-  // Quiz answers are passed via Lemon Squeezy custom data as a JSON string
+  const customerEmail = session.customer_details?.email || session.customer_email || session.user_email || session.email;
+  const customerName = session.customer_details?.name || session.user_name || 'there';
+
+  // Quiz answers are passed via Stripe client_reference_id
   let quizData = {};
-  if (order.custom_data && order.custom_data.data) {
+  const clientRef = session.client_reference_id || session.custom_data?.data;
+  if (clientRef) {
     try {
-      quizData = JSON.parse(order.custom_data.data);
+      const decodedRef = decodeURIComponent(clientRef);
+      quizData = JSON.parse(decodedRef);
     } catch (e) {
       console.error("Failed to parse quiz data:", e);
-      quizData = order.custom_data;
+      try {
+        quizData = JSON.parse(clientRef); // in case it wasn't encoded
+      } catch (e2) {
+        quizData = clientRef;
+      }
     }
-  } else {
-    quizData = order.custom_data || {};
   }
 
   try {
@@ -110,10 +131,19 @@ User Data:
 - Activity: ${quizData[8] || 'Active'}
 
 IMPORTANT: 
-- Provide exactly 7 days of meals and a 4-day workout cycle.
-- Keep descriptions short to fit the response limit.
-- Use plain text with clear headers (e.g., DAY 1, MEALS, WORKOUT). 
-- Do NOT use HTML tags or markdown code blocks.`;
+Respond ONLY with a valid JSON object matching this structure (no markdown tags outside it):
+{
+  "summary": "A short, highly motivating message for the user.",
+  "schedule": [
+    {
+      "day": "DAY 1",
+      "meals": "Breakfast: ... | Lunch: ... | Dinner: ...",
+      "workout": "20 min cardio / exercises"
+    }
+  ],
+  "tips": ["Tip 1", "Tip 2"]
+}
+Make exactly 7 days. Keep text concise.`;
 
     const message = await client.messages.create({
       model: 'claude-sonnet-4-6',
@@ -125,7 +155,7 @@ IMPORTANT:
 
     // ── 2. Generate PDF using PDFKit ──────────────────────────────────────
     const PDFDocument = require('pdfkit');
-    const doc = new PDFDocument({ margin: 50 });
+    const doc = new PDFDocument({ margin: 0, size: 'A4' }); // remove default margin for full header
     let buffers = [];
     doc.on('data', buffers.push.bind(buffers));
     
@@ -135,13 +165,65 @@ IMPORTANT:
       });
     });
 
-    // Design the PDF
-    doc.fillColor('#E8454A').fontSize(26).text('BILDBODY', { align: 'center' });
-    doc.fillColor('#333333').fontSize(14).text('YOUR PERSONAL TRANSFORMATION PLAN', { align: 'center' });
-    doc.moveDown();
-    doc.fillColor('#000000').fontSize(18).text(`Prepared for: ${customerName}`, { align: 'left' });
-    doc.moveDown();
-    doc.fontSize(12).lineGap(4).text(planText);
+    // --- Premium PDF Design ---
+    let planData;
+    try {
+      const jsonStr = planText.substring(planText.indexOf('{'), planText.lastIndexOf('}') + 1);
+      planData = JSON.parse(jsonStr);
+    } catch (e) {
+      planData = null;
+    }
+
+    // Header Band
+    doc.rect(0, 0, doc.page.width, 140).fill('#E8454A');
+    doc.fillColor('#FFFFFF').fontSize(38).text('BILDBODY', 0, 45, { align: 'center', characterSpacing: 4 });
+    doc.fontSize(12).text('YOUR PREMIUM TRANSFORMATION PLAN', { align: 'center', characterSpacing: 2 });
+    
+    doc.y = 170;
+    doc.fillColor('#1A1A2E').fontSize(22).text(`Prepared exclusively for: ${customerName}`, 50);
+    doc.moveDown(0.5);
+
+    if (planData) {
+      doc.fillColor('#4A4A6A').fontSize(12).text(planData.summary, 50, doc.y, { width: doc.page.width - 100, lineGap: 4 });
+      doc.moveDown(2);
+
+      planData.schedule.forEach(day => {
+        if (doc.y > doc.page.height - 180) {
+          doc.addPage();
+          doc.y = 50;
+        }
+
+        // Day Box Header
+        doc.rect(50, doc.y, doc.page.width - 100, 26).fill('#FFE0DD');
+        doc.fillColor('#E8454A').fontSize(14).text(day.day, 60, doc.y + 6);
+        doc.y += 20;
+
+        // Content
+        doc.fillColor('#1A1A2E').fontSize(11);
+        doc.moveDown(0.5);
+        doc.font('Helvetica-Bold').text('MEALS:', 60, doc.y);
+        doc.font('Helvetica').text(day.meals, 60, doc.y, { width: doc.page.width - 120 });
+        doc.moveDown(0.5);
+        doc.font('Helvetica-Bold').text('WORKOUT:', 60, doc.y);
+        doc.fillColor('#10B981').font('Helvetica').text(day.workout, 60, doc.y, { width: doc.page.width - 120 });
+        doc.moveDown(1.5);
+      });
+
+      doc.moveDown();
+      doc.rect(50, doc.y, doc.page.width - 100, 2).fill('#EEEEEE');
+      doc.y += 15;
+      
+      doc.fillColor('#E8454A').fontSize(16).font('Helvetica-Bold').text('TOP TIPS FOR SUCCESS', 50);
+      doc.moveDown(0.5);
+      doc.fillColor('#4A4A6A').fontSize(11).font('Helvetica');
+      planData.tips.forEach(tip => {
+        doc.text(`• ${tip}`, 50, doc.y, { width: doc.page.width - 100, lineGap: 3 });
+      });
+    } else {
+      // Fallback if parsing fails
+      doc.fillColor('#333333').fontSize(11).lineGap(4).text(planText, 50, doc.y, { width: doc.page.width - 100 });
+    }
+
     doc.end();
 
     const pdfBuffer = await pdfPromise;

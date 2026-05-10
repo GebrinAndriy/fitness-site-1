@@ -36,7 +36,7 @@ const SCREENS = ['scrW', 'scr0', 'scr1', 'scr2', 'scr3', 'scr4', 'scr5', 'scr6',
 
 function show(idx) {
   SCREENS.forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('on'); });
-  const map = { '-1': 'scrW', 20: 'scrEmail', 21: 'scrL', 22: 'scrF', 'Success': 'scrSuccess', 'TestLoading': 'scrTestLoading' };
+  const map = { '-1': 'scr0', 0: 'scrW', 20: 'scrEmail', 21: 'scrL', 22: 'scrF', 'Success': 'scrSuccess', 'TestLoading': 'scrTestLoading' };
   const targetId = map[idx] !== undefined ? map[idx] : 'scr' + idx;
   const target = document.getElementById(targetId);
   if (target) target.classList.add('on');
@@ -46,9 +46,12 @@ function show(idx) {
 
   if (idx === -1) {
     topbar.classList.remove('vis'); offerBar.classList.remove('vis');
+    botbar.style.display = 'none';
+  } else if (idx === 0) {
+    topbar.classList.remove('vis'); offerBar.classList.remove('vis');
     mainBtn.textContent = 'CONTINUE'; mainBtn.disabled = false;
     botbar.style.display = 'block';
-  } else if (idx >= 0 && idx < TOTAL) {
+  } else if (idx > 0 && idx < TOTAL) {
     topbar.classList.add('vis'); offerBar.classList.remove('vis');
     updSegs(idx); refreshBtn(idx);
     botbar.style.display = 'block';
@@ -76,6 +79,8 @@ function show(idx) {
 }
 
 function refreshBtn(q) {
+  if (q === -1) { botbar.style.display = 'none'; return; }
+  if (q === 0) { mainBtn.textContent = 'CONTINUE'; mainBtn.disabled = false; botbar.style.display = 'block'; return; }
   if (q === 5 || q === 6 || q === 7) { mainBtn.disabled = false; }
   else if (q === 4) { mainBtn.disabled = !(Array.isArray(A[4]) && A[4].length > 0); }
   else if (q === 20) {
@@ -115,9 +120,54 @@ function handleMain() {
   }, 150); // Small delay to prevent ghost clicks on the next screen
 }
 
-function goBack() { if (cur > 0) show(cur - 1); else if (cur === 0) show(-1); }
+function goBack() { if (cur > -1) show(cur - 1); }
 
-function pickCard(c, q) { c.closest('.pgrid').querySelectorAll('.pcard').forEach(x => x.classList.remove('sel')); c.classList.add('sel'); A[q] = c.dataset.v; refreshBtn(q); }
+function pickCard(c, q) { 
+  c.closest('.pgrid').querySelectorAll('.pcard').forEach(x => x.classList.remove('sel')); 
+  c.classList.add('sel'); 
+  A[q] = c.dataset.v; 
+  
+  if (q === 0) {
+    updateGenderUI(A[q]);
+  }
+  
+  refreshBtn(q); 
+}
+
+function updateGenderUI(gender) {
+  const isMale = gender === 'Male';
+  
+  // Swap images
+  document.querySelectorAll('.dyn-img').forEach(img => {
+    if (isMale && img.dataset.maleSrc) {
+      img.src = img.dataset.maleSrc;
+    } else if (!isMale && img.dataset.femaleSrc) {
+      img.src = img.dataset.femaleSrc;
+    }
+  });
+
+  // Swap generic text elements
+  document.querySelectorAll('.dyn-text').forEach(el => {
+    if (isMale && el.dataset.maleText) {
+      el.textContent = el.dataset.maleText;
+    } else if (!isMale && el.dataset.femaleText) {
+      el.textContent = el.dataset.femaleText;
+    }
+  });
+
+  // Swap review texts
+  document.querySelectorAll('.dyn-review').forEach(rev => {
+    const titleEl = rev.querySelector('.review-text-title');
+    const bodyEl = rev.querySelector('.review-text-body');
+    if (isMale) {
+      if (titleEl && rev.dataset.mTitle) titleEl.textContent = `"${rev.dataset.mTitle}"`;
+      if (bodyEl && rev.dataset.mBody) bodyEl.textContent = rev.dataset.mBody;
+    } else {
+      if (titleEl && rev.dataset.fTitle) titleEl.textContent = `"${rev.dataset.fTitle}"`;
+      if (bodyEl && rev.dataset.fBody) bodyEl.textContent = rev.dataset.fBody;
+    }
+  });
+}
 function pickIcon(c, q) { const p = c.closest('.igrid') || c.closest('.cgrid'); p.querySelectorAll('.icard, .ccard').forEach(x => x.classList.remove('sel')); c.classList.add('sel'); A[q] = c.dataset.v; refreshBtn(q); }
 function pickList(b, q) { b.closest('.lopts').querySelectorAll('.lopt').forEach(x => x.classList.remove('sel')); b.classList.add('sel'); A[q] = b.dataset.v; refreshBtn(q); }
 
@@ -182,6 +232,8 @@ function calcBMI() {
   const wi = document.getElementById('bmiWarningIco');
   const wt = document.getElementById('bmiWarningTtl');
   const wx = document.getElementById('bmiWarningTxt');
+  
+  const isMale = A[0] === 'Male';
 
   if (bmi < 18.5) {
     wb.className = 'bmi-box'; wi.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
@@ -191,7 +243,9 @@ function calcBMI() {
     wt.textContent = 'Healthy BMI!'; wx.textContent = 'Your weight is in the normal range. Great job!';
   } else {
     wb.className = 'bmi-box'; wi.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
-    wt.textContent = 'Unhealthy BMI Risks:'; wx.textContent = 'Hormonal imbalances, risk of cardiovascular disease, joint pain.';
+    wt.textContent = 'Unhealthy BMI Risks:'; 
+    wx.textContent = isMale ? 'Hormonal imbalances, decreased testosterone, increased risk of cardiovascular disease, type 2 diabetes, joint pain' 
+                            : 'Hormonal imbalances, irregular menstrual cycle, increased risk of cardiovascular disease, type 2 diabetes, skin and hair problems';
   }
 
   document.getElementById('bmiBodyType').textContent = A[3] || 'Not specified';
@@ -266,12 +320,20 @@ function scrollToPay() {
   const p = document.getElementById('payTarget');
   if (p) p.scrollIntoView({ behavior: 'smooth', block: 'start' });
   
-  // Update links with quiz data
-  const data = encodeURIComponent(JSON.stringify(A));
-  const links = document.querySelectorAll('.lemonsqueezy-button');
+  // Extract only the fields needed by webhook to keep client_reference_id under 200 chars
+  const essentialData = {
+    2: A[2] || '',
+    5: A[5] || '',
+    6: A[6] || '',
+    8: A[8] || ''
+  };
+  const clientRef = encodeURIComponent(JSON.stringify(essentialData));
+  
+  const links = document.querySelectorAll('.stripe-button');
   links.forEach(link => {
     const baseUrl = link.getAttribute('href').split('?')[0];
-    link.setAttribute('href', `${baseUrl}?checkout[custom][data]=${data}&checkout[email]=${A.email || ''}`);
+    const emailParam = A.email ? `&prefilled_email=${encodeURIComponent(A.email)}` : '';
+    link.setAttribute('href', `${baseUrl}?client_reference_id=${clientRef}${emailParam}`);
   });
 }
 
