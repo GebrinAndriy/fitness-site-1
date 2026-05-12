@@ -177,13 +177,20 @@ Respond ONLY JSON: {"summary": "...", "schedule": [{"day": "DAY 1", "meals": "..
     } catch (e) { planData = null; }
 
     if (planData) {
-      // Fetch only 4 core images to be super fast
+      // Define 10 UNIQUE URLs for a varied presentation
       const imageUrls = [
-        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=60', // Cover
-        'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=60', // Food
-        'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=60', // Workout
-        'https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=800&q=60'  // Tips
+        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=700&q=50', // Cover
+        'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=700&q=50', // Summary
+        'https://images.unsplash.com/photo-1494390248081-4e521a5940db?w=700&q=50', // D1
+        'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=700&q=50', // D2
+        'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=700&q=50', // D3
+        'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=700&q=50', // D4
+        'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=700&q=50', // D5
+        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=700&q=50', // D6
+        'https://images.unsplash.com/photo-1594882645126-14020914d58d?w=700&q=50', // D7
+        'https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=700&q=50'  // Tips
       ];
+      console.log("Fetching 10 images in parallel...");
       const images = await Promise.all(imageUrls.map(url => fetchImage(url)));
 
       // SLIDE 1: COVER
@@ -210,8 +217,8 @@ Respond ONLY JSON: {"summary": "...", "schedule": [{"day": "DAY 1", "meals": "..
         const day = planData.schedule[i];
         doc.addPage();
         
-        // Alternate between food and workout images
-        const imgIdx = (i % 2 === 0) ? 1 : 2;
+        // Use unique images for each day (indices 2 to 8)
+        const imgIdx = 2 + (i % 7);
         if (images[imgIdx]) doc.image(images[imgIdx], 0, 0, { width: 842, height: 595 });
         
         doc.rect(442, 0, 400, 595).fillColor('#FFFFFF').fillOpacity(0.95).fill();
@@ -227,16 +234,18 @@ Respond ONLY JSON: {"summary": "...", "schedule": [{"day": "DAY 1", "meals": "..
         doc.fillColor('#AAAAAA').fontSize(10).text(`PAGE ${i + 3} / 10`, 482, 550);
       }
 
-      // FINAL SLIDE: TIPS
+      // FINAL SLIDE: TIPS (Fixed Overlapping)
       doc.addPage();
-      if (images[3]) doc.image(images[3], 0, 0, { width: 842, height: 595 });
-      doc.rect(100, 100, 642, 395).fillColor('#FFFFFF').fillOpacity(0.9).fill();
-      doc.fillOpacity(1).fillColor('#E8454A').fontSize(32).font('Helvetica-Bold').text('PRO TIPS FOR SUCCESS', 140, 140);
-      let tipY = 230;
+      if (images[9]) doc.image(images[9], 0, 0, { width: 842, height: 595 });
+      doc.rect(100, 80, 642, 435).fillColor('#FFFFFF').fillOpacity(0.9).fill();
+      doc.fillOpacity(1).fillColor('#E8454A').fontSize(32).font('Helvetica-Bold').text('PRO TIPS FOR SUCCESS', 140, 120);
+      
+      doc.y = 170;
+      doc.fillColor('#1A1A2E').fontSize(14).font('Helvetica');
       planData.tips.forEach(tip => {
-        doc.circle(150, tipY + 7, 4).fill('#E8454A');
-        doc.text(tip, 170, tipY, { width: 500 });
-        tipY += 40;
+        doc.circle(150, doc.y + 7, 4).fill('#E8454A');
+        doc.text(tip, 170, doc.y, { width: 500, lineGap: 4 });
+        doc.moveDown(0.8);
       });
       
     } else {
