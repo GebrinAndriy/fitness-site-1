@@ -227,15 +227,21 @@ Make exactly 7 days. Keep text concise.`;
       doc.fontSize(16).font('Helvetica').text(planData.summary, 70, 160, { width: 340, lineGap: 8 });
       
       // ── SLIDES 3-9: DAILY PLANS ────────────────────────────────────────
-      const imgKeywords = ['breakfast', 'workout', 'healthy', 'fitness', 'salad', 'gym', 'yoga'];
+      const dayImages = [
+        'https://images.unsplash.com/photo-1494390248081-4e521a5940db?q=80&w=1200&auto=format&fit=crop', // Day 1: Breakfast/Yoga
+        'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=1200&auto=format&fit=crop', // Day 2: Training
+        'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1200&auto=format&fit=crop', // Day 3: Healthy Food
+        'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1200&auto=format&fit=crop', // Day 4: Salad
+        'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1200&auto=format&fit=crop', // Day 5: Gym
+        'https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1200&auto=format&fit=crop', // Day 6: Meal Prep
+        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1200&auto=format&fit=crop'  // Day 7: Success/Body
+      ];
       
       for (let i = 0; i < planData.schedule.length; i++) {
         const day = planData.schedule[i];
         doc.addPage();
         
-        // Dynamic image based on day index or content
-        const keyword = imgKeywords[i % imgKeywords.length];
-        const dayImg = await fetchImage(`https://source.unsplash.com/featured/842x595/?${keyword},fitness`);
+        const dayImg = await fetchImage(dayImages[i % dayImages.length]);
         if (dayImg) doc.image(dayImg, 0, 0, { width: 842, height: 595 });
         
         // Glassmorphism effect for content
