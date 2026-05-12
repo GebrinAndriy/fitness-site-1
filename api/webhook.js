@@ -11,6 +11,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import nodemailer from 'nodemailer';
 import { createHmac } from 'crypto';
+import PDFDocument from 'pdfkit';
 
 // ── Vercel config: MUST disable bodyParser to verify Stripe signatures ──────
 export const config = { api: { bodyParser: false } };
@@ -132,6 +133,7 @@ export default async function handler(req, res) {
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) throw new Error("Missing email credentials on server");
 
     // ── 1. Generate the plan with Claude ──────────────────────────────────
+    console.log("Step 1: Contacting Claude AI...");
     const client = new Anthropic({ apiKey: apiKey });
 
     const prompt = `You are an expert nutritionist and fitness coach.
@@ -163,10 +165,11 @@ Make exactly 7 days. Keep text concise.`;
     });
 
     const planText = message.content[0].text.trim();
+    console.log("Claude AI responded successfully.");
 
     // ── 2. Generate PDF using PDFKit ──────────────────────────────────────
-    const PDFDocument = require('pdfkit');
-    const doc = new PDFDocument({ margin: 0, size: 'A4' }); // remove default margin for full header
+    console.log("Step 2: Generating PDF...");
+    const doc = new PDFDocument({ margin: 0, size: 'A4' });
     let buffers = [];
     doc.on('data', buffers.push.bind(buffers));
     
