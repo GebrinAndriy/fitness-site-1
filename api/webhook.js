@@ -219,7 +219,9 @@ Respond ONLY JSON: {"summary": "...", "schedule": [{"day": "DAY 1", "meals": "..
         doc.addPage();
         
         const imgIdx = 2 + (i % 7);
-        if (images[imgIdx]) doc.image(images[imgIdx], 0, 0, { width: 842, height: 595 });
+        // FALLBACK: If specific image fails, use the Cover image (images[0])
+        const bgImage = images[imgIdx] || images[0];
+        if (bgImage) doc.image(bgImage, 0, 0, { width: 842, height: 595 });
 
         // Zig-Zag Logic: i % 2 === 0 -> Text Right, else Text Left
         const isRight = (i % 2 === 0);
