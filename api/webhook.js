@@ -12,16 +12,23 @@ import Anthropic from '@anthropic-ai/sdk';
 import nodemailer from 'nodemailer';
 import { createHmac } from 'crypto';
 
-// ── Vercel config: allow larger body for webhook payloads ──────────────────
-export const config = { api: { bodyParser: true } };
+// ── Vercel config: MUST disable bodyParser to verify Stripe signatures ──────
+export const config = { api: { bodyParser: false } };
+
+async function getRawBody(readable) {
+  const chunks = [];
+  for await (const chunk of readable) {
+    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+  }
+  return Buffer.concat(chunks);
+}
 
 // ── Verify that the request truly came from Stripe ─────────────────────────
 function verifySignature(req, rawBody) {
-  // Allow manual testing from our test button
   if (req.headers['x-test-mode'] === 'true') return true;
 
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
-  if (!secret) return true; // skip if not set (dev mode)
+  if (!secret) return true; 
   
   const sigHeader = req.headers['stripe-signature'];
   if (!sigHeader) return false;
@@ -76,14 +83,18 @@ function wrapHtml(planMarkdown, customerName) {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // In production you should pass rawBody through a custom middleware,
-  // but for simplicity we stringify the parsed body for signature check.
-  const rawBody = JSON.stringify(req.body);
+  // 1. Get RAW body as string
+  const buf = await getRawBody(req);
+  const rawBody = buf.toString();
+
+  // 2. Verify signature
   if (!verifySignature(req, rawBody)) {
+    console.error("Signature verification failed.");
     return res.status(401).json({ error: 'Invalid signature' });
   }
 
-  const event = req.body;
+  // 3. Parse JSON manually
+  const event = JSON.parse(rawBody);
   const isTest = req.headers['x-test-mode'] === 'true';
 
   // Allow custom test event name or require Stripe checkout.session.completed
