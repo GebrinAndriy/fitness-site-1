@@ -161,7 +161,7 @@ Respond ONLY JSON: {"summary": "...", "schedule": [{"day": "DAY 1", "meals": "..
     async function fetchImage(url) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+        const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s timeout
         const response = await fetch(url, { signal: controller.signal });
         clearTimeout(timeoutId);
         if (!response.ok) return null;
@@ -177,25 +177,26 @@ Respond ONLY JSON: {"summary": "...", "schedule": [{"day": "DAY 1", "meals": "..
     } catch (e) { planData = null; }
 
     if (planData) {
-      // 10 UNIQUE & OPTIMIZED IMAGES (w=400 for speed)
+      // HIGH QUALITY & STABLE MIX (Unsplash + Pixabay logic)
       const imageUrls = [
-        'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=40', // Cover
-        'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&q=40', // Summary
-        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=40', // D1
-        'https://images.unsplash.com/photo-1583454110551-0979a64f3d4b?w=400&q=40', // D2
-        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=40', // D3
-        'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=40', // D4
-        'https://images.unsplash.com/photo-1574680093755-d24244b059ae?w=400&q=40', // D5
-        'https://images.unsplash.com/photo-1594882645126-14020914d58d?w=400&q=40', // D6
-        'https://images.unsplash.com/photo-1571902258033-28b89d5ca00b?w=400&q=40', // D7
-        'https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=400&q=40'  // Tips
+        'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1000&q=80', // Cover
+        'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1000&q=80', // Summary
+        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1000&q=80', // D1
+        'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1000&q=80', // D2
+        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1000&q=80', // D3
+        'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1000&q=80', // D4
+        'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1000&q=80', // D5
+        'https://images.unsplash.com/photo-1594882645126-14020914d58d?w=1000&q=80', // D6
+        'https://images.unsplash.com/photo-1571902258033-28b89d5ca00b?w=1000&q=80', // D7
+        'https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=1000&q=80'  // Tips
       ];
-      console.log("Fetching 10 optimized images...");
+      console.log("Fetching 10 HIGH-QUALITY images...");
       const images = await Promise.all(imageUrls.map(url => fetchImage(url)));
 
       // SLIDE 1: COVER
       if (images[0]) doc.image(images[0], 0, 0, { width: 842, height: 595 });
-      else { doc.rect(0,0,842,595).fill('#E8454A'); }
+      else doc.rect(0,0,842,595).fill('#1A1A2E');
+      
       doc.rect(0, 0, 842, 595).fillColor('#000000').fillOpacity(0.4).fill();
       doc.fillOpacity(1).fillColor('#FFFFFF');
       doc.fontSize(60).font('Helvetica-Bold').text('BILDBODY', 0, 200, { align: 'center', characterSpacing: 10 });
