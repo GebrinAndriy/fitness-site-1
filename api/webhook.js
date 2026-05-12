@@ -168,8 +168,9 @@ Make exactly 7 days. Keep text concise.`;
     console.log("Claude AI responded successfully.");
 
     // ── 2. Generate PDF using PDFKit ──────────────────────────────────────
-    console.log("Step 2: Generating PDF...");
-    const doc = new PDFDocument({ margin: 0, size: 'A4' });
+    console.log("Step 2: Generating PDF Presentation...");
+    // Landscape A4: [841.89, 595.28]
+    const doc = new PDFDocument({ margin: 0, size: [842, 595] });
     let buffers = [];
     doc.on('data', buffers.push.bind(buffers));
     
@@ -179,7 +180,18 @@ Make exactly 7 days. Keep text concise.`;
       });
     });
 
-    // --- Premium PDF Design ---
+    // Helper to fetch images for PDFKit
+    async function fetchImage(url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) return null;
+        const arrayBuffer = await response.arrayBuffer();
+        return Buffer.from(arrayBuffer);
+      } catch (e) {
+        return null;
+      }
+    }
+
     let planData;
     try {
       const jsonStr = planText.substring(planText.indexOf('{'), planText.lastIndexOf('}') + 1);
@@ -188,58 +200,83 @@ Make exactly 7 days. Keep text concise.`;
       planData = null;
     }
 
-    // Header Band
-    doc.rect(0, 0, doc.page.width, 140).fill('#E8454A');
-    doc.fillColor('#FFFFFF').fontSize(38).text('BILDBODY', 0, 45, { align: 'center', characterSpacing: 4 });
-    doc.fontSize(12).text('YOUR PREMIUM TRANSFORMATION PLAN', { align: 'center', characterSpacing: 2 });
-    
-    doc.y = 170;
-    doc.fillColor('#1A1A2E').fontSize(22).text(`Prepared exclusively for: ${customerName}`, 50);
-    doc.moveDown(0.5);
-
     if (planData) {
-      doc.fillColor('#4A4A6A').fontSize(12).text(planData.summary, 50, doc.y, { width: doc.page.width - 100, lineGap: 4 });
-      doc.moveDown(2);
-
-      planData.schedule.forEach(day => {
-        if (doc.y > doc.page.height - 180) {
-          doc.addPage();
-          doc.y = 50;
-        }
-
-        // Day Box Header
-        doc.rect(50, doc.y, doc.page.width - 100, 26).fill('#FFE0DD');
-        doc.fillColor('#E8454A').fontSize(14).text(day.day, 60, doc.y + 6);
-        doc.y += 20;
-
-        // Content
-        doc.fillColor('#1A1A2E').fontSize(11);
-        doc.moveDown(0.5);
-        doc.font('Helvetica-Bold').text('MEALS:', 60, doc.y);
-        doc.font('Helvetica').text(day.meals, 60, doc.y, { width: doc.page.width - 120 });
-        doc.moveDown(0.5);
-        doc.font('Helvetica-Bold').text('WORKOUT:', 60, doc.y);
-        doc.fillColor('#10B981').font('Helvetica').text(day.workout, 60, doc.y, { width: doc.page.width - 120 });
-        doc.moveDown(1.5);
-      });
-
-      doc.moveDown();
-      doc.rect(50, doc.y, doc.page.width - 100, 2).fill('#EEEEEE');
-      doc.y += 15;
+      // ── SLIDE 1: COVER ──────────────────────────────────────────────────
+      const coverImg = await fetchImage('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop');
+      if (coverImg) doc.image(coverImg, 0, 0, { width: 842, height: 595 });
       
-      doc.fillColor('#E8454A').fontSize(16).font('Helvetica-Bold').text('TOP TIPS FOR SUCCESS', 50);
-      doc.moveDown(0.5);
-      doc.fillColor('#4A4A6A').fontSize(11).font('Helvetica');
+      // Overlay
+      doc.rect(0, 0, 842, 595).fillColor('#000000').fillOpacity(0.4).fill();
+      
+      doc.fillOpacity(1).fillColor('#FFFFFF');
+      doc.fontSize(60).font('Helvetica-Bold').text('BILDBODY', 0, 200, { align: 'center', characterSpacing: 10 });
+      doc.fontSize(20).font('Helvetica').text('YOUR PERSONAL TRANSFORMATION JOURNEY', { align: 'center', characterSpacing: 2 });
+      doc.moveDown(2);
+      doc.fontSize(24).text(`PREPARED FOR ${customerName.toUpperCase()}`, { align: 'center' });
+      
+      // ── SLIDE 2: SUMMARY ───────────────────────────────────────────────
+      doc.addPage();
+      const sumImg = await fetchImage('https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1200&auto=format&fit=crop');
+      if (sumImg) doc.image(sumImg, 0, 0, { width: 842, height: 595 });
+      
+      doc.rect(40, 40, 400, 515).fillColor('#FFFFFF').fillOpacity(0.9).fill();
+      doc.fillOpacity(1).fillColor('#1A1A2E');
+      doc.fontSize(32).font('Helvetica-Bold').text('THE VISION', 70, 80);
+      doc.rect(70, 120, 50, 4).fill('#E8454A');
+      
+      doc.fontSize(16).font('Helvetica').text(planData.summary, 70, 160, { width: 340, lineGap: 8 });
+      
+      // ── SLIDES 3-9: DAILY PLANS ────────────────────────────────────────
+      const imgKeywords = ['breakfast', 'workout', 'healthy', 'fitness', 'salad', 'gym', 'yoga'];
+      
+      for (let i = 0; i < planData.schedule.length; i++) {
+        const day = planData.schedule[i];
+        doc.addPage();
+        
+        // Dynamic image based on day index or content
+        const keyword = imgKeywords[i % imgKeywords.length];
+        const dayImg = await fetchImage(`https://source.unsplash.com/featured/842x595/?${keyword},fitness`);
+        if (dayImg) doc.image(dayImg, 0, 0, { width: 842, height: 595 });
+        
+        // Glassmorphism effect for content
+        doc.rect(442, 0, 400, 595).fillColor('#FFFFFF').fillOpacity(0.95).fill();
+        
+        doc.fillOpacity(1).fillColor('#E8454A').fontSize(40).font('Helvetica-Bold').text(day.day, 482, 60);
+        doc.rect(482, 110, 60, 5).fill('#E8454A');
+        
+        doc.fillColor('#1A1A2E').fontSize(14).font('Helvetica-Bold').text('NUTRITION PLAN', 482, 150);
+        doc.fontSize(12).font('Helvetica').text(day.meals, 482, 175, { width: 320, lineGap: 5 });
+        
+        doc.moveDown(2);
+        doc.fillColor('#10B981').fontSize(14).font('Helvetica-Bold').text('WORKOUT STRATEGY', 482, doc.y);
+        doc.fillColor('#1A1A2E').fontSize(12).font('Helvetica').text(day.workout, 482, doc.y + 5, { width: 320, lineGap: 5 });
+        
+        // Page Number
+        doc.fillColor('#AAAAAA').fontSize(10).text(`PAGE ${i + 3} / ${planData.schedule.length + 3}`, 482, 550);
+      }
+
+      // ── FINAL SLIDE: TIPS ──────────────────────────────────────────────
+      doc.addPage();
+      const tipsImg = await fetchImage('https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?q=80&w=1200&auto=format&fit=crop');
+      if (tipsImg) doc.image(tipsImg, 0, 0, { width: 842, height: 595 });
+      
+      doc.rect(100, 100, 642, 395).fillColor('#FFFFFF').fillOpacity(0.9).fill();
+      doc.fillOpacity(1).fillColor('#E8454A').fontSize(32).font('Helvetica-Bold').text('PRO TIPS FOR SUCCESS', 140, 140);
+      
+      doc.fillColor('#1A1A2E').fontSize(14).font('Helvetica').text('Follow these guidelines to maximize your results:', 140, 185);
+      
+      let tipY = 230;
       planData.tips.forEach(tip => {
-        doc.text(`• ${tip}`, 50, doc.y, { width: doc.page.width - 100, lineGap: 3 });
+        doc.circle(150, tipY + 7, 4).fill('#E8454A');
+        doc.text(tip, 170, tipY, { width: 500 });
+        tipY += 40;
       });
+      
     } else {
-      // Fallback if parsing fails
-      doc.fillColor('#333333').fontSize(11).lineGap(4).text(planText, 50, doc.y, { width: doc.page.width - 100 });
+      doc.addPage().text("Error generating presentation data.");
     }
 
     doc.end();
-
     const pdfBuffer = await pdfPromise;
 
     // ── 3. Send email ───────────────────
