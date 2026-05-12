@@ -132,43 +132,36 @@ export default async function handler(req, res) {
     if (!apiKey) throw new Error("Missing ANTHROPIC_API_KEY or CLAUDE_API_KEY on server");
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) throw new Error("Missing email credentials on server");
 
-    // ── 1. Generate the plan with Claude ──────────────────────────────────
-    console.log("Step 1: Contacting Claude AI...");
+    // ── 1. Generate the plan with Claude (FAST MODEL) ─────────────────────
+    console.log("Step 1: Contacting Claude AI (Haiku)...");
     const client = new Anthropic({ apiKey: apiKey });
 
     const prompt = `You are an expert nutritionist and fitness coach.
-Generate a concise but complete 7-day personal diet and workout plan for ${customerName}.
+Generate a 7-day personal diet and workout plan for ${customerName}.
 User Data:
 - Goal: ${quizData[2] || 'Weight Loss'}
 - Weight: ${quizData[5] || '70kg'}, Height: ${quizData[6] || '165cm'}
 - Activity: ${quizData[8] || 'Active'}
 
-IMPORTANT: 
-Respond ONLY with a valid JSON object matching this structure (no markdown tags outside it):
+IMPORTANT: Respond ONLY with a valid JSON:
 {
-  "summary": "A short, highly motivating message for the user.",
-  "schedule": [
-    {
-      "day": "DAY 1",
-      "meals": "Breakfast: ... | Lunch: ... | Dinner: ...",
-      "workout": "20 min cardio / exercises"
-    }
-  ],
+  "summary": "Short motivating message.",
+  "schedule": [{"day": "DAY 1", "meals": "...", "workout": "..."}],
   "tips": ["Tip 1", "Tip 2"]
 }
-Make exactly 7 days. Keep text concise.`;
+Make exactly 7 days.`;
 
     const message = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 3500,
+      model: 'claude-3-haiku-20240307',
+      max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }],
     });
 
     const planText = message.content[0].text.trim();
-    console.log("Claude AI responded successfully.");
+    console.log("Claude AI (Haiku) responded.");
 
     // ── 2. Generate PDF using PDFKit ──────────────────────────────────────
-    console.log("Step 2: Generating PDF Presentation (Parallel Image Fetch)...");
+    console.log("Step 2: Generating PDF Presentation...");
     const doc = new PDFDocument({ margin: 0, size: [842, 595] });
     let buffers = [];
     doc.on('data', buffers.push.bind(buffers));
@@ -177,58 +170,45 @@ Make exactly 7 days. Keep text concise.`;
       doc.on('end', () => resolve(Buffer.concat(buffers)));
     });
 
-    // Optimized parallel image fetcher
     async function fetchImage(url) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2500); // 2.5s limit per image
+        const timeoutId = setTimeout(() => controller.abort(), 2000); 
         const response = await fetch(url, { signal: controller.signal });
         clearTimeout(timeoutId);
         if (!response.ok) return null;
         const arrayBuffer = await response.arrayBuffer();
         return Buffer.from(arrayBuffer);
-      } catch (e) {
-        return null;
-      }
+      } catch (e) { return null; }
     }
 
     let planData;
     try {
       const jsonStr = planText.substring(planText.indexOf('{'), planText.lastIndexOf('}') + 1);
       planData = JSON.parse(jsonStr);
-    } catch (e) {
-      planData = null;
-    }
+    } catch (e) { planData = null; }
 
     if (planData) {
-      // Define all URLs first
+      // Fetch only 4 core images to be super fast
       const imageUrls = [
-        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1000&auto=format', // Cover
-        'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1000&auto=format', // Summary
-        'https://images.unsplash.com/photo-1494390248081-4e521a5940db?w=1000&auto=format', // D1
-        'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=1000&auto=format', // D2
-        'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1000&auto=format', // D3
-        'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1000&auto=format', // D4
-        'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1000&auto=format', // D5
-        'https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=1000&auto=format'  // Tips
+        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=60', // Cover
+        'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=60', // Food
+        'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=60', // Workout
+        'https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=800&q=60'  // Tips
       ];
-
-      console.log("Fetching all images in parallel...");
       const images = await Promise.all(imageUrls.map(url => fetchImage(url)));
-      console.log("Images fetched.");
 
-      // ── SLIDE 1: COVER ──────────────────────────────────────────────────
+      // SLIDE 1: COVER
       if (images[0]) doc.image(images[0], 0, 0, { width: 842, height: 595 });
       else { doc.rect(0,0,842,595).fill('#E8454A'); }
-      
       doc.rect(0, 0, 842, 595).fillColor('#000000').fillOpacity(0.4).fill();
       doc.fillOpacity(1).fillColor('#FFFFFF');
       doc.fontSize(60).font('Helvetica-Bold').text('BILDBODY', 0, 200, { align: 'center', characterSpacing: 10 });
-      doc.fontSize(20).font('Helvetica').text('YOUR PERSONAL TRANSFORMATION JOURNEY', { align: 'center', characterSpacing: 2 });
+      doc.fontSize(20).text('YOUR PERSONAL TRANSFORMATION JOURNEY', { align: 'center', characterSpacing: 2 });
       doc.moveDown(2);
       doc.fontSize(24).text(`PREPARED FOR ${customerName.toUpperCase()}`, { align: 'center' });
       
-      // ── SLIDE 2: SUMMARY ───────────────────────────────────────────────
+      // SLIDE 2: SUMMARY
       doc.addPage();
       if (images[1]) doc.image(images[1], 0, 0, { width: 842, height: 595 });
       doc.rect(40, 40, 400, 515).fillColor('#FFFFFF').fillOpacity(0.9).fill();
@@ -237,13 +217,13 @@ Make exactly 7 days. Keep text concise.`;
       doc.rect(70, 120, 50, 4).fill('#E8454A');
       doc.fontSize(16).font('Helvetica').text(planData.summary, 70, 160, { width: 340, lineGap: 8 });
       
-      // ── SLIDES 3-9: DAILY PLANS ────────────────────────────────────────
+      // SLIDES 3-9: DAILY PLANS
       for (let i = 0; i < planData.schedule.length; i++) {
         const day = planData.schedule[i];
         doc.addPage();
         
-        // Use pre-fetched day images (2 to 7), wrap around if more than 7 days
-        const imgIdx = (i % 5) + 2; 
+        // Alternate between food and workout images
+        const imgIdx = (i % 2 === 0) ? 1 : 2;
         if (images[imgIdx]) doc.image(images[imgIdx], 0, 0, { width: 842, height: 595 });
         
         doc.rect(442, 0, 400, 595).fillColor('#FFFFFF').fillOpacity(0.95).fill();
@@ -256,16 +236,14 @@ Make exactly 7 days. Keep text concise.`;
         doc.moveDown(2);
         doc.fillColor('#10B981').fontSize(14).font('Helvetica-Bold').text('WORKOUT STRATEGY', 482, doc.y);
         doc.fillColor('#1A1A2E').fontSize(12).font('Helvetica').text(day.workout, 482, doc.y + 5, { width: 320, lineGap: 5 });
-        doc.fillColor('#AAAAAA').fontSize(10).text(`PAGE ${i + 3} / ${planData.schedule.length + 3}`, 482, 550);
+        doc.fillColor('#AAAAAA').fontSize(10).text(`PAGE ${i + 3} / 10`, 482, 550);
       }
 
-      // ── FINAL SLIDE: TIPS ──────────────────────────────────────────────
+      // FINAL SLIDE: TIPS
       doc.addPage();
-      if (images[7]) doc.image(images[7], 0, 0, { width: 842, height: 595 });
+      if (images[3]) doc.image(images[3], 0, 0, { width: 842, height: 595 });
       doc.rect(100, 100, 642, 395).fillColor('#FFFFFF').fillOpacity(0.9).fill();
       doc.fillOpacity(1).fillColor('#E8454A').fontSize(32).font('Helvetica-Bold').text('PRO TIPS FOR SUCCESS', 140, 140);
-      doc.fillColor('#1A1A2E').fontSize(14).font('Helvetica').text('Follow these guidelines to maximize your results:', 140, 185);
-      
       let tipY = 230;
       planData.tips.forEach(tip => {
         doc.circle(150, tipY + 7, 4).fill('#E8454A');
