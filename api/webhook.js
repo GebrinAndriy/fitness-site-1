@@ -132,28 +132,16 @@ export default async function handler(req, res) {
     if (!apiKey) throw new Error("Missing ANTHROPIC_API_KEY or CLAUDE_API_KEY on server");
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) throw new Error("Missing email credentials on server");
 
-    // ── 1. Generate the plan with Claude (FAST MODEL) ─────────────────────
-    console.log("Step 1: Contacting Claude AI (Haiku)...");
+    // ── 1. Generate the plan with Claude (STABLE MODEL + SHORT PROMPT) ────
+    console.log("Step 1: Contacting Claude AI...");
     const client = new Anthropic({ apiKey: apiKey });
 
-    const prompt = `You are an expert nutritionist and fitness coach.
-Generate a 7-day personal diet and workout plan for ${customerName}.
-User Data:
-- Goal: ${quizData[2] || 'Weight Loss'}
-- Weight: ${quizData[5] || '70kg'}, Height: ${quizData[6] || '165cm'}
-- Activity: ${quizData[8] || 'Active'}
-
-IMPORTANT: Respond ONLY with a valid JSON:
-{
-  "summary": "Short motivating message.",
-  "schedule": [{"day": "DAY 1", "meals": "...", "workout": "..."}],
-  "tips": ["Tip 1", "Tip 2"]
-}
-Make exactly 7 days.`;
+    const prompt = `Quick 7-day fitness plan for ${customerName} (Goal: ${quizData[2] || 'Fitness'}). 
+Respond ONLY JSON: {"summary": "...", "schedule": [{"day": "DAY 1", "meals": "...", "workout": "..."}], "tips": ["..."]}`;
 
     const message = await client.messages.create({
-      model: 'claude-3-haiku-20240307',
-      max_tokens: 2000,
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 1500,
       messages: [{ role: 'user', content: prompt }],
     });
 
