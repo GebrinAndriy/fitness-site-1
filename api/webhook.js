@@ -213,25 +213,30 @@ Respond ONLY JSON: {"summary": "...", "schedule": [{"day": "DAY 1", "meals": "..
       doc.rect(70, 120, 50, 4).fill('#E8454A');
       doc.fontSize(16).font('Helvetica').text(planData.summary, 70, 160, { width: 340, lineGap: 8 });
       
-      // SLIDES 3-9: DAILY PLANS
+      // SLIDES 3-9: DAILY PLANS (ZIG-ZAG LAYOUT)
       for (let i = 0; i < planData.schedule.length; i++) {
         const day = planData.schedule[i];
         doc.addPage();
         
         const imgIdx = 2 + (i % 7);
         if (images[imgIdx]) doc.image(images[imgIdx], 0, 0, { width: 842, height: 595 });
+
+        // Zig-Zag Logic: i % 2 === 0 -> Text Right, else Text Left
+        const isRight = (i % 2 === 0);
+        const rectX = isRight ? 442 : 0;
+        const textX = isRight ? 482 : 40;
+
+        doc.rect(rectX, 0, 400, 595).fillColor('#FFFFFF').fillOpacity(0.95).fill();
+        doc.fillOpacity(1).fillColor('#E8454A').fontSize(40).font('Helvetica-Bold').text(day.day, textX, 60);
+        doc.rect(textX, 110, 60, 5).fill('#E8454A');
         
-        doc.rect(442, 0, 400, 595).fillColor('#FFFFFF').fillOpacity(0.95).fill();
-        doc.fillOpacity(1).fillColor('#E8454A').fontSize(40).font('Helvetica-Bold').text(day.day, 482, 60);
-        doc.rect(482, 110, 60, 5).fill('#E8454A');
-        
-        doc.fillColor('#1A1A2E').fontSize(14).font('Helvetica-Bold').text('NUTRITION PLAN', 482, 150);
-        doc.fontSize(12).font('Helvetica').text(day.meals, 482, 175, { width: 320, lineGap: 5 });
+        doc.fillColor('#1A1A2E').fontSize(14).font('Helvetica-Bold').text('NUTRITION PLAN', textX, 150);
+        doc.fontSize(12).font('Helvetica').text(day.meals, textX, 175, { width: 320, lineGap: 5 });
         
         doc.moveDown(2);
-        doc.fillColor('#10B981').fontSize(14).font('Helvetica-Bold').text('WORKOUT STRATEGY', 482, doc.y);
-        doc.fillColor('#1A1A2E').fontSize(12).font('Helvetica').text(day.workout, 482, doc.y + 5, { width: 320, lineGap: 5 });
-        doc.fillColor('#AAAAAA').fontSize(10).text(`PAGE ${i + 3} / 10`, 482, 550);
+        doc.fillColor('#10B981').fontSize(14).font('Helvetica-Bold').text('WORKOUT STRATEGY', textX, doc.y);
+        doc.fillColor('#1A1A2E').fontSize(12).font('Helvetica').text(day.workout, textX, doc.y + 5, { width: 320, lineGap: 5 });
+        doc.fillColor('#AAAAAA').fontSize(10).text(`PAGE ${i + 3} / 10`, textX, 550);
       }
 
       // FINAL SLIDE: TIPS
