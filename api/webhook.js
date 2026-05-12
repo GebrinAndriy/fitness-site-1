@@ -177,18 +177,18 @@ Respond ONLY JSON: {"summary": "...", "schedule": [{"day": "DAY 1", "meals": "..
     } catch (e) { planData = null; }
 
     if (planData) {
-      // Define 10 STABLE URLs with specific IDs
+      // CURATED PREMIUM IMAGE LIST
       const imageUrls = [
-        'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=50', // Cover (Gym)
-        'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=50', // Summary
-        'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=800&q=50', // D1 (Training - New Gamma)
-        'https://images.unsplash.com/photo-1494390248081-4e521a5940db?w=800&q=50', // D2
-        'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=50', // D3
-        'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=50', // D4
-        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=50', // D5
-        'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=800&q=50', // D6
-        'https://images.unsplash.com/photo-1594882645126-14020914d58d?w=800&q=50', // D7
-        'https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=800&q=50'  // Tips
+        'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=50', // Cover: Dark Gym
+        'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=50', // Summary: Light Food
+        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=50', // Day 1: Fitness Girl (Bright)
+        'https://images.unsplash.com/photo-1583454110551-0979a64f3d4b?w=800&q=50', // Day 2: Healthy Breakfast
+        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=50', // Day 3: Heavy Workout (Man)
+        'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=50', // Day 4: Salad/Bowl
+        'https://images.unsplash.com/photo-1574680093755-d24244b059ae?w=800&q=50', // Day 5: Stretching/Yoga
+        'https://images.unsplash.com/photo-1594882645126-14020914d58d?w=800&q=50', // Day 6: Meal Prep/Kitchen
+        'https://images.unsplash.com/photo-1571902258033-28b89d5ca00b?w=800&q=50', // Day 7: Success/Result
+        'https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=800&q=50'  // Tips: Running
       ];
       console.log("Fetching 10 images in parallel...");
       const images = await Promise.all(imageUrls.map(url => fetchImage(url)));
