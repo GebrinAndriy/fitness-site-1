@@ -161,7 +161,7 @@ Respond ONLY JSON: {"summary": "...", "schedule": [{"day": "DAY 1", "meals": "..
     async function fetchImage(url) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000); // Increased to 4s
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
         const response = await fetch(url, { signal: controller.signal });
         clearTimeout(timeoutId);
         if (!response.ok) return null;
@@ -177,20 +177,20 @@ Respond ONLY JSON: {"summary": "...", "schedule": [{"day": "DAY 1", "meals": "..
     } catch (e) { planData = null; }
 
     if (planData) {
-      // CURATED PREMIUM IMAGE LIST
+      // 10 UNIQUE & OPTIMIZED IMAGES (w=400 for speed)
       const imageUrls = [
-        'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=50', // Cover: Dark Gym
-        'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=50', // Summary: Light Food
-        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=50', // Day 1: Fitness Girl (Bright)
-        'https://images.unsplash.com/photo-1583454110551-0979a64f3d4b?w=800&q=50', // Day 2: Healthy Breakfast
-        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=50', // Day 3: Heavy Workout (Man)
-        'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=50', // Day 4: Salad/Bowl
-        'https://images.unsplash.com/photo-1574680093755-d24244b059ae?w=800&q=50', // Day 5: Stretching/Yoga
-        'https://images.unsplash.com/photo-1594882645126-14020914d58d?w=800&q=50', // Day 6: Meal Prep/Kitchen
-        'https://images.unsplash.com/photo-1571902258033-28b89d5ca00b?w=800&q=50', // Day 7: Success/Result
-        'https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=800&q=50'  // Tips: Running
+        'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=40', // Cover
+        'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&q=40', // Summary
+        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=40', // D1
+        'https://images.unsplash.com/photo-1583454110551-0979a64f3d4b?w=400&q=40', // D2
+        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=40', // D3
+        'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=40', // D4
+        'https://images.unsplash.com/photo-1574680093755-d24244b059ae?w=400&q=40', // D5
+        'https://images.unsplash.com/photo-1594882645126-14020914d58d?w=400&q=40', // D6
+        'https://images.unsplash.com/photo-1571902258033-28b89d5ca00b?w=400&q=40', // D7
+        'https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=400&q=40'  // Tips
       ];
-      console.log("Fetching 10 images in parallel...");
+      console.log("Fetching 10 optimized images...");
       const images = await Promise.all(imageUrls.map(url => fetchImage(url)));
 
       // SLIDE 1: COVER
@@ -217,7 +217,6 @@ Respond ONLY JSON: {"summary": "...", "schedule": [{"day": "DAY 1", "meals": "..
         const day = planData.schedule[i];
         doc.addPage();
         
-        // Use unique images for each day (indices 2 to 8)
         const imgIdx = 2 + (i % 7);
         if (images[imgIdx]) doc.image(images[imgIdx], 0, 0, { width: 842, height: 595 });
         
@@ -234,9 +233,9 @@ Respond ONLY JSON: {"summary": "...", "schedule": [{"day": "DAY 1", "meals": "..
         doc.fillColor('#AAAAAA').fontSize(10).text(`PAGE ${i + 3} / 10`, 482, 550);
       }
 
-      // FINAL SLIDE: TIPS (Fixed Overlapping)
+      // FINAL SLIDE: TIPS
       doc.addPage();
-      if (images[9]) doc.image(images[9], 0, 0, { width: 842, height: 595 });
+      if (images[4]) doc.image(images[4], 0, 0, { width: 842, height: 595 });
       doc.rect(100, 80, 642, 435).fillColor('#FFFFFF').fillOpacity(0.9).fill();
       doc.fillOpacity(1).fillColor('#E8454A').fontSize(32).font('Helvetica-Bold').text('PRO TIPS FOR SUCCESS', 140, 120);
       
