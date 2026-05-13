@@ -18,17 +18,30 @@ export default async function handler(req, res) {
     const apiKey = (process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || "").trim();
     if (!apiKey) return res.status(500).json({ error: "No API Key" });
 
-    // 1. Швидкий запит
+    // 1. Запит до Claude (Оптимізований для великих відповідей)
     const client = new Anthropic({ apiKey });
     const message = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 3000,
-      messages: [{ role: 'user', content: `30-Tage Plan für ${customerName}. JSON: {"summary": "...", "days": [{"day": 1, "diet": "...", "workout": "..."}]}. Deutsch.` }],
+      max_tokens: 4096, // Збільшено до максимуму
+      messages: [{ 
+        role: 'user', 
+        content: `Erstelle einen 30-Tage Plan für ${customerName}. 
+        WICHTIG: Antworte NUR im JSON-Format. Beschreibe Mahlzeiten kurz (1 Satz).
+        JSON: {"days": [{"day": 1, "diet": "...", "workout": "..."}]}. 
+        Sprache: Deutsch.` 
+      }],
     });
 
-    const planData = JSON.parse(message.content[0].text.trim().substring(message.content[0].text.indexOf('{'), message.content[0].text.lastIndexOf('}') + 1));
+    const rawText = message.content[0].text.trim();
+    let planData;
+    try {
+      const jsonStr = rawText.substring(rawText.indexOf('{'), rawText.lastIndexOf('}') + 1);
+      planData = JSON.parse(jsonStr);
+    } catch (e) {
+      throw new Error("AI response was too long or malformed. Please try again.");
+    }
 
-    // 2. Преміум PDF
+    // 2. Преміум PDF (Векторна графіка)
     const doc = new PDFDocument({ margin: 0, size: [842, 595] });
     let buffers = [];
     doc.on('data', buffers.push.bind(buffers));
@@ -46,7 +59,7 @@ export default async function handler(req, res) {
     doc.fillColor('#FFFFFF').fontSize(60).font('Arial-Bold').text('30 TAGE PLAN', 0, 220, { align: 'center' });
     doc.fontSize(20).font('Arial').text(`TRANSFORMATION FÜR ${customerName.toUpperCase()}`, 0, 350, { align: 'center' });
 
-    // Pages
+    // Days
     planData.days.forEach((day, idx) => {
       doc.addPage();
       const isLeft = idx % 2 === 0;
@@ -65,7 +78,7 @@ export default async function handler(req, res) {
     doc.end();
     const pdfBuffer = await pdfPromise;
 
-    // 3. Відправка (Відтворюємо дизайн зі скріншота)
+    // 3. Відправка (Фірмовий дизайн)
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
@@ -79,19 +92,16 @@ export default async function handler(req, res) {
       <div style="padding: 40px; color: #333; line-height: 1.6;">
         <h2 style="margin-top: 0; font-size: 22px;">Hallo <strong>${customerName}</strong>! 👋</h2>
         <p>Wir haben die Erstellung deiner individuellen 30-Tage-Fitness- und Ernährungsstrategie abgeschlossen.</p>
-        
         <div style="background-color: #f0fdf4; border-left: 4px solid #10B981; padding: 20px; margin: 25px 0; border-radius: 4px;">
           <h3 style="color: #166534; margin-top: 0; font-size: 18px;">✅ Dein PDF-Plan ist im Anhang!</h3>
-          <p style="color: #166534; margin-bottom: 0; font-size: 14px;">Öffne die angehängte Datei, um deinen vollständigen Zeitplan zu sehen. Du kannst sie auf deinem Handy speichern oder ausdrucken.</p>
+          <p style="color: #166534; margin-bottom: 0; font-size: 14px;">Öffne die angehängte Datei, um deinen vollständigen Zeitplan zu sehen.</p>
         </div>
-        
         <p>Wir freuen uns darauf, deine Fortschritte zu sehen!</p>
       </div>
-      <div style="background-color: #f9f9f9; padding: 20px; text-align: center; font-size: 12px; color: #888; border-top: 1px solid #eee;">
+      <div style="background-color: #f9f9f9; padding: 20px; text-align: center; font-size: 12px; color: #888;">
         <p>© 2026 BildBody Fitness. Alle Rechte vorbehalten.</p>
       </div>
-    </div>
-    `;
+    </div>`;
 
     await transporter.sendMail({
       from: `"BildBody" <${process.env.EMAIL_USER}>`,
@@ -105,7 +115,6 @@ export default async function handler(req, res) {
     });
 
     return res.status(200).json({ ok: true });
-
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
