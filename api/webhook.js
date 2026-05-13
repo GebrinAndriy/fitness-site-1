@@ -1,16 +1,22 @@
 import Anthropic from '@anthropic-ai/sdk';
 import PDFDocument from 'pdfkit';
 import nodemailer from 'nodemailer';
+import fetch from 'node-fetch';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const logFile = join(process.cwd(), 'debug.log');
+
+function log(msg) {
+  const timestamp = new Date().toISOString();
+  fs.appendFileSync(logFile, `[${timestamp}] ${msg}\n`);
+}
 
 export default async function handler(req, res) {
   try {
-    if (req.method !== 'POST') {
-      return res.status(405).json({ error: 'Method not allowed' });
-    }
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     const event = req.body;
     const isTest = req.headers['x-test-mode'] === 'true';
@@ -23,12 +29,12 @@ export default async function handler(req, res) {
     const customerEmail = session.customer_details?.email || session.customer_email || session.user_email || session.email;
     const customerName = session.customer_details?.name || session.user_name || 'there';
 
-    // 1. ВІДПОВІДАЄМО STRIPE НЕГАЙНО
+    log(`Webhook received for ${customerEmail}`);
     res.status(200).json({ ok: true, status: 'Processing' });
 
-    // 2. ФОНОВА ОБРОБКА
     (async () => {
       try {
+        log('Starting background task...');
         let quizData = {};
         const clientRef = session.client_reference_id || session.custom_data?.data;
         if (clientRef) {
@@ -41,98 +47,88 @@ export default async function handler(req, res) {
         }
 
         const apiKey = (process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || "").trim();
-        if (!apiKey || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) return;
-
-        const gender = Array.isArray(quizData) ? (quizData[0] || 'person') : (quizData.gender || 'person');
-        const goal = Array.isArray(quizData) ? (quizData[2] || 'Weight Loss') : (quizData.goal || 'Weight Loss');
-
-        // --- ГЕНЕРАЦІЯ CLAUDE (30 окремих днів) ---
-        const client = new Anthropic({ apiKey });
-        const prompt = `Erstelle einen detaillierten 30-TAGE-ERNÄHRUNGSPLAN für: Geschlecht ${gender}, Ziel: ${goal}.
-        Antworte NUR mit validem JSON:
-        {
-          "summary": "3 Sätze Motivation",
-          "days": [
-            {"day": 1, "diet": "Frühstück, Mittag, Abendessen", "workout": "Tagesziel"},
-            ... genau 30 Tage
-          ],
-          "tips": ["Tipp 1", "Tipp 2", "Tipp 3", "Tipp 4"]
+        if (!apiKey || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+          log('ERROR: Missing environment variables');
+          return;
         }
+
+        const gender = Array.isArray(quizData) ? (quizData[0] || 'person') : 'person';
+        const goal = Array.isArray(quizData) ? (quizData[2] || 'Weight Loss') : 'Weight Loss';
+
+        log('Requesting Claude AI (30-day plan)...');
+        const client = new Anthropic({ apiKey });
+        const prompt = `Erstelle einen detaillierten 30-TAGE-ERNÄHRUNGSPLAN für: Geschlecht ${gender}, Ziel: ${goal}. 
+        Antworte NUR mit validem JSON. Das JSON muss genau 30 Tage im Array "days" enthalten.
+        Format: {"summary": "...", "days": [{"day": 1, "diet": "Frühstück: ..., Mittag: ..., Abend: ...", "workout": "..."}], "tips": ["...", "..."]}
         Sprache: Deutsch.`;
 
         const message = await client.messages.create({
           model: 'claude-3-haiku-20240307',
-          max_tokens: 4000,
+          max_tokens: 4096,
           messages: [{ role: 'user', content: prompt }],
         });
 
+        log('Claude AI responded. Parsing JSON...');
         const planData = JSON.parse(message.content[0].text.trim());
+        log(`JSON parsed successfully. Days generated: ${planData.days?.length}`);
 
-        // --- ГЕНЕРАЦІЯ PDF ---
+        // Generate PDF
+        log('Starting PDF generation...');
         const doc = new PDFDocument({ margin: 0, size: [842, 595] });
         try {
           doc.registerFont('Arial', join(process.cwd(), 'arial.ttf'));
           doc.registerFont('Arial-Bold', join(process.cwd(), 'arialbd.ttf'));
           doc.font('Arial');
-        } catch (e) { doc.font('Helvetica'); }
+        } catch (e) { log('Font warning: Arial not found, using Helvetica'); doc.font('Helvetica'); }
 
         let buffers = [];
         doc.on('data', buffers.push.bind(buffers));
         const pdfPromise = new Promise((resolve) => doc.on('end', () => resolve(Buffer.concat(buffers))));
 
-        async function fetchImage(keyword) {
+        async function getSafeImage(keyword) {
           try {
-            const url = `https://source.unsplash.com/800x600/?fitness,healthy,food,${keyword}&sig=${Math.random()}`;
-            const response = await fetch(url);
+            const response = await fetch(`https://source.unsplash.com/800x600/?fitness,${keyword}`);
             return response.ok ? Buffer.from(await response.arrayBuffer()) : null;
           } catch (e) { return null; }
         }
 
-        // Завантажуємо фото для обкладинки та фонів (для швидкості візьмемо 10 унікальних і будемо чергувати)
-        const images = await Promise.all([
-          fetchImage('cover'), fetchImage('workout'), fetchImage('meal'), 
-          fetchImage('body'), fetchImage('gym'), fetchImage('vegetables'),
-          fetchImage('run'), fetchImage('yoga'), fetchImage('fruit'), fetchImage('strong')
+        const coverImg = await getSafeImage('workout');
+        const dayImages = await Promise.all([
+          getSafeImage('healthy,food'), getSafeImage('gym'), getSafeImage('vegetables'), getSafeImage('body')
         ]);
 
-        // SLIDE 1: COVER
-        if (images[0]) doc.image(images[0], 0, 0, { width: 842, height: 595 });
+        // Slide 1
+        if (coverImg) doc.image(coverImg, 0, 0, { width: 842, height: 595 });
         doc.rect(0, 0, 842, 595).fillColor('#000000').fillOpacity(0.5).fill();
-        doc.fillOpacity(1).fillColor('#FFFFFF');
-        doc.fontSize(50).font('Arial-Bold').text('30-TAGE TRANSFORMATION', 0, 240, { align: 'center' });
-        doc.fontSize(24).text(`PERSONALISIERT FÜR ${customerName.toUpperCase()}`, { align: 'center' });
+        doc.fillOpacity(1).fillColor('#FFFFFF').fontSize(50).font('Arial-Bold').text('30-TAGE TRANSFORMATION', 0, 240, { align: 'center' });
+        doc.fontSize(24).text(`FÜR ${customerName.toUpperCase()}`, { align: 'center' });
 
-        // 30 ДНІВ - ШАХОВИЙ ПОРЯДОК
+        // Days
         planData.days.forEach((day, idx) => {
           doc.addPage();
           const isLeft = idx % 2 === 0;
-          const bgImg = images[(idx % 9) + 1] || images[0];
-
+          const img = dayImages[idx % dayImages.length];
           if (isLeft) {
-            // Фото зліва
-            if (bgImg) doc.image(bgImg, 0, 0, { width: 421, height: 595 });
+            if (img) doc.image(img, 0, 0, { width: 421, height: 595 });
             doc.rect(421, 0, 421, 595).fill('#FFFFFF');
             doc.fillColor('#E8454A').fontSize(40).font('Arial-Bold').text(`TAG ${day.day}`, 461, 60);
-            doc.fillColor('#1A1A2E').fontSize(22).text('ERNÄHRUNG', 461, 130);
-            doc.fontSize(14).font('Arial').text(day.diet, 461, 170, { width: 340, lineGap: 5 });
-            doc.fillColor('#10B981').fontSize(22).font('Arial-Bold').text('WORKOUT', 461, 380);
-            doc.fillColor('#1A1A2E').fontSize(14).font('Arial').text(day.workout, 461, 420, { width: 340 });
+            doc.fillColor('#1A1A2E').fontSize(14).font('Arial').text(day.diet, 461, 150, { width: 340, lineGap: 4 });
+            doc.fillColor('#10B981').fontSize(22).font('Arial-Bold').text('WORKOUT', 461, 400);
+            doc.fillColor('#1A1A2E').fontSize(14).font('Arial').text(day.workout, 461, 440, { width: 340 });
           } else {
-            // Фото справа
-            if (bgImg) doc.image(bgImg, 421, 0, { width: 421, height: 595 });
+            if (img) doc.image(img, 421, 0, { width: 421, height: 595 });
             doc.rect(0, 0, 421, 595).fill('#FFFFFF');
             doc.fillColor('#E8454A').fontSize(40).font('Arial-Bold').text(`TAG ${day.day}`, 40, 60);
-            doc.fillColor('#1A1A2E').fontSize(22).text('ERNÄHRUNG', 40, 130);
-            doc.fontSize(14).font('Arial').text(day.diet, 40, 170, { width: 340, lineGap: 5 });
-            doc.fillColor('#10B981').fontSize(22).font('Arial-Bold').text('WORKOUT', 40, 380);
-            doc.fillColor('#1A1A2E').fontSize(14).font('Arial').text(day.workout, 40, 420, { width: 340 });
+            doc.fillColor('#1A1A2E').fontSize(14).font('Arial').text(day.diet, 40, 150, { width: 340, lineGap: 4 });
+            doc.fillColor('#10B981').fontSize(22).font('Arial-Bold').text('WORKOUT', 40, 400);
+            doc.fillColor('#1A1A2E').fontSize(14).font('Arial').text(day.workout, 40, 440, { width: 340 });
           }
         });
 
         doc.end();
         const pdfBuffer = await pdfPromise;
+        log('PDF generated. Sending email...');
 
-        // ВІДПРАВКА
         const transporter = nodemailer.createTransport({
           service: 'gmail',
           auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
@@ -141,16 +137,20 @@ export default async function handler(req, res) {
         await transporter.sendMail({
           from: `"BildBody" <${process.env.EMAIL_USER}>`,
           to: customerEmail,
-          subject: `✅ Fertig! Dein 30-Tage Plan ist da, ${customerName}`,
-          html: `<h3>Hallo ${customerName}!</h3><p>Anbei findest du deine persönliche Transformation für die nächsten 30 Tage.</p>`,
+          subject: `✅ Dein 30-Tage Plan ist fertig, ${customerName}`,
+          html: `<p>Hallo ${customerName}, hier ist dein Plan!</p>`,
           attachments: [
-            { filename: `Plan_Tag_1-30_${customerName}.pdf`, content: pdfBuffer },
-            { filename: 'BildBody_Premium_Guide.pdf', path: join(process.cwd(), 'diet.pdf') }
+            { filename: `Plan_${customerName}.pdf`, content: pdfBuffer },
+            { filename: 'Premium_Guide.pdf', path: join(process.cwd(), 'diet.pdf') }
           ]
         });
-      } catch (err) { console.error('BG Error:', err); }
+        log(`SUCCESS: Email sent to ${customerEmail}`);
+      } catch (err) {
+        log(`CRITICAL BG ERROR: ${err.message}\n${err.stack}`);
+      }
     })();
   } catch (err) {
+    log(`TOP LEVEL ERROR: ${err.message}`);
     return res.status(500).json({ error: err.message });
   }
 }
