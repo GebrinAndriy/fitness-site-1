@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>BildBody — Your Personal Fitness Plan</title>
+  <title>BildBody — Dein persönlicher Fitnessplan</title>
 
   <!-- Premium Fonts -->
   <link
@@ -38,25 +38,25 @@
       <!-- OFFER BAR -->
       <div id="offerBar">
         <div class="ob-left">
-          <span class="ob-lbl">Offer ends in</span>
+          <span class="ob-lbl">Angebot endet in</span>
           <span class="ob-val" id="timerTop">15:00</span>
         </div>
-        <button class="ob-btn" onclick="scrollToPay()">GET MY PLAN</button>
+        <button class="ob-btn" onclick="scrollToPay()">PLAN ERHALTEN</button>
       </div>
 
       <!-- Q0: GENDER -->
       <div class="scr" id="scr0">
         <div class="scr-body">
-          <div class="qtitle">What is your gender?</div>
-          <div class="qsub">This helps us calculate accurate metrics for your body</div>
+          <div class="qtitle">Was ist dein Geschlecht?</div>
+          <div class="qsub">Dies hilft uns, genaue Kennzahlen für deinen Körper zu berechnen</div>
           <div class="pgrid c2" id="g0">
             <div class="pcard" data-v="Female" onclick="pickCard(this,0)">
-              <img src="images/q0_woman.png" alt="Female" />
-              <div class="pcard-lbl">Female</div>
+              <img src="images/q0_woman.png" alt="Weiblich" />
+              <div class="pcard-lbl">Weiblich</div>
             </div>
             <div class="pcard" data-v="Male" onclick="pickCard(this,0)">
-              <img src="images/q0_man.png" alt="Male" />
-              <div class="pcard-lbl">Male</div>
+              <img src="images/q0_man.png" alt="Männlich" />
+              <div class="pcard-lbl">Männlich</div>
             </div>
           </div>
         </div>
@@ -67,8 +67,8 @@
         <div class="scr-body"
           style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:44px">
           <div class="w-logo">✦ BildBody</div>
-          <div class="w-stat"><em>576,269</em> people</div>
-          <div class="w-stat-sub">achieved their dream body with BildBody</div>
+          <div class="w-stat"><em>576.269</em> Personen</div>
+          <div class="w-stat-sub">haben mit BildBody ihren Traumkörper erreicht</div>
           <div class="w-img-wrap">
             <div class="w-circle"></div>
             <!-- AI: три спортивні жінки разом, рожевий фон -->
@@ -80,24 +80,24 @@
       <!-- Q1: AGE GROUP -->
       <div class="scr" id="scr1">
         <div class="scr-body">
-          <div class="qtitle">What is your age group?</div>
-          <div class="qsub">Age directly affects your metabolism and optimal nutrition plan</div>
+          <div class="qtitle">Wie alt bist du?</div>
+          <div class="qsub">Das Alter beeinflusst deinen Stoffwechsel und Ernährungsplan</div>
           <div class="pgrid c2" id="g1">
             <div class="pcard" data-v="18–29 years" onclick="pickCard(this,1)">
               <img class="dyn-img" src="images/q1_age_20.png" data-female-src="images/q1_age_20.png" data-male-src="images/q1_age_20_male.png" alt="18-29" />
-              <div class="albl">18–29 years ›</div>
+              <div class="albl">18–29 Jahre ›</div>
             </div>
             <div class="pcard" data-v="30–39 years" onclick="pickCard(this,1)">
               <img class="dyn-img" src="images/q1_age_35.png" data-female-src="images/q1_age_35.png" data-male-src="images/q1_age_35_male.png" alt="30-39" />
-              <div class="albl">30–39 years ›</div>
+              <div class="albl">30–39 Jahre ›</div>
             </div>
             <div class="pcard" data-v="40–49 years" onclick="pickCard(this,1)">
               <img class="dyn-img" src="images/q1_age_45.png" data-female-src="images/q1_age_45.png" data-male-src="images/q1_age_45_male.png" alt="40-49" />
-              <div class="albl">40–49 years ›</div>
+              <div class="albl">40–49 Jahre ›</div>
             </div>
             <div class="pcard" data-v="50+ years" onclick="pickCard(this,1)">
               <img class="dyn-img" src="images/q1_age_55.png" data-female-src="images/q1_age_55.png" data-male-src="images/q1_age_55_male.png" alt="50+" />
-              <div class="albl">50+ years ›</div>
+              <div class="albl">50+ Jahre ›</div>
             </div>
           </div>
         </div>
@@ -106,35 +106,35 @@
       <!-- Q2: GOAL -->
       <div class="scr" id="scr2">
         <div class="scr-body">
-          <div class="qtitle">What is your main goal?</div>
-          <div class="qsub">Choose what best matches your desires</div>
+          <div class="qtitle">Was ist dein Hauptziel?</div>
+          <div class="qsub">Wähle, was am besten zu deinen Wünschen passt</div>
           <div class="lopts" id="g2">
             <button class="lopt" data-v="Lose Weight" onclick="pickList(this,2)">
               <img class="lopt-img dyn-img" src="images/q2_goal_1.png" data-female-src="images/q2_goal_1.png" data-male-src="images/q2_goal_1_male.png" alt="" />
               <div class="lopt-tx">
-                <div class="lopt-ttl">Lose Weight</div>
-                <div class="lopt-dsc">Reduce fat on belly, hips and arms</div>
+                <div class="lopt-ttl">Abnehmen</div>
+                <div class="lopt-dsc">Fett an Bauch, Hüften und Armen reduzieren</div>
               </div>
             </button>
             <button class="lopt" data-v="Tone My Body" onclick="pickList(this,2)">
               <img class="lopt-img dyn-img" src="images/q2_goal_2.png" data-female-src="images/q2_goal_2.png" data-male-src="images/q2_goal_2_male.png" alt="" />
               <div class="lopt-tx">
-                <div class="lopt-ttl">Tone My Body</div>
-                <div class="lopt-dsc">Firm, defined and feminine figure</div>
+                <div class="lopt-ttl">Körper straffen</div>
+                <div class="lopt-dsc">Feste, definierte und feminine Figur</div>
               </div>
             </button>
             <button class="lopt" data-v="Healthy Eating" onclick="pickList(this,2)">
               <img class="lopt-img dyn-img" src="images/q2_goal_3.png" data-female-src="images/q2_goal_3.png" data-male-src="images/q2_goal_3_male.png" alt="" />
               <div class="lopt-tx">
-                <div class="lopt-ttl">Healthy Eating</div>
-                <div class="lopt-dsc">Control appetite and eat right</div>
+                <div class="lopt-ttl">Gesunde Ernährung</div>
+                <div class="lopt-dsc">Appetit kontrollieren und richtig essen</div>
               </div>
             </button>
             <button class="lopt" data-v="Build Muscle" onclick="pickList(this,2)">
               <img class="lopt-img dyn-img" src="images/q2_goal_4.png" data-female-src="images/q2_goal_4.png" data-male-src="images/q2_goal_4_male.png" alt="" />
               <div class="lopt-tx">
-                <div class="lopt-ttl">Build Muscle</div>
-                <div class="lopt-dsc">Increase strength and muscle volume</div>
+                <div class="lopt-ttl">Muskeln aufbauen</div>
+                <div class="lopt-dsc">Kraft und Muskelvolumen steigern</div>
               </div>
             </button>
           </div>
@@ -145,28 +145,28 @@
       <!-- Q3: BODY TYPE -->
       <div class="scr" id="scr3">
         <div class="scr-body">
-          <div class="qtitle">What is your body type?</div>
-          <div class="qsub">This helps us find the most effective approach for you</div>
+          <div class="qtitle">Was ist dein Körpertyp?</div>
+          <div class="qsub">Dies hilft uns, den effektivsten Ansatz für dich zu finden</div>
           <div class="igrid" id="g3">
             <div class="icard" data-v="Slim" onclick="pickIcon(this,3)">
-              <img class="icard-img dyn-img" src="images/q3_body_slim_1777379362834.png" data-female-src="images/q3_body_slim_1777379362834.png" data-male-src="images/q3_body_slim_male.png" alt="Slim" />
-              <div class="icard-ttl">Slim</div>
-              <div class="icard-dsc">Lean figure, want to gain tone</div>
+              <img class="icard-img dyn-img" src="images/q3_body_slim_1777379362834.png" data-female-src="images/q3_body_slim_1777379362834.png" data-male-src="images/q3_body_slim_male.png" alt="Schlank" />
+              <div class="icard-ttl">Schlank</div>
+              <div class="icard-dsc">Zierliche Figur, möchte Tonus gewinnen</div>
             </div>
             <div class="icard" data-v="Average" onclick="pickIcon(this,3)">
-              <img class="icard-img dyn-img" src="images/q3_body_average_1777379375866.png" data-female-src="images/q3_body_average_1777379375866.png" data-male-src="images/q3_body_average_male.png" alt="Average" />
-              <div class="icard-ttl">Average</div>
-              <div class="icard-dsc">Normal build, want to tone up</div>
+              <img class="icard-img dyn-img" src="images/q3_body_average_1777379375866.png" data-female-src="images/q3_body_average_1777379375866.png" data-male-src="images/q3_body_average_male.png" alt="Durchschnitt" />
+              <div class="icard-ttl">Durchschnitt</div>
+              <div class="icard-dsc">Normaler Körperbau, möchte fitter werden</div>
             </div>
             <div class="icard" data-v="Overweight" onclick="pickIcon(this,3)">
-              <img class="icard-img dyn-img" src="images/q3_body_overweight_1777379392522.png" data-female-src="images/q3_body_overweight_1777379392522.png" data-male-src="images/q3_body_overweight_male.png" alt="Overweight" />
-              <div class="icard-ttl">Overweight</div>
-              <div class="icard-dsc">Carrying extra weight, want to slim down</div>
+              <img class="icard-img dyn-img" src="images/q3_body_overweight_1777379392522.png" data-female-src="images/q3_body_overweight_1777379392522.png" data-male-src="images/q3_body_overweight_male.png" alt="Übergewichtig" />
+              <div class="icard-ttl">Übergewichtig</div>
+              <div class="icard-dsc">Einige Pfunde zu viel, möchte abnehmen</div>
             </div>
             <div class="icard" data-v="Obese" onclick="pickIcon(this,3)">
-              <img class="icard-img dyn-img" src="images/q3_body_obese_1777379405771.png" data-female-src="images/q3_body_obese_1777379405771.png" data-male-src="images/q3_body_obese_male.png" alt="Obese" />
-              <div class="icard-ttl">Obese</div>
-              <div class="icard-dsc">Need serious lifestyle changes</div>
+              <img class="icard-img dyn-img" src="images/q3_body_obese_1777379405771.png" data-female-src="images/q3_body_obese_1777379405771.png" data-male-src="images/q3_body_obese_male.png" alt="Stark übergewichtig" />
+              <div class="icard-ttl">Adipös</div>
+              <div class="icard-dsc">Benötigt ernsthafte Lebensstiländerungen</div>
             </div>
           </div>
         </div>
@@ -175,15 +175,15 @@
       <!-- Q4: TARGET AREAS -->
       <div class="scr" id="scr4">
         <div class="scr-body">
-          <div class="qtitle">Which areas do you want to improve?</div>
-          <div class="qsub">You can select multiple options</div>
+          <div class="qtitle">Welche Bereiche möchtest du verbessern?</div>
+          <div class="qsub">Du kannst mehrere Optionen auswählen</div>
           <div class="lopts" id="g4">
             <div class="chkw" onclick="togChk(this,4,event)">
               <button class="lopt" data-v="Belly &amp; Waist">
                 <img class="lopt-img dyn-img" src="images/q4_target_1.png" data-female-src="images/q4_target_1.png" data-male-src="images/q4_target_1_male.png" alt="" />
                 <div class="lopt-tx">
-                  <div class="lopt-ttl">Belly &amp; Waist</div>
-                  <div class="lopt-dsc">Abs, sides, lower belly</div>
+                  <div class="lopt-ttl">Bauch &amp; Taille</div>
+                  <div class="lopt-dsc">Bauchmuskeln, Seiten, Unterbauch</div>
                 </div>
               </button>
               <div class="chkbox">✓</div>
@@ -192,8 +192,8 @@
               <button class="lopt" data-v="Glutes">
                 <img class="lopt-img dyn-img" src="images/q4_target_2.png" data-female-src="images/q4_target_2.png" data-male-src="images/q4_target_2_male.png" alt="" />
                 <div class="lopt-tx">
-                  <div class="lopt-ttl">Glutes</div>
-                  <div class="lopt-dsc">Lift and round the booty</div>
+                  <div class="lopt-ttl">Gesäß</div>
+                  <div class="lopt-dsc">Po straffen und formen</div>
                 </div>
               </button>
               <div class="chkbox">✓</div>
@@ -202,8 +202,8 @@
               <button class="lopt" data-v="Legs">
                 <img class="lopt-img dyn-img" src="images/q4_target_3.png" data-female-src="images/q4_target_3.png" data-male-src="images/q4_target_3_male.png" alt="" />
                 <div class="lopt-tx">
-                  <div class="lopt-ttl">Legs</div>
-                  <div class="lopt-dsc">Thighs, calves, inner legs</div>
+                  <div class="lopt-ttl">Beine</div>
+                  <div class="lopt-dsc">Oberschenkel, Waden, Innenseiten</div>
                 </div>
               </button>
               <div class="chkbox">✓</div>
@@ -212,8 +212,8 @@
               <button class="lopt" data-v="Arms &amp; Chest">
                 <img class="lopt-img dyn-img" src="images/q4_target_4.png" data-female-src="images/q4_target_4.png" data-male-src="images/q4_target_4_male.png" alt="" />
                 <div class="lopt-tx">
-                  <div class="lopt-ttl">Arms &amp; Chest</div>
-                  <div class="lopt-dsc">Triceps, shoulders, décolleté</div>
+                  <div class="lopt-ttl">Arme &amp; Brust</div>
+                  <div class="lopt-dsc">Trizeps, Schultern, Dekolleté</div>
                 </div>
               </button>
               <div class="chkbox">✓</div>
@@ -226,8 +226,8 @@
       <!-- Q5: WEIGHT -->
       <div class="scr" id="scr5">
         <div class="scr-body">
-          <div class="qtitle">What is your current weight?</div>
-          <div class="qsub">Enter your real weight for accurate calorie calculation</div>
+          <div class="qtitle">Was ist dein aktuelles Gewicht?</div>
+          <div class="qsub">Gib dein echtes Gewicht für eine genaue Kalorienberechnung ein</div>
           <div class="numsec">
             <div class="utog">
               <button class="ubtn" onclick="setU('w','lbs',this)">lbs</button>
@@ -247,8 +247,8 @@
       <!-- Q6: HEIGHT -->
       <div class="scr" id="scr6">
         <div class="scr-body">
-          <div class="qtitle">What is your height?</div>
-          <div class="qsub">Needed to calculate your Body Mass Index (BMI)</div>
+          <div class="qtitle">Wie groß bist du?</div>
+          <div class="qsub">Wird benötigt, um deinen Body-Mass-Index (BMI) zu berechnen</div>
           <div class="numsec">
             <div class="utog">
               <button class="ubtn" onclick="setU('h','ft',this)">ft</button>
@@ -268,9 +268,8 @@
       <!-- Q7: BMI SUMMARY -->
       <div class="scr" id="scr7">
         <div class="scr-body">
-          <div class="qtitle">Here's your health profile</div>
-          <div class="qsub" style="font-weight: 700; font-size: 20px; color: var(--txt); margin-top: 20px;">Body Mass
-            Index (BMI)</div>
+          <div class="qtitle">Hier ist dein Gesundheitsprofil</div>
+          <div class="qsub" style="font-weight: 700; font-size: 20px; color: var(--txt); margin-top: 20px;">Body-Mass-Index (BMI)</div>
 
           <div class="bmi-wrap">
             <div class="bmi-track-wrap">
@@ -283,23 +282,22 @@
               </div>
               <div class="bmi-track">
                 <div class="bmi-marker" id="bmiMarker">
-                  <div class="bmi-bubble" id="bmiValText">You - 0</div>
+                  <div class="bmi-bubble" id="bmiValText">Du - 0</div>
                 </div>
               </div>
               <div class="bmi-labels" style="margin-top:8px;">
-                <span style="text-align:left">Underweight</span>
+                <span style="text-align:left">Untergewicht</span>
                 <span>Normal</span>
-                <span>Overweight</span>
-                <span style="text-align:right">Obese</span>
+                <span>Übergewicht</span>
+                <span style="text-align:right">Adipositas</span>
               </div>
             </div>
 
             <div class="bmi-box" id="bmiWarningBox">
               <div class="bmi-box-ico" id="bmiWarningIco"><i class="fa-solid fa-circle-exclamation"></i></div>
               <div>
-                <div class="bmi-box-ttl" id="bmiWarningTtl">Unhealthy BMI Risks:</div>
-                <div class="bmi-box-txt" id="bmiWarningTxt">Hormonal imbalances, irregular menstrual cycle, increased
-                  risk of cardiovascular disease, type 2 diabetes, skin and hair problems</div>
+                <div class="bmi-box-ttl" id="bmiWarningTtl">Risiken bei ungesundem BMI:</div>
+                <div class="bmi-box-txt" id="bmiWarningTxt">Hormonelle Ungleichgewichte, unregelmäßiger Zyklus, erhöhtes Risiko für Herz-Kreislauf-Erkrankungen, Typ-2-Diabetes, Haut- und Haarprobleme</div>
               </div>
             </div>
 
@@ -310,29 +308,29 @@
                 <div class="bmi-sitem">
                   <div class="bmi-sitem-ico">👙</div>
                   <div>
-                    <div class="bmi-sitem-lbl">Body Type</div>
+                    <div class="bmi-sitem-lbl">Körpertyp</div>
                     <div class="bmi-sitem-val" id="bmiBodyType">Mesomorph</div>
                   </div>
                 </div>
                 <div class="bmi-sitem">
                   <div class="bmi-sitem-ico">🛋️</div>
                   <div>
-                    <div class="bmi-sitem-lbl">Lifestyle</div>
-                    <div class="bmi-sitem-val" id="bmiLifestyle">Sedentary</div>
+                    <div class="bmi-sitem-lbl">Lebensstil</div>
+                    <div class="bmi-sitem-val" id="bmiLifestyle">Sitzend</div>
                   </div>
                 </div>
                 <div class="bmi-sitem">
                   <div class="bmi-sitem-ico"><i class="fa-solid fa-heart-pulse"></i></div>
                   <div>
-                    <div class="bmi-sitem-lbl">Fitness Level</div>
-                    <div class="bmi-sitem-val">Basic</div>
+                    <div class="bmi-sitem-lbl">Fitnesslevel</div>
+                    <div class="bmi-sitem-val">Basis</div>
                   </div>
                 </div>
                 <div class="bmi-sitem">
                   <div class="bmi-sitem-ico"><i class="fa-solid fa-fire"></i></div>
                   <div>
-                    <div class="bmi-sitem-lbl">Metabolism</div>
-                    <div class="bmi-sitem-val">Moderate, responds well</div>
+                    <div class="bmi-sitem-lbl">Stoffwechsel</div>
+                    <div class="bmi-sitem-val">Moderat, spricht gut an</div>
                   </div>
                 </div>
               </div>
@@ -344,35 +342,35 @@
       <!-- Q8: ACTIVITY -->
       <div class="scr" id="scr8">
         <div class="scr-body">
-          <div class="qtitle">What is your activity level?</div>
-          <div class="qsub">Be honest — this directly affects your calorie calculation</div>
+          <div class="qtitle">Wie aktiv bist du im Alltag?</div>
+          <div class="qsub">Sei ehrlich – dies beeinflusst direkt deine Kalorienberechnung</div>
           <div class="lopts" id="g8">
             <button class="lopt" data-v="Sedentary" onclick="pickList(this,8)">
               <div class="lopt-ico"><i class="fa-solid fa-couch"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">Sedentary</div>
-                <div class="lopt-dsc">Office job, little movement</div>
+                <div class="lopt-ttl">Sitzend</div>
+                <div class="lopt-dsc">Bürojob, wenig Bewegung</div>
               </div>
             </button>
             <button class="lopt" data-v="Lightly Active" onclick="pickList(this,8)">
               <div class="lopt-ico"><i class="fa-solid fa-person-walking"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">Lightly Active</div>
-                <div class="lopt-dsc">Walks, 1–2 workouts/week</div>
+                <div class="lopt-ttl">Leicht aktiv</div>
+                <div class="lopt-dsc">Spaziergänge, 1–2 Workouts/Woche</div>
               </div>
             </button>
             <button class="lopt" data-v="Moderately Active" onclick="pickList(this,8)">
               <div class="lopt-ico"><i class="fa-solid fa-dumbbell"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">Moderately Active</div>
-                <div class="lopt-dsc">2–3 workouts/week</div>
+                <div class="lopt-ttl">Moderativ aktiv</div>
+                <div class="lopt-dsc">2–3 Workouts/Woche</div>
               </div>
             </button>
             <button class="lopt" data-v="Very Active" onclick="pickList(this,8)">
               <div class="lopt-ico"><i class="fa-solid fa-bolt"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">Very Active</div>
-                <div class="lopt-dsc">4–5+ workouts/week</div>
+                <div class="lopt-ttl">Sehr aktiv</div>
+                <div class="lopt-dsc">4–5+ Workouts/Woche</div>
               </div>
             </button>
           </div>
@@ -382,35 +380,35 @@
       <!-- Q9: WATER -->
       <div class="scr" id="scr9">
         <div class="scr-body">
-          <div class="qtitle">How much water do you drink per day?</div>
-          <div class="qsub">Water is critical for metabolism and weight loss</div>
+          <div class="qtitle">Wie viel Wasser trinkst du am Tag?</div>
+          <div class="qsub">Wasser ist entscheidend für den Stoffwechsel und das Abnehmen</div>
           <div class="lopts" id="g9">
             <button class="lopt" data-v="Less than 4 glasses" onclick="pickList(this,9)">
               <div class="lopt-ico"><i class="fa-solid fa-droplet"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">Less than 4 glasses</div>
-                <div class="lopt-dsc">Under 800 ml</div>
+                <div class="lopt-ttl">Weniger als 4 Gläser</div>
+                <div class="lopt-dsc">Unter 800 ml</div>
               </div>
             </button>
             <button class="lopt" data-v="4–6 glasses" onclick="pickList(this,9)">
               <div class="lopt-ico"><i class="fa-solid fa-glass-water"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">4–6 glasses</div>
+                <div class="lopt-ttl">4–6 Gläser</div>
                 <div class="lopt-dsc">800–1200 ml</div>
               </div>
             </button>
             <button class="lopt" data-v="7–8 glasses" onclick="pickList(this,9)">
               <div class="lopt-ico"><i class="fa-solid fa-bottle-water"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">7–8 glasses</div>
+                <div class="lopt-ttl">7–8 Gläser</div>
                 <div class="lopt-dsc">1400–1600 ml</div>
               </div>
             </button>
             <button class="lopt" data-v="More than 8 glasses" onclick="pickList(this,9)">
               <div class="lopt-ico"><i class="fa-solid fa-water"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">More than 8 glasses</div>
-                <div class="lopt-dsc">Over 1600 ml</div>
+                <div class="lopt-ttl">Mehr als 8 Gläser</div>
+                <div class="lopt-dsc">Über 1600 ml</div>
               </div>
             </button>
           </div>
@@ -420,26 +418,26 @@
       <!-- Q10: ALLERGY -->
       <div class="scr" id="scr10">
         <div class="scr-body">
-          <div class="qtitle">Do you have any food allergies?</div>
-          <div class="qsub">We'll take this into account when building your nutrition plan</div>
+          <div class="qtitle">Hast du Lebensmittelallergien?</div>
+          <div class="qsub">Wir berücksichtigen dies bei der Erstellung deines Ernährungsplans</div>
           <div class="lopts" id="g10">
             <button class="lopt" data-v="Yes, I have allergies" onclick="pickAllergy(this, 'yes')">
               <div class="lopt-ico"><i class="fa-solid fa-triangle-exclamation"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">Yes, I have allergies</div>
-                <div class="lopt-dsc">Intolerance to foods</div>
+                <div class="lopt-ttl">Ja, ich habe Allergien</div>
+                <div class="lopt-dsc">Unverträglichkeit gegenüber Lebensmitteln</div>
               </div>
             </button>
             <button class="lopt" data-v="No allergies" onclick="pickAllergy(this, 'no')">
               <div class="lopt-ico"><i class="fa-solid fa-circle-check"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">No, I don't</div>
-                <div class="lopt-dsc">I can eat any foods</div>
+                <div class="lopt-ttl">Nein, keine</div>
+                <div class="lopt-dsc">Ich kann alles essen</div>
               </div>
             </button>
           </div>
           <div id="allergyWrap" style="display: none; margin-top: 16px; width: 100%;">
-            <input type="text" id="allergyInput" class="ninp" placeholder="E.g., peanuts, lactose..."
+            <input type="text" id="allergyInput" class="ninp" placeholder="Z.B. Erdnüsse, Laktose..."
               style="width: 100%; height: 58px; font-size: 16px; font-weight: 500; text-align: left; padding: 0 16px;"
               oninput="checkAllergyInput()" />
           </div>
@@ -450,26 +448,26 @@
       <div class="scr split-scr" id="scr11">
         <img class="split-bg dyn-img" src="images/sleep_split_1777382589921.png" data-female-src="images/sleep_split_1777382589921.png" data-male-src="images/sleep_split_male.png" alt="Sleep" />
         <div class="split-content">
-          <div class="qtitle">How much do you usually sleep?</div>
+          <div class="qtitle">Wie viel schläfst du normalerweise?</div>
           <div class="lopts" id="g11">
             <button class="lopt" data-v="Less than 5 hours" onclick="pickList(this,11)">
               <div class="lopt-tx">
-                <div class="lopt-ttl">Less than 5 hours</div>
+                <div class="lopt-ttl">Weniger als 5 Stunden</div>
               </div>
             </button>
             <button class="lopt" data-v="5-6 hours" onclick="pickList(this,11)">
               <div class="lopt-tx">
-                <div class="lopt-ttl">5-6 hours</div>
+                <div class="lopt-ttl">5–6 Stunden</div>
               </div>
             </button>
             <button class="lopt" data-v="7-8 hours" onclick="pickList(this,11)">
               <div class="lopt-tx">
-                <div class="lopt-ttl">7-8 hours</div>
+                <div class="lopt-ttl">7–8 Stunden</div>
               </div>
             </button>
             <button class="lopt" data-v="More than 8 hours" onclick="pickList(this,11)">
               <div class="lopt-tx">
-                <div class="lopt-ttl">More than 8 hours</div>
+                <div class="lopt-ttl">Mehr als 8 Stunden</div>
               </div>
             </button>
           </div>
@@ -480,26 +478,26 @@
       <div class="scr split-scr" id="scr12">
         <img class="split-bg dyn-img" src="images/stress_split_1777382607246.png" data-female-src="images/stress_split_1777382607246.png" data-male-src="images/stress_split_male.png" alt="Stress" />
         <div class="split-content">
-          <div class="qtitle">How often do you feel stressed?</div>
+          <div class="qtitle">Wie oft fühlst du dich gestresst?</div>
           <div class="lopts" id="g12">
             <button class="lopt" data-v="Rarely" onclick="pickList(this,12)">
               <div class="lopt-tx">
-                <div class="lopt-ttl">Rarely</div>
+                <div class="lopt-ttl">Selten</div>
               </div>
             </button>
             <button class="lopt" data-v="Sometimes" onclick="pickList(this,12)">
               <div class="lopt-tx">
-                <div class="lopt-ttl">Sometimes</div>
+                <div class="lopt-ttl">Manchmal</div>
               </div>
             </button>
             <button class="lopt" data-v="Often" onclick="pickList(this,12)">
               <div class="lopt-tx">
-                <div class="lopt-ttl">Often, daily</div>
+                <div class="lopt-ttl">Oft, täglich</div>
               </div>
             </button>
             <button class="lopt" data-v="Constantly" onclick="pickList(this,12)">
               <div class="lopt-tx">
-                <div class="lopt-ttl">Constantly overwhelmed</div>
+                <div class="lopt-ttl">Ständig überfordert</div>
               </div>
             </button>
           </div>
@@ -508,28 +506,28 @@
 
       <!-- Q13: CRAVINGS -->
       <div class="scr split-scr" id="scr13">
-        <img class="split-bg dyn-img" src="images/cravings_split_1777382623454.png" data-female-src="images/cravings_split_1777382623454.png" data-male-src="images/cravings_split_male.png" alt="Cravings" />
+        <img class="split-bg dyn-img" src="images/cravings_split_1777382623454.png" data-female-src="images/cravings_split_1777382623454.png" data-male-src="images/cravings_split_male.png" alt="Heißhunger" />
         <div class="split-content">
-          <div class="qtitle">Do you have late night cravings?</div>
+          <div class="qtitle">Hast du Heißhungerattacken am späten Abend?</div>
           <div class="lopts" id="g13">
             <button class="lopt" data-v="Never" onclick="pickList(this,13)">
               <div class="lopt-tx">
-                <div class="lopt-ttl">No, I sleep well</div>
+                <div class="lopt-ttl">Nein, ich schlafe gut</div>
               </div>
             </button>
             <button class="lopt" data-v="Rarely" onclick="pickList(this,13)">
               <div class="lopt-tx">
-                <div class="lopt-ttl">Rarely</div>
+                <div class="lopt-ttl">Selten</div>
               </div>
             </button>
             <button class="lopt" data-v="Often" onclick="pickList(this,13)">
               <div class="lopt-tx">
-                <div class="lopt-ttl">Yes, especially for sweets</div>
+                <div class="lopt-ttl">Ja, besonders auf Süßes</div>
               </div>
             </button>
             <button class="lopt" data-v="Always" onclick="pickList(this,13)">
               <div class="lopt-tx">
-                <div class="lopt-ttl">Yes, I wake up to eat</div>
+                <div class="lopt-ttl">Ja, ich wache zum Essen auf</div>
               </div>
             </button>
           </div>
@@ -539,24 +537,24 @@
       <!-- Q14: BACK PAIN -->
       <div class="scr" id="scr14">
         <div class="scr-body">
-          <div class="qtitle">Do you experience back or joint pain?</div>
-          <div class="qsub">We will adjust the workouts to protect your joints</div>
+          <div class="qtitle">Hast du Rücken- oder Gelenkschmerzen?</div>
+          <div class="qsub">Wir passen die Workouts an, um deine Gelenke zu schonen</div>
           <div class="igrid" id="g14">
             <div class="icard" data-v="No pain" onclick="pickIcon(this,14)">
               <i class="fa-solid fa-check icard-ico"></i>
-              <div class="icard-ttl">No pain</div>
+              <div class="icard-ttl">Keine Schmerzen</div>
             </div>
             <div class="icard" data-v="Lower back" onclick="pickIcon(this,14)">
               <i class="fa-solid fa-bolt icard-ico"></i>
-              <div class="icard-ttl">Lower back</div>
+              <div class="icard-ttl">Unterer Rücken</div>
             </div>
             <div class="icard" data-v="Knees" onclick="pickIcon(this,14)">
               <i class="fa-solid fa-bone icard-ico"></i>
-              <div class="icard-ttl">Knee pain</div>
+              <div class="icard-ttl">Knieschmerzen</div>
             </div>
             <div class="icard" data-v="Neck/Shoulders" onclick="pickIcon(this,14)">
               <i class="fa-solid fa-person-praying icard-ico"></i>
-              <div class="icard-ttl">Neck/Shoulders</div>
+              <div class="icard-ttl">Nacken/Schultern</div>
             </div>
           </div>
         </div>
@@ -565,24 +563,24 @@
       <!-- Q15: MEALS PER DAY -->
       <div class="scr" id="scr15">
         <div class="scr-body">
-          <div class="qtitle">How many meals do you eat a day?</div>
-          <div class="qsub">This helps us schedule your diet properly</div>
+          <div class="qtitle">Wie viele Mahlzeiten isst du am Tag?</div>
+          <div class="qsub">Dies hilft uns, deine Ernährung richtig zu planen</div>
           <div class="cgrid" id="g15">
             <div class="ccard" data-v="1-2 meals" onclick="pickIcon(this,15)">
               <i class="fa-solid fa-utensils ccard-ico"></i>
-              <div class="ccard-tx">1-2 meals</div>
+              <div class="ccard-tx">1–2 Mahlzeiten</div>
             </div>
             <div class="ccard" data-v="3 meals" onclick="pickIcon(this,15)">
               <i class="fa-solid fa-bowl-food ccard-ico"></i>
-              <div class="ccard-tx">3 meals (Standard)</div>
+              <div class="ccard-tx">3 Mahlzeiten (Standard)</div>
             </div>
             <div class="ccard" data-v="4+ meals" onclick="pickIcon(this,15)">
               <i class="fa-solid fa-box ccard-ico"></i>
-              <div class="ccard-tx">4+ meals (Frequent)</div>
+              <div class="ccard-tx">4+ Mahlzeiten (Häufig)</div>
             </div>
             <div class="ccard" data-v="Chaotic" onclick="pickIcon(this,15)">
               <i class="fa-solid fa-cookie-bite ccard-ico"></i>
-              <div class="ccard-tx">I snack all day</div>
+              <div class="ccard-tx">Ich snacker den ganzen Tag</div>
             </div>
           </div>
         </div>
@@ -590,32 +588,32 @@
 
       <!-- Q16: ENERGY DROPS -->
       <div class="scr split-scr" id="scr16">
-        <img class="split-bg dyn-img" src="images/energy_split.png" data-female-src="images/energy_split.png" data-male-src="images/energy_split_male.png" alt="Energy" />
+        <img class="split-bg dyn-img" src="images/energy_split.png" data-female-src="images/energy_split.png" data-male-src="images/energy_split_male.png" alt="Energie" />
         <div class="split-content">
-          <div class="qtitle">Do you feel energy drops during the day?</div>
+          <div class="qtitle">Hast du Energieeinbrüche während des Tages?</div>
           <div class="lopts" id="g16">
             <button class="lopt" data-v="High energy" onclick="pickList(this,16)">
               <div class="lopt-ico"><i class="fa-solid fa-battery-full"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">No, consistent energy</div>
+                <div class="lopt-ttl">Nein, konstante Energie</div>
               </div>
             </button>
             <button class="lopt" data-v="Afternoon crash" onclick="pickList(this,16)">
               <div class="lopt-ico"><i class="fa-solid fa-arrow-trend-down"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">Yes, afternoon crash</div>
+                <div class="lopt-ttl">Ja, Mittagstief</div>
               </div>
             </button>
             <button class="lopt" data-v="Morning fatigue" onclick="pickList(this,16)">
               <div class="lopt-ico"><i class="fa-solid fa-bed"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">Hard to wake up</div>
+                <div class="lopt-ttl">Schwer wach zu werden</div>
               </div>
             </button>
             <button class="lopt" data-v="Always tired" onclick="pickList(this,16)">
               <div class="lopt-ico"><i class="fa-solid fa-battery-empty"></i></div>
               <div class="lopt-tx">
-                <div class="lopt-ttl">Constantly tired</div>
+                <div class="lopt-ttl">Ständig müde</div>
               </div>
             </button>
           </div>
@@ -625,24 +623,24 @@
       <!-- Q17: FAST FOOD -->
       <div class="scr" id="scr17">
         <div class="scr-body">
-          <div class="qtitle">How often do you eat fast food or junk food?</div>
-          <div class="qsub">Be honest! We need to know your starting point</div>
+          <div class="qtitle">Wie oft isst du Fast Food oder Junk Food?</div>
+          <div class="qsub">Sei ehrlich! Wir müssen deinen Ausgangspunkt kennen</div>
           <div class="igrid" id="g17">
             <div class="icard" data-v="Rarely/Never" onclick="pickIcon(this,17)">
               <i class="fa-solid fa-leaf icard-ico"></i>
-              <div class="icard-ttl">Rarely/Never</div>
+              <div class="icard-ttl">Selten/Nie</div>
             </div>
             <div class="icard" data-v="1-2 times a week" onclick="pickIcon(this,17)">
               <i class="fa-solid fa-burger icard-ico"></i>
-              <div class="icard-ttl">1-2 times/week</div>
+              <div class="icard-ttl">1–2 Mal/Woche</div>
             </div>
             <div class="icard" data-v="3-4 times a week" onclick="pickIcon(this,17)">
               <i class="fa-solid fa-pizza-slice icard-ico"></i>
-              <div class="icard-ttl">3-4 times/week</div>
+              <div class="icard-ttl">3–4 Mal/Woche</div>
             </div>
             <div class="icard" data-v="Almost daily" onclick="pickIcon(this,17)">
               <i class="fa-solid fa-hotdog icard-ico"></i>
-              <div class="icard-ttl">Almost daily</div>
+              <div class="icard-ttl">Fast täglich</div>
             </div>
           </div>
         </div>
@@ -651,24 +649,24 @@
       <!-- Q18: VEGETABLES -->
       <div class="scr" id="scr18">
         <div class="scr-body">
-          <div class="qtitle">Do you eat enough vegetables?</div>
-          <div class="qsub">Fiber is essential for weight loss</div>
+          <div class="qtitle">Isst du genug Gemüse?</div>
+          <div class="qsub">Ballaststoffe sind wichtig für das Abnehmen</div>
           <div class="cgrid" id="g18">
             <div class="ccard" data-v="Every meal" onclick="pickIcon(this,18)">
               <i class="fa-solid fa-seedling ccard-ico"></i>
-              <div class="ccard-tx">Yes, with every meal</div>
+              <div class="ccard-tx">Ja, zu jeder Mahlzeit</div>
             </div>
             <div class="ccard" data-v="1-2 servings" onclick="pickIcon(this,18)">
               <i class="fa-solid fa-carrot ccard-ico"></i>
-              <div class="ccard-tx">1-2 servings a day</div>
+              <div class="ccard-tx">1–2 Portionen am Tag</div>
             </div>
             <div class="ccard" data-v="Rarely" onclick="pickIcon(this,18)">
               <i class="fa-solid fa-apple-whole ccard-ico"></i>
-              <div class="ccard-tx">Rarely eat veggies</div>
+              <div class="ccard-tx">Selten Gemüse</div>
             </div>
             <div class="ccard" data-v="I hate veggies" onclick="pickIcon(this,18)">
               <i class="fa-solid fa-ban ccard-ico" style="color:var(--txt)"></i>
-              <div class="ccard-tx">I don't like vegetables</div>
+              <div class="ccard-tx">Ich mag kein Gemüse</div>
             </div>
           </div>
         </div>
@@ -677,24 +675,24 @@
       <!-- Q19: TYPICAL DAY -->
       <div class="scr" id="scr19">
         <div class="scr-body">
-          <div class="qtitle">How would you describe your typical day?</div>
-          <div class="qsub">This helps us schedule your workouts</div>
+          <div class="qtitle">Wie würdest du deinen typischen Tag beschreiben?</div>
+          <div class="qsub">Dies hilft uns, deine Workouts zu planen</div>
           <div class="cgrid" id="g19">
             <div class="ccard" data-v="Office/Desk" onclick="pickIcon(this,19)">
               <i class="fa-solid fa-laptop ccard-ico"></i>
-              <div class="ccard-tx">Sitting at a desk</div>
+              <div class="ccard-tx">Am Schreibtisch sitzen</div>
             </div>
             <div class="ccard" data-v="On my feet" onclick="pickIcon(this,19)">
               <i class="fa-solid fa-person-walking ccard-ico"></i>
-              <div class="ccard-tx">Mostly on my feet</div>
+              <div class="ccard-tx">Hauptsächlich auf den Beinen</div>
             </div>
             <div class="ccard" data-v="Physical labor" onclick="pickIcon(this,19)">
               <i class="fa-solid fa-box-open ccard-ico"></i>
-              <div class="ccard-tx">Heavy physical labor</div>
+              <div class="ccard-tx">Schwere körperliche Arbeit</div>
             </div>
             <div class="ccard" data-v="At home/Mixed" onclick="pickIcon(this,19)">
               <i class="fa-solid fa-house ccard-ico"></i>
-              <div class="ccard-tx">At home / Mixed</div>
+              <div class="ccard-tx">Zuhause / Gemischt</div>
             </div>
           </div>
         </div>
@@ -703,14 +701,14 @@
       <!-- EMAIL COLLECTION -->
       <div class="scr" id="scrEmail">
         <div class="scr-body">
-          <div class="qtitle">Enter your email to get your results</div>
-          <div class="qsub">We will send your personalized plan to this address</div>
+          <div class="qtitle">Gib deine E-Mail ein, um deine Ergebnisse zu erhalten</div>
+          <div class="qsub">Wir senden deinen personalisierten Plan an diese Adresse</div>
           <div style="margin-top: 30px;">
             <div class="input-wrap">
-              <input type="email" id="inpEmail" class="main-input" placeholder="example@mail.com" oninput="refreshBtn(20)">
+              <input type="email" id="inpEmail" class="main-input" placeholder="beispiel@mail.de" oninput="refreshBtn(20)">
             </div>
             <div style="margin-top: 16px; font-size: 12px; color: var(--sub); text-align: center;">
-              <i class="fa-solid fa-lock"></i> Your data is safe and will not be shared.
+              <i class="fa-solid fa-lock"></i> Deine Daten sind sicher und werden nicht weitergegeben.
             </div>
           </div>
         </div>
@@ -721,21 +719,21 @@
     <div class="scr" id="scrTestLoading" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 999999; display: none;">
       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 24px;">
         <div class="test-spinner"></div>
-        <h2 style="margin-top: 28px; font-weight: 800; color: #1a1a2e; font-size: 24px;">Finalizing Your Plan...</h2>
-        <p style="color: #666; margin-top: 10px; font-size: 16px;">We are preparing your personalized strategy. Please wait about 2 minutes.</p>
+        <h2 style="margin-top: 28px; font-weight: 800; color: #1a1a2e; font-size: 24px;">Dein Plan wird finalisiert...</h2>
+        <p style="color: #666; margin-top: 10px; font-size: 16px;">Wir bereiten deine persönliche Strategie vor. Bitte warte etwa 2 Minuten.</p>
       </div>
     </div>
 
     <!-- LOADING PAGE (AI Processing) -->
     <div class="scr" id="scrL">
         <div class="scr-body" style="padding-top:44px">
-          <div class="ld-title">Building your <span>personalized</span><br>nutrition plan</div>
-          <div class="ld-sub">Just a few seconds…</div>
+          <div class="ld-title">Erstellung deines <span>personalisierten</span><br>Ernährungsplans</div>
+          <div class="ld-sub">Nur noch wenige Sekunden…</div>
           <div class="ld-steps">
             <div class="ld-step">
               <div class="ld-ico"><i class="fa-solid fa-bullseye"></i></div>
               <div class="ld-info">
-                <div class="ld-row"><span>Analyzing your goals...</span><span class="ld-pct" id="lp0">0%</span></div>
+                <div class="ld-row"><span>Ziele werden analysiert...</span><span class="ld-pct" id="lp0">0%</span></div>
                 <div class="ld-track">
                   <div class="ld-fill" id="lf0"></div>
                 </div>
@@ -745,7 +743,7 @@
             <div class="ld-step">
               <div class="ld-ico"><i class="fa-solid fa-calculator"></i></div>
               <div class="ld-info">
-                <div class="ld-row"><span>Calculating calorie needs...</span><span class="ld-pct" id="lp1">0%</span>
+                <div class="ld-row"><span>Kalorienbedarf wird berechnet...</span><span class="ld-pct" id="lp1">0%</span>
                 </div>
                 <div class="ld-track">
                   <div class="ld-fill" id="lf1"></div>
@@ -756,7 +754,7 @@
             <div class="ld-step">
               <div class="ld-ico"><i class="fa-solid fa-bolt"></i></div>
               <div class="ld-info">
-                <div class="ld-row"><span>Optimizing your diet...</span><span class="ld-pct" id="lp2">0%</span></div>
+                <div class="ld-row"><span>Ernährung wird optimiert...</span><span class="ld-pct" id="lp2">0%</span></div>
                 <div class="ld-track">
                   <div class="ld-fill" id="lf2"></div>
                 </div>
@@ -766,7 +764,7 @@
             <div class="ld-step">
               <div class="ld-ico"><i class="fa-solid fa-clipboard-list"></i></div>
               <div class="ld-info">
-                <div class="ld-row"><span>Generating your personal plan...</span><span class="ld-pct" id="lp3">0%</span>
+                <div class="ld-row"><span>Dein persönlicher Plan wird generiert...</span><span class="ld-pct" id="lp3">0%</span>
                 </div>
                 <div class="ld-track">
                   <div class="ld-fill" id="lf3"></div>
@@ -788,21 +786,21 @@
             style="background: linear-gradient(135deg, #1A1A2E 0%, #2D1B4E 100%); padding: 20px 20px 18px; margin-bottom: 2px;">
             <div
               style="color: #FF8A6E; font-size: 11px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; text-align: center; margin-bottom: 10px;">
-              ✦ Your Results Are Waiting ✦</div>
+              ✦ DEINE ERGEBNISSE WARTEN ✦</div>
             <div style="display: flex; justify-content: space-around; gap: 8px;">
               <div style="text-align: center; flex: 1;">
                 <div style="font-size: 22px; font-weight: 900; color: #fff; line-height: 1;">50K+</div>
-                <div class="dyn-text" data-female-text="Women transformed" data-male-text="Men transformed" style="font-size: 10px; color: rgba(255,255,255,.55); margin-top: 3px;">Women transformed</div>
+                <div class="dyn-text" data-female-text="Frauen transformiert" data-male-text="Männer transformiert" style="font-size: 10px; color: rgba(255,255,255,.55); margin-top: 3px;">Frauen transformiert</div>
               </div>
               <div style="width: 1px; background: rgba(255,255,255,.1);"></div>
               <div style="text-align: center; flex: 1;">
                 <div style="font-size: 22px; font-weight: 900; color: #FF8A6E; line-height: 1;">-7kg</div>
-                <div style="font-size: 10px; color: rgba(255,255,255,.55); margin-top: 3px;">Avg. in 4 weeks</div>
+                <div style="font-size: 10px; color: rgba(255,255,255,.55); margin-top: 3px;">Schnitt in 30 Tagen</div>
               </div>
               <div style="width: 1px; background: rgba(255,255,255,.1);"></div>
               <div style="text-align: center; flex: 1;">
                 <div style="font-size: 22px; font-weight: 900; color: #fff; line-height: 1;">4.9★</div>
-                <div style="font-size: 10px; color: rgba(255,255,255,.55); margin-top: 3px;">Customer rating</div>
+                <div style="font-size: 10px; color: rgba(255,255,255,.55); margin-top: 3px;">Kundenbewertung</div>
               </div>
             </div>
           </div>
@@ -811,9 +809,8 @@
           <div class="ba-wrap">
             <!-- Headers -->
             <div class="ba-tabs">
-              <div class="ba-tab" style="border:none;background:transparent;cursor:default;">Now</div>
-              <div class="ba-tab" style="border:none;background:transparent;cursor:default;color:var(--red);">Your Goal
-              </div>
+              <div class="ba-tab" style="border:none;background:transparent;cursor:default;">Jetzt</div>
+              <div class="ba-tab" style="border:none;background:transparent;cursor:default;color:var(--red);">Dein Ziel</div>
             </div>
             <!-- Image -->
             <div class="ba-imgs" style="display: block;">
@@ -823,10 +820,10 @@
             <!-- Stats row -->
             <div class="ba-stats">
               <div class="ba-stat-col">
-                <div class="ba-stat-lbl">Body Fat Percentage</div>
-                <div class="ba-stat-val">High</div>
-                <div class="ba-stat-lbl" style="margin-top:8px">Fitness Level</div>
-                <div class="ba-stat-val">Beginner</div>
+                <div class="ba-stat-lbl">Körperfettanteil</div>
+                <div class="ba-stat-val">Hoch</div>
+                <div class="ba-stat-lbl" style="margin-top:8px">Fitnesslevel</div>
+                <div class="ba-stat-val">Anfänger</div>
                 <div class="ba-dots">
                   <span class="ba-dot active"></span><span class="ba-dot active"></span>
                   <span class="ba-dot"></span><span class="ba-dot"></span><span class="ba-dot"></span>
@@ -834,10 +831,10 @@
               </div>
               <div class="ba-divider"></div>
               <div class="ba-stat-col ba-stat-col-r">
-                <div class="ba-stat-lbl">Body Fat Percentage</div>
-                <div class="ba-stat-val red">Low</div>
-                <div class="ba-stat-lbl" style="margin-top:8px">Skill Level</div>
-                <div class="ba-stat-val red">Advanced</div>
+                <div class="ba-stat-lbl">Körperfettanteil</div>
+                <div class="ba-stat-val red">Niedrig</div>
+                <div class="ba-stat-lbl" style="margin-top:8px">Skill-Level</div>
+                <div class="ba-stat-val red">Fortgeschritten</div>
                 <div class="ba-dots">
                   <span class="ba-dot active red"></span><span class="ba-dot active red"></span>
                   <span class="ba-dot active red"></span><span class="ba-dot active red"></span>
@@ -845,55 +842,54 @@
                 </div>
               </div>
             </div>
-            <div class="ba-note">* Individual results may vary</div>
+            <div class="ba-note">* Individuelle Ergebnisse können variieren</div>
           </div>
 
           <div style="text-align: center; margin: 16px 24px 20px;" id="planReadyBlock">
             <div class="w-logo" style="margin-bottom: 12px;">BILDBODY</div>
             <div class="qtitle"
               style="font-size: 26px; line-height: 1.15; text-transform: uppercase; font-weight: 900; letter-spacing: -0.5px;">
-              TRANSFORM YOUR BODY RIGHT NOW!</div>
-            <div class="qsub" style="margin-bottom: 0; font-size: 14px;" id="planReadySub">We've built a program
-              specifically to help you reach your goals.</div>
+              TRANSFORMIERE DEINEN KÖRPER JETZT!</div>
+            <div class="qsub" style="margin-bottom: 0; font-size: 14px;" id="planReadySub">Wir haben ein Programm erstellt, das speziell darauf zugeschnitten ist, dir beim Erreichen deiner Ziele zu helfen.</div>
           </div>
 
           <div class="fin-body">
 
-            <div class="sec-ttl">What you'll get</div>
+            <div class="sec-ttl">Was du bekommst</div>
             <div class="bens">
               <div class="ben">
                 <img class="ben-img dyn-img" src="images/ben1.png" data-female-src="images/ben1.png" data-male-src="images/ben1_male.png" alt="" />
                 <div class="ben-tx">
-                  <div class="ben-ttl">Effective Fat Burning</div>
-                  <div class="ben-dsc">200+ exercises for problem areas</div>
+                  <div class="ben-ttl">Effektive Fettverbrennung</div>
+                  <div class="ben-dsc">200+ Übungen für Problemzonen</div>
                 </div>
               </div>
               <div class="ben">
                 <img class="ben-img" src="images/ben2.png" alt="" />
                 <div class="ben-tx">
-                  <div class="ben-ttl">Personal Nutrition Plan</div>
-                  <div class="ben-dsc">Daily menu tailored to your calories</div>
+                  <div class="ben-ttl">Persönlicher Ernährungsplan</div>
+                  <div class="ben-dsc">Tägliches Menü, angepasst an deine Kalorien</div>
                 </div>
               </div>
               <div class="ben">
                 <img class="ben-img" src="images/ben3.png" alt="" />
                 <div class="ben-tx">
-                  <div class="ben-ttl">Hydration Plan</div>
-                  <div class="ben-dsc">Optimal daily water intake</div>
+                  <div class="ben-ttl">Trinkplan</div>
+                  <div class="ben-dsc">Optimale tägliche Wasseraufnahme</div>
                 </div>
               </div>
               <div class="ben">
                 <img class="ben-img dyn-img" src="images/ben4.png" data-female-src="images/ben4.png" data-male-src="images/ben4_male.png" alt="" />
                 <div class="ben-tx">
-                  <div class="ben-ttl">Visible results from week 2</div>
-                  <div class="ben-dsc">Track your weight and body shape</div>
+                  <div class="ben-ttl">Sichtbare Ergebnisse ab Tag 10</div>
+                  <div class="ben-dsc">Verfolge dein Gewicht und deine Körperform</div>
                 </div>
               </div>
               <div class="ben">
                 <img class="ben-img dyn-img" src="images/ben5.png" data-female-src="images/ben5.png" data-male-src="images/ben5_male.png" alt="" />
                 <div class="ben-tx">
-                  <div class="ben-ttl">Improved mood &amp; energy</div>
-                  <div class="ben-dsc">Motivation and positive mindset</div>
+                  <div class="ben-ttl">Bessere Laune &amp; mehr Energie</div>
+                  <div class="ben-dsc">Motivation und eine positive Einstellung</div>
                 </div>
               </div>
             </div>
@@ -903,57 +899,56 @@
               <div style="text-align:center; margin-bottom: 16px;">
                 <div
                   style="display:inline-block; background: var(--rg); border-radius: 12px; padding: 6px 14px; font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 10px;">
-                  ⚡ LIMITED OFFER</div>
+                  ⚡ LIMITIERTES ANGEBOT</div>
                 <div
                   style="font-size: 30px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; text-transform: uppercase; background: var(--rg); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                  STOP MAKING<br>EXCUSES!</div>
-                <div style="font-size: 13px; color: var(--sub); margin-top: 8px;">Your transformation starts the moment
-                  you decide.</div>
+                  HÖR AUF MIT DEN<br>AUSREDEN!</div>
+                <div style="font-size: 13px; color: var(--sub); margin-top: 8px;">Deine Transformation beginnt in dem Moment, in dem du dich entscheidest.</div>
               </div>
               <!-- Goal + Weight meta cards -->
               <div class="plan-meta-row">
                 <div class="plan-meta-card">
                   <div class="plan-meta-ico"><i class="fa-solid fa-bullseye"></i></div>
                   <div>
-                    <div class="plan-meta-lbl">Goal</div>
-                    <div class="plan-meta-val" id="planMetaGoal">Lose Weight</div>
+                    <div class="plan-meta-lbl">Ziel</div>
+                    <div class="plan-meta-val" id="planMetaGoal">Abnehmen</div>
                   </div>
                 </div>
                 <div class="plan-meta-card">
                   <div class="plan-meta-ico"><i class="fa-solid fa-weight-scale"></i></div>
                   <div>
-                    <div class="plan-meta-lbl">Weight</div>
+                    <div class="plan-meta-lbl">Gewicht</div>
                     <div class="plan-meta-val" id="planMetaWeight">65 kg</div>
                   </div>
                 </div>
                 <div class="plan-meta-card">
                   <div class="plan-meta-ico"><i class="fa-solid fa-utensils"></i></div>
                   <div>
-                    <div class="plan-meta-lbl">Diet</div>
+                    <div class="plan-meta-lbl">Diät</div>
                     <div class="plan-meta-val" id="planMetaDiet">Standard</div>
                   </div>
                 </div>
                 <div class="plan-meta-card">
                   <div class="plan-meta-ico"><i class="fa-solid fa-bolt"></i></div>
                   <div>
-                    <div class="plan-meta-lbl">Activity</div>
-                    <div class="plan-meta-val" id="planMetaActivity">Moderate</div>
+                    <div class="plan-meta-lbl">Aktivität</div>
+                    <div class="plan-meta-val" id="planMetaActivity">Moderat</div>
                   </div>
                 </div>
               </div>
               <!-- Timer + Price row -->
               <div class="plan-timer-row">
                 <div>
-                  <div class="plan-lbl">Offer ends in:</div>
+                  <div class="plan-lbl">Angebot endet in:</div>
                   <div class="plan-timer" id="timerMain">15:00</div>
                 </div>
                 <div style="text-align:right">
-                  <div class="plan-lbl">Price:</div>
-                  <div class="plan-price">$9.99</div>
+                  <div class="plan-lbl">Preis:</div>
+                  <div class="plan-price">9.99€</div>
                 </div>
               </div>
               <a href="https://buy.stripe.com/test_3cIaEQ52LgbT2eG9eE4sE00" class="stripe-button plan-cta"
-                style="display:flex; justify-content:center; align-items:center; text-decoration:none;">GET MY PLAN</a>
+                style="display:flex; justify-content:center; align-items:center; text-decoration:none;">PLAN ERHALTEN</a>
             </div>
 
             <!-- Payment methods -->
@@ -961,13 +956,10 @@
               <div
                 style="text-align:center; margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, #FFF0F0, #FFE0DD); border-radius: 16px;">
                 <div style="font-size: 22px;">🔥</div>
-                <div style="font-size: 17px; font-weight: 800; color: var(--txt); margin: 6px 0 4px;">Ready to change
-                  your life?</div>
-                <div style="font-size: 13px; color: var(--txt2);">Join 50,000+ women who already transformed with
-                  BildBody.</div>
+                <div style="font-size: 17px; font-weight: 800; color: var(--txt); margin: 6px 0 4px;">Bereit, dein Leben zu ändern?</div>
+                <div style="font-size: 13px; color: var(--txt2);">Schließe dich über 50.000 Frauen an, die sich bereits mit BildBody transformiert haben.</div>
               </div>
-              <div class="pay-ttl" style="text-align:center; margin-bottom: 18px; font-weight: 700;">Choose your payment
-                method:</div>
+              <div class="pay-ttl" style="text-align:center; margin-bottom: 18px; font-weight: 700;">Wähle deine Zahlungsmethode:</div>
 
               <div style="display:flex; justify-content:center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;">
                 <i class="fa-brands fa-apple-pay" style="font-size:34px; color:#000;"></i>
@@ -981,87 +973,83 @@
               <a href="https://buy.stripe.com/test_3cIaEQ52LgbT2eG9eE4sE00" class="stripe-button gpay-btn"
                 style="text-decoration:none; background: #635bff; color: white; border: none;">
                 <i class="fa-solid fa-lock" style="font-size:18px"></i>
-                <span>Secure Checkout</span>
+                <span>Sicherer Checkout</span>
               </a>
 
               <!-- TEMPORARY TEST BUTTON -->
               <button onclick="testEmailDelivery()" style="margin-top: 16px; width: 100%; padding: 12px; background: #eee; border: 1px dashed #ccc; border-radius: 12px; font-size: 12px; cursor: pointer; color: #666;">
-                🧪 Test Email Delivery (Skip Payment)
+                🧪 E-Mail-Zustellung testen (Zahlung überspringen)
               </button>
 
               <div class="pay-note" style="margin-top: 16px; text-align: center; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 6px;">
                 <i class="fa-brands fa-stripe" style="color:#635bff; font-size:28px;"></i>
-                <span style="color: var(--sub);">Payments are securely processed by Stripe</span>
+                <span style="color: var(--sub);">Zahlungen werden sicher über Stripe abgewickelt</span>
               </div>
             </div>
 
             <!-- Reviews -->
-            <div class="sec-ttl">Success Stories</div>
+            <div class="sec-ttl">Erfolgsgeschichten</div>
             <div class="reviews-slider" id="autoSlider">
-              <div class="review-slide dyn-review" data-f-title="I never thought it could be so easy!" data-m-title="Finally a plan that works!" data-f-body="In just 3 weeks I completely transformed my body. The plan was so easy to follow and the results speak for themselves. Highly recommend! ⭐⭐⭐⭐⭐" data-m-body="The workout routine was intense but exactly what I needed. I lost the belly and gained muscle mass. Awesome! ⭐⭐⭐⭐⭐">
-                <img src="images/review_1.png" class="dyn-img" data-female-src="images/review_1.png" data-male-src="images/review_1_male.png" alt="Success Story 1">
+              <div class="review-slide dyn-review" data-f-title="Ich hätte nie gedacht, dass es so einfach sein könnte!" data-m-title="Endlich ein Plan, der funktioniert!" data-f-body="In nur 30 Tagen habe ich meinen Körper komplett transformiert. Der Plan war so einfach zu befolgen und die Ergebnisse sprechen für sich. Sehr empfehlenswert! ⭐⭐⭐⭐⭐" data-m-body="Die Workout-Routine war intensiv, aber genau das, was ich brauchte. Ich habe den Bauchansatz verloren und Muskelmasse aufgebaut. Großartig! ⭐⭐⭐⭐⭐">
+                <img src="images/review_1.png" class="dyn-img" data-female-src="images/review_1.png" data-male-src="images/review_1_male.png" alt="Erfolgsgeschichte 1">
                 <div class="review-text">
-                  <div class="review-text-title">"I never thought it could be so easy!"</div>
-                  <div class="review-text-body">In just 3 weeks I completely transformed my body. The plan was so easy to follow and the results speak for themselves. Highly recommend! ⭐⭐⭐⭐⭐</div>
+                  <div class="review-text-title">"Ich hätte nie gedacht, dass es so einfach sein könnte!"</div>
+                  <div class="review-text-body">In nur 30 Tagen habe ich meinen Körper komplett transformiert. Der Plan war so einfach zu befolgen und die Ergebnisse sprechen für sich. Sehr empfehlenswert! ⭐⭐⭐⭐⭐</div>
                 </div>
               </div>
-              <div class="review-slide dyn-review" data-f-title="My belly is completely gone." data-m-title="My abs are finally showing." data-f-body="After trying everything, this is the only thing that worked. It adapted perfectly to my lifestyle and I lost 5kg without feeling hungry! ⭐⭐⭐⭐⭐" data-m-body="I've been trying to lose this gut for years. This personalized plan finally gave me the structure I needed. Down 6kg! ⭐⭐⭐⭐⭐">
-                <img src="images/review_2.png" class="dyn-img" data-female-src="images/review_2.png" data-male-src="images/review_2_male.png" alt="Success Story 2">
+              <div class="review-slide dyn-review" data-f-title="Mein Bauch ist komplett weg." data-m-title="Meine Bauchmuskeln sind endlich sichtbar." data-f-body="Nachdem ich alles ausprobiert habe, ist dies das Einzige, was funktioniert hat. Es hat sich perfekt an meinen Lebensstil angepasst und ich habe 5kg abgenommen, ohne Hunger zu haben! ⭐⭐⭐⭐⭐" data-m-body="Ich habe jahrelang versucht, diesen Bauch loszuwerden. Dieser personalisierte Plan hat mir endlich die Struktur gegeben, die ich brauchte. Down 6kg! ⭐⭐⭐⭐⭐">
+                <img src="images/review_2.png" class="dyn-img" data-female-src="images/review_2.png" data-male-src="images/review_2_male.png" alt="Erfolgsgeschichte 2">
                 <div class="review-text">
-                  <div class="review-text-title">"My belly is completely gone."</div>
-                  <div class="review-text-body">After trying everything, this is the only thing that worked. It adapted perfectly to my lifestyle and I lost 5kg without feeling hungry! ⭐⭐⭐⭐⭐</div>
+                  <div class="review-text-title">"Mein Bauch ist komplett weg."</div>
+                  <div class="review-text-body">Nachdem ich alles ausprobiert habe, ist dies das Einzige, was funktioniert hat. Es hat sich perfekt an meinen Lebensstil angepasst und ich habe 5kg abgenommen, ohne Hunger zu haben! ⭐⭐⭐⭐⭐</div>
                 </div>
               </div>
-              <div class="review-slide dyn-review" data-f-title="Finally, real results!" data-m-title="More energy and strength!" data-f-body="The targeted exercises shaped my body exactly where I wanted. I have more energy than ever and I love what I see in the mirror. ⭐⭐⭐⭐⭐" data-m-body="I feel stronger and much more active. The meal plan was super easy to stick to, even with a busy schedule. Highly recommended! ⭐⭐⭐⭐⭐">
-                <img src="images/review_3.png" class="dyn-img" data-female-src="images/review_3.png" data-male-src="images/review_3_male.png" alt="Success Story 3">
+              <div class="review-slide dyn-review" data-f-title="Endlich echte Ergebnisse!" data-m-title="Mehr Energie und Kraft!" data-f-body="Die gezielten Übungen haben meinen Körper genau dort geformt, wo ich es wollte. Ich habe mehr Energie als je zuvor und ich liebe, was ich im Spiegel sehe. ⭐⭐⭐⭐⭐" data-m-body="Ich fühle mich stärker und viel aktiver. Der Ernährungsplan war super einfach einzuhalten, selbst bei einem vollen Terminkalender. Sehr empfehlenswert! ⭐⭐⭐⭐⭐">
+                <img src="images/review_3.png" class="dyn-img" data-female-src="images/review_3.png" data-male-src="images/review_3_male.png" alt="Erfolgsgeschichte 3">
                 <div class="review-text">
-                  <div class="review-text-title">"Finally, real results!"</div>
-                  <div class="review-text-body">The targeted exercises shaped my body exactly where I wanted. I have more energy than ever and I love what I see in the mirror. ⭐⭐⭐⭐⭐</div>
+                  <div class="review-text-title">"Endlich echte Ergebnisse!"</div>
+                  <div class="review-text-body">Die gezielten Übungen haben meinen Körper genau dort geformt, wo ich es wollte. Ich habe mehr Energie als je zuvor und ich liebe, was ich im Spiegel sehe. ⭐⭐⭐⭐⭐</div>
                 </div>
               </div>
-              <div class="review-slide dyn-review" data-f-title="Best decision of the year." data-m-title="A complete transformation." data-f-body="I feel so much more confident in my clothes now. The recipes were delicious and the exercises were fast but effective. ⭐⭐⭐⭐⭐" data-m-body="I've built muscle and lost the fat I couldn't get rid of. The tailored approach makes a huge difference. ⭐⭐⭐⭐⭐">
-                <img src="images/review_4.png" class="dyn-img" data-female-src="images/review_4.png" data-male-src="images/review_4_male.png" alt="Success Story 4">
+              <div class="review-slide dyn-review" data-f-title="Beste Entscheidung des Jahres." data-m-title="Eine komplette Transformation." data-f-body="Ich fühle mich jetzt so viel selbstbewusster in meiner Kleidung. Die Rezepte waren köstlich und die Übungen schnell, aber effektiv. ⭐⭐⭐⭐⭐" data-m-body="Ich habe Muskeln aufgebaut und das Fett verloren, das ich nicht loswerden konnte. Der maßgeschneiderte Ansatz macht einen riesigen Unterschied. ⭐⭐⭐⭐⭐">
+                <img src="images/review_4.png" class="dyn-img" data-female-src="images/review_4.png" data-male-src="images/review_4_male.png" alt="Erfolgsgeschichte 4">
                 <div class="review-text">
-                  <div class="review-text-title">"Best decision of the year."</div>
-                  <div class="review-text-body">I feel so much more confident in my clothes now. The recipes were delicious and the exercises were fast but effective. ⭐⭐⭐⭐⭐</div>
+                  <div class="review-text-title">"Beste Entscheidung des Jahres."</div>
+                  <div class="review-text-body">Ich fühle mich jetzt so viel selbstbewusster in meiner Kleidung. Die Rezepte waren köstlich und die Übungen schnell, aber effektiv. ⭐⭐⭐⭐⭐</div>
                 </div>
               </div>
-              <div class="review-slide dyn-review" data-f-title="I feel like a new person." data-m-title="Back in shape!" data-f-body="After having kids, I struggled with my weight. This plan was gentle yet so effective. I'm finally back to my pre-pregnancy weight! ⭐⭐⭐⭐⭐" data-m-body="At 45, I thought my best years were behind me. This program proved me wrong. I'm back in shape and feel 10 years younger! ⭐⭐⭐⭐⭐">
-                <img src="images/review_5.png" class="dyn-img" data-female-src="images/review_5.png" data-male-src="images/review_5_male.png" alt="Success Story 5">
+              <div class="review-slide dyn-review" data-f-title="Ich fühle mich wie ein neuer Mensch." data-m-title="Wieder in Form!" data-f-body="Nachdem ich Kinder bekommen habe, hatte ich mit meinem Gewicht zu kämpfen. Dieser Plan war sanft und dennoch so effektiv. Ich bin endlich wieder bei meinem Gewicht von vor der Schwangerschaft! ⭐⭐⭐⭐⭐" data-m-body="Mit 45 dachte ich, meine besten Jahre lägen hinter mir. Dieses Programm hat mich eines Besseren belehrt. Ich bin wieder in Form und fühle mich 10 Jahre jünger! ⭐⭐⭐⭐⭐">
+                <img src="images/review_5.png" class="dyn-img" data-female-src="images/review_5.png" data-male-src="images/review_5_male.png" alt="Erfolgsgeschichte 5">
                 <div class="review-text">
-                  <div class="review-text-title">"I feel like a new person."</div>
-                  <div class="review-text-body">After having kids, I struggled with my weight. This plan was gentle yet so effective. I'm finally back to my pre-pregnancy weight! ⭐⭐⭐⭐⭐</div>
+                  <div class="review-text-title">"Ich fühle mich wie ein neuer Mensch."</div>
+                  <div class="review-text-body">Nachdem ich Kinder bekommen habe, hatte ich mit meinem Gewicht zu kämpfen. Dieser Plan war sanft und dennoch so effektiv. Ich bin endlich wieder bei meinem Gewicht von vor der Schwangerschaft! ⭐⭐⭐⭐⭐</div>
                 </div>
               </div>
             </div>
 
 
             <!-- FAQ -->
-            <div class="sec-ttl">Frequently Asked Questions</div>
+            <div class="sec-ttl">Häufig gestellte Fragen</div>
             <div class="faq">
               <div class="faq-item">
-                <div class="faq-q" onclick="togFaq(this)">How long until I see results?<span class="faq-arr"><i
+                <div class="faq-q" onclick="togFaq(this)">Wie lange dauert es, bis ich Ergebnisse sehe?<span class="faq-arr"><i
                       class="fa-solid fa-chevron-down"></i></span></div>
-                <div class="faq-ans">First results are usually visible within 2 weeks of following the plan. Within a
-                  month most clients achieve -3 to -7 kg.</div>
+                <div class="faq-ans">Erste Ergebnisse sind in der Regel innerhalb von 10 Tagen nach Beginn des Plans sichtbar. Innerhalb eines Monats erreichen die meisten Kunden -3 bis -7 kg.</div>
               </div>
               <div class="faq-item">
-                <div class="faq-q" onclick="togFaq(this)">Do I need a gym membership?<span class="faq-arr"><i
+                <div class="faq-q" onclick="togFaq(this)">Benötige ich eine Mitgliedschaft im Fitnessstudio?<span class="faq-arr"><i
                       class="fa-solid fa-chevron-down"></i></span></div>
-                <div class="faq-ans">No! All exercises are adapted for home. You only need 20–30 minutes a day and the
-                  desire to change.</div>
+                <div class="faq-ans">Nein! Alle Übungen sind für zu Hause angepasst. Du brauchst nur 20–30 Minuten am Tag und den Wunsch nach Veränderung.</div>
               </div>
               <div class="faq-item">
-                <div class="faq-q" onclick="togFaq(this)">Can I follow it with food allergies?<span class="faq-arr"><i
+                <div class="faq-q" onclick="togFaq(this)">Kann ich den Plan bei Lebensmittelallergien befolgen?<span class="faq-arr"><i
                       class="fa-solid fa-chevron-down"></i></span></div>
-                <div class="faq-ans">Yes! Your plan fully adapts to the dietary restrictions and allergies you indicated
-                  in the quiz.</div>
+                <div class="faq-ans">Ja! Dein Plan passt sich vollständig an die diätetischen Einschränkungen und Allergien an, die du im Quiz angegeben hast.</div>
               </div>
               <div class="faq-item">
-                <div class="faq-q" onclick="togFaq(this)">What if I quit halfway?<span class="faq-arr"><i
+                <div class="faq-q" onclick="togFaq(this)">Was ist, wenn ich auf halbem Weg aufhöre?<span class="faq-arr"><i
                       class="fa-solid fa-chevron-down"></i></span></div>
-                <div class="faq-ans">We've built a micro-goal system. Weekly progress is tangible, and ongoing support
-                  helps you stay on track.</div>
+                <div class="faq-ans">Wir haben ein System von Mikro-Zielen entwickelt. Der wöchentliche Fortschritt ist spürbar, und ständige Unterstützung hilft dir, auf Kurs zu bleiben.</div>
               </div>
             </div>
 
@@ -1069,19 +1057,18 @@
             <!-- Guarantee -->
             <div class="guarantee">
               <div class="guarantee-ico"><i class="fa-solid fa-shield-halved"></i></div>
-              <div class="guarantee-ttl">30-Day Money Back Guarantee</div>
-              <div class="guarantee-txt">We're confident in your results. If you don't see changes within 30 days —
-                we'll refund you, no questions asked.</div>
+              <div class="guarantee-ttl">30-Tage Geld-zurück-Garantie</div>
+              <div class="guarantee-txt">Wir sind von deinen Ergebnissen überzeugt. Wenn du innerhalb von 30 Tagen keine Veränderungen siehst, erstatten wir dir den vollen Betrag zurück – ohne Fragen.</div>
             </div>
 
             <!-- Footer -->
             <div class="footer">
               <div class="footer-links">
-                <a href="terms.html" target="_blank">Terms of Use</a>
-                <a href="refund.html" target="_blank">Refund Policy</a>
-                <a href="privacy.html" target="_blank">Privacy Policy</a>
+                <a href="terms.html" target="_blank">Nutzungsbedingungen</a>
+                <a href="refund.html" target="_blank">Rückerstattungsrichtlinie</a>
+                <a href="privacy.html" target="_blank">Datenschutzrichtlinie</a>
               </div>
-              <div class="footer-copy">&copy; 2026 BildBody. All rights reserved.</div>
+              <div class="footer-copy">&copy; 2026 BildBody. Alle Rechte vorbehalten.</div>
             </div>
 
           </div>
@@ -1095,34 +1082,34 @@
         <div class="success-icon">
           <i class="fa-solid fa-circle-check"></i>
         </div>
-        <h1 class="success-ttl">Payment Successful!</h1>
-        <p class="success-sub">Your transformation journey has officially begun.</p>
+        <h1 class="success-ttl">Zahlung erfolgreich!</h1>
+        <p class="success-sub">Deine Transformationsreise hat offiziell begonnen.</p>
         
         <div class="success-card" style="width: 100%; max-width: 400px; margin: 0 auto;">
           <div class="success-card-row">
             <i class="fa-solid fa-envelope-open-text"></i>
             <div>
-              <strong>Check your inbox</strong>
-              <span>Your personal plan is being generated and will arrive in 1-2 minutes.</span>
+              <strong>Prüfe dein Posteingang</strong>
+              <span>Dein persönlicher Plan wird gerade generiert und trifft in 1–2 Minuten ein.</span>
             </div>
           </div>
           <div class="success-card-row">
             <i class="fa-solid fa-triangle-exclamation"></i>
             <div>
-              <strong>Check Spam folder</strong>
-              <span>If you don't see the email, please check your spam or promotions tab.</span>
+              <strong>Spam-Ordner prüfen</strong>
+              <span>Falls du keine E-Mail siehst, schaue bitte im Spam- oder Werbe-Ordner nach.</span>
             </div>
           </div>
         </div>
 
-        <p class="success-note">We are excited to see your results! Welcome to the BildBody community.</p>
+        <p class="success-note">Wir freuen uns auf deine Ergebnisse! Willkommen in der BildBody-Community.</p>
       </div>
     </div>
 
     <!-- BOTTOM BUTTON -->
     <div class="botbar" id="botbar">
-      <button class="mainbtn" id="mainBtn" onclick="handleMain()">CONTINUE</button>
-      <div class="buy-note" id="buyNote">🔐 Secure payment · 30-day money back guarantee</div>
+      <button class="mainbtn" id="mainBtn" onclick="handleMain()">WEITER</button>
+      <div class="buy-note" id="buyNote">🔐 Sichere Zahlung · 30-Tage Geld-zurück-Garantie</div>
     </div>
 
   </div><!-- .app -->

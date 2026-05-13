@@ -49,7 +49,7 @@ function show(idx) {
     botbar.style.display = 'none';
   } else if (idx === 0) {
     topbar.classList.remove('vis'); offerBar.classList.remove('vis');
-    mainBtn.textContent = 'CONTINUE'; mainBtn.disabled = false;
+    mainBtn.textContent = 'WEITER'; mainBtn.disabled = false;
     botbar.style.display = 'block';
   } else if (idx > 0 && idx < TOTAL) {
     topbar.classList.add('vis'); offerBar.classList.remove('vis');
@@ -80,17 +80,17 @@ function show(idx) {
 
 function refreshBtn(q) {
   if (q === -1) { botbar.style.display = 'none'; return; }
-  if (q === 0) { mainBtn.textContent = 'CONTINUE'; mainBtn.disabled = false; botbar.style.display = 'block'; return; }
+  if (q === 0) { mainBtn.textContent = 'WEITER'; mainBtn.disabled = false; botbar.style.display = 'block'; return; }
   if (q === 5 || q === 6 || q === 7) { mainBtn.disabled = false; }
   else if (q === 4) { mainBtn.disabled = !(Array.isArray(A[4]) && A[4].length > 0); }
   else if (q === 20) {
     const email = document.getElementById('inpEmail').value;
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     mainBtn.disabled = !re.test(email);
-    mainBtn.textContent = 'GET RESULTS';
+    mainBtn.textContent = 'ERGEBNISSE ERHALTEN';
   }
   else { mainBtn.disabled = A[q] === undefined; }
-  if (q < TOTAL) mainBtn.textContent = q < TOTAL - 1 ? 'NEXT STEP' : 'SEE RESULTS';
+  if (q < TOTAL) mainBtn.textContent = q < TOTAL - 1 ? 'NÄCHSTER SCHRITT' : 'ERGEBNISSE ANZEIGEN';
 }
 
 function handleMain() {
@@ -109,7 +109,7 @@ function handleMain() {
         if (wrap && wrap.style.display === 'block') {
           A[10] = document.getElementById('allergyInput').value.trim() || 'Has allergies but not specified';
         } else {
-          A[10] = 'No allergies';
+          A[10] = 'Keine Allergien';
         }
       }
       show(cur + 1);
@@ -135,7 +135,7 @@ function pickCard(c, q) {
 }
 
 function updateGenderUI(gender) {
-  const isMale = gender === 'Male';
+  const isMale = gender === 'Männlich';
   
   // Swap images
   document.querySelectorAll('.dyn-img').forEach(img => {
@@ -182,7 +182,7 @@ function pickAllergy(b, type) {
     inp.focus();
   } else {
     wrap.style.display = 'none';
-    A[10] = 'No allergies';
+    A[10] = 'Keine Allergien';
   }
   refreshBtn(10);
 }
@@ -215,7 +215,7 @@ function calcBMI() {
 
   const m = document.getElementById('bmiMarker');
   const t = document.getElementById('bmiValText');
-  if (t) t.textContent = "You - " + val;
+  if (t) t.textContent = "Du - " + val;
 
   let pct = ((bmi - 15) / (40 - 15)) * 100;
   pct = Math.max(0, Math.min(100, pct));
@@ -237,19 +237,19 @@ function calcBMI() {
 
   if (bmi < 18.5) {
     wb.className = 'bmi-box'; wi.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
-    wt.textContent = 'Underweight Risks:'; wx.textContent = 'Weakened immune system, fragile bones, feeling tired.';
+    wt.textContent = 'Risiken bei Untergewicht:'; wx.textContent = 'Geschwächtes Immunsystem, brüchige Knochen, Müdigkeit.';
   } else if (bmi <= 25) {
     wb.className = 'bmi-box good'; wi.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
-    wt.textContent = 'Healthy BMI!'; wx.textContent = 'Your weight is in the normal range. Great job!';
+    wt.textContent = 'Gesunder BMI!'; wx.textContent = 'Dein Gewicht liegt im Normalbereich. Gute Arbeit!';
   } else {
     wb.className = 'bmi-box'; wi.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
-    wt.textContent = 'Unhealthy BMI Risks:'; 
-    wx.textContent = isMale ? 'Hormonal imbalances, decreased testosterone, increased risk of cardiovascular disease, type 2 diabetes, joint pain' 
-                            : 'Hormonal imbalances, irregular menstrual cycle, increased risk of cardiovascular disease, type 2 diabetes, skin and hair problems';
+    wt.textContent = 'Risiken bei ungesundem BMI:'; 
+    wx.textContent = isMale ? 'Hormonelle Ungleichgewichte, verringertes Testosteron, erhöhtes Risiko für Herz-Kreislauf-Erkrankungen, Typ-2-Diabetes, Gelenkschmerzen' 
+                            : 'Hormonelle Ungleichgewichte, unregelmäßiger Menstruationszyklus, erhöhtes Risiko für Herz-Kreislauf-Erkrankungen, Typ-2-Diabetes, Haut- und Haarprobleme';
   }
 
-  document.getElementById('bmiBodyType').textContent = A[3] || 'Not specified';
-  document.getElementById('bmiLifestyle').textContent = A[8] || 'Not specified';
+  document.getElementById('bmiBodyType').textContent = A[3] || 'Nicht angegeben';
+  document.getElementById('bmiLifestyle').textContent = A[8] || 'Nicht angegeben';
 }
 
 function stepN(t, d) { const i = document.getElementById(t === 'w' ? 'inpW' : 'inpH'); i.value = Math.min(parseInt(i.max), Math.max(parseInt(i.min), (parseInt(i.value) || 0) + d)); }
@@ -294,18 +294,18 @@ function buildPlanGoal() {
   if (mw) mw.textContent = w;
   // legacy
   const pg = document.getElementById('planGoalTxt');
-  if (pg) pg.textContent = `Goal: ${g} · Weight: ${w}`;
+  if (pg) pg.textContent = `Ziel: ${g} · Gewicht: ${w}`;
 
   // Dynamic Plan Description
   const prs = document.getElementById('planReadySub');
   if (prs) {
-    let age = A[1] ? A[1].replace(' years', '') : 'your age';
-    let targetTxt = A[4] && A[4].length > 0 ? A[4].join(' and ').toLowerCase() : 'whole body';
-    let txt = `Based on your answers, we designed a custom ${A[3] ? A[3].toLowerCase() : ''} body plan for a ${age} year old. `;
-    if (g === 'Lose Weight') txt += `This program focuses on burning fat to drop from ${w} to your ideal weight, specifically targeting your ${targetTxt}.`;
-    else if (g === 'Tone My Body') txt += `This program focuses on building lean muscle tone and shaping your ${targetTxt} without bulking up.`;
-    else if (g === 'Build Muscle') txt += `This program features a high-protein diet and targeted workouts to increase muscle mass in your ${targetTxt}.`;
-    else txt += `This program will improve your overall fitness, energy levels, and tone your ${targetTxt}.`;
+    let age = A[1] ? A[1].replace(' years', '') : 'dein Alter';
+    let targetTxt = A[4] && A[4].length > 0 ? A[4].join(' und ').toLowerCase() : 'den ganzen Körper';
+    let txt = `Basierend auf deinen Antworten haben wir einen individuellen Plan für den Körperbau ${A[3] ? A[3].toLowerCase() : ''} für eine(n) ${age}-Jährige(n) erstellt. `;
+    if (g === 'Lose Weight') txt += `Dieses Programm konzentriert sich auf die Fettverbrennung, um von ${w} auf dein Idealgewicht zu kommen, wobei speziell dein ${targetTxt} angesprochen wird.`;
+    else if (g === 'Tone My Body') txt += `Dieses Programm konzentriert sich auf den Aufbau von fettfreier Muskelmasse und die Formung deines ${targetTxt}, ohne "breit" zu werden.`;
+    else if (g === 'Build Muscle') txt += `Dieses Programm bietet eine proteinreiche Ernährung und gezielte Workouts zur Steigerung der Muskelmasse in deinem ${targetTxt}.`;
+    else txt += `Dieses Programm wird deine allgemeine Fitness und dein Energieniveau verbessern und dein ${targetTxt} straffen.`;
     prs.textContent = txt;
   }
 }
@@ -372,30 +372,30 @@ function initSlider() {
 }
 
 async function generatePlanWithClaude() {
-  const prompt = `You are an expert nutritionist and fitness coach. Generate a personalized 7-day diet and workout plan based on the following client data:
-Gender: ${A[0]}
-Age: ${A[1]}
-Main Goal: ${A[2]}
-Body Type: ${A[3]}
-Target Areas: ${A[4] ? A[4].join(', ') : 'None'}
-Weight: ${A[5]}
-Height: ${A[6]}
-Activity Level: ${A[8]}
-Water Intake: ${A[9]}
-Allergies/Food Intolerances: ${A[10]}
-Sleep Habits: ${A[11]}
-Stress Levels: ${A[12]}
-Late Night Cravings: ${A[13]}
-Joint Pain: ${A[14]}
-Meals per Day: ${A[15]}
-Energy Drops: ${A[16]}
-Fast Food Frequency: ${A[17]}
-Vegetable Intake: ${A[18]}
-Typical Day: ${A[19]}
+  const prompt = `Du bist ein erfahrener Ernährungsberater und Fitnesscoach. Erstelle einen personalisierten 30-Tage-Ernährungs- und Trainingsplan basierend auf den folgenden Kundendaten:
+Geschlecht: ${A[0]}
+Alter: ${A[1]}
+Hauptziel: ${A[2]}
+Körpertyp: ${A[3]}
+Zielzonen: ${A[4] ? A[4].join(', ') : 'Keine'}
+Gewicht: ${A[5]}
+Größe: ${A[6]}
+Aktivitätsniveau: ${A[8]}
+Wasseraufnahme: ${A[9]}
+Allergien/Unverträglichkeiten: ${A[10]}
+Schlafgewohnheiten: ${A[11]}
+Stresslevel: ${A[12]}
+Heißhungerattacken nachts: ${A[13]}
+Gelenkschmerzen: ${A[14]}
+Mahlzeiten pro Tag: ${A[15]}
+Energieabfälle: ${A[16]}
+Fast-Food-Frequenz: ${A[17]}
+Gemüseverzehr: ${A[18]}
+Typischer Tag: ${A[19]}
 
-Please provide the output in a clean HTML format suitable for displaying in a web app.`;
+Bitte gib die Antwort in sauberem HTML-Format aus, das für die Anzeige in einer Web-App geeignet ist. WICHTIG: DIE ANTWORT MUSS VOLLSTÄNDIG AUF DEUTSCH SEIN.`;
 
-  console.log("Sending request to Claude API...");
+  console.log("Sende Anfrage an Claude API...");
 
   try {
     const response = await fetch('/api/generate', {
@@ -408,27 +408,27 @@ Please provide the output in a clean HTML format suitable for displaying in a we
 
     if (!response.ok) {
       const err = await response.text();
-      console.error("API Error:", err);
-      alert("API Request Failed! See console for details. (Check CORS or API Key)");
+      console.error("API-Fehler:", err);
+      alert("API-Anfrage fehlgeschlagen! Details siehe Konsole. (CORS oder API-Key prüfen)");
       return;
     }
 
     const data = await response.json();
-    console.log("Claude Response:", data);
-    alert("Plan generated successfully! Check console for the response.");
+    console.log("Claude Antwort:", data);
+    alert("Plan erfolgreich erstellt! Schau in die Konsole für die Antwort.");
   } catch (e) {
-    console.error("Fetch Error:", e);
-    alert("Failed to connect to the API. This is likely due to browser CORS policies. You need a backend proxy.");
+    console.error("Fetch-Fehler:", e);
+    alert("Verbindung zur API fehlgeschlagen. Dies liegt wahrscheinlich an den CORS-Richtlinien des Browsers. Du benötigst einen Backend-Proxy.");
   }
 }
 
 function doBuy() {
-  alert('Payment successful! Generating your personal plan with AI...');
+  alert('Zahlung erfolgreich! Dein persönlicher Plan wird mit KI erstellt...');
   generatePlanWithClaude();
 }
 async function testEmailDelivery() {
-  const email = A.email || prompt("Please enter email to receive the test plan:");
-  const name = prompt("Please enter your name for the test:", "Customer") || "Customer";
+  const email = A.email || prompt("Bitte gib deine E-Mail-Adresse ein, um den Testplan zu erhalten:");
+  const name = prompt("Bitte gib deinen Namen für den Test ein:", "Kunde") || "Kunde";
   if (!email) return;
   
   // Show loading screen
@@ -459,10 +459,10 @@ async function testEmailDelivery() {
     if (response.ok) {
       show('Success');
     } else {
-      alert("❌ Test failed: " + (result.error || "Unknown error"));
+      alert("❌ Test fehlgeschlagen: " + (result.error || "Unbekannter Fehler"));
     }
   } catch (e) {
-    alert("❌ Error connecting to backend: " + e.message);
+    alert("❌ Fehler bei der Verbindung zum Backend: " + e.message);
   }
 }
 
