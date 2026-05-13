@@ -16,11 +16,9 @@ export default async function handler(req, res) {
     const customerName = session.customer_details?.name || 'Customer';
 
     const apiKey = (process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || "").trim();
-    if (!apiKey || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) return res.status(500).json({ error: "Env Error" });
-
     const client = new Anthropic({ apiKey });
 
-    // --- ПАРАЛЕЛЬНЕ ЗАВАНТАЖЕННЯ: ШІ + 4 ОПТИМІЗОВАНІ ФОТО ---
+    // --- ФУНКЦІЯ ЗАВАНТАЖЕННЯ ---
     async function getImg(id) {
       try {
         const url = `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=600&q=60`;
@@ -29,7 +27,8 @@ export default async function handler(req, res) {
       } catch (e) { return null; }
     }
 
-    const [message, coverImg, i1, i2, i3] = await Promise.all([
+    // Завантажуємо 4 найнадійніші фото
+    const [message, imgCover, imgFood, imgGym, imgExtra] = await Promise.all([
       client.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 1500,
@@ -38,11 +37,13 @@ export default async function handler(req, res) {
       getImg('1534438327276-14e5300c3a48'), // Cover
       getImg('1490645935967-10de6ba17061'), // Food
       getImg('1517836357463-d25dfeac3438'), // Gym
-      getImg('1506126613408-eca07ce68773')  // Stretch
+      getImg('1506126613408-eca07ce68773')  // Extra
     ]);
 
     const weekData = JSON.parse(message.content[0].text.trim().substring(message.content[0].text.indexOf('{'), message.content[0].text.lastIndexOf('}') + 1));
-    const dayImages = [i1, i2, i3];
+    
+    // Масив доступних картинок для контенту (фільтруємо null)
+    const availableImages = [imgFood, imgGym, imgExtra].filter(img => img !== null);
 
     const doc = new PDFDocument({ margin: 0, size: [842, 595] });
     let buffers = [];
@@ -52,7 +53,7 @@ export default async function handler(req, res) {
     doc.font('Helvetica');
 
     // --- ОБКЛАДИНКА ---
-    if (coverImg) doc.image(coverImg, 0, 0, { width: 842, height: 595 });
+    if (imgCover) doc.image(imgCover, 0, 0, { width: 842, height: 595 });
     doc.rect(0, 0, 842, 595).fillColor('#000000').fillOpacity(0.4).fill();
     doc.fillOpacity(1).fillColor('#E8454A').fontSize(24).font('Helvetica-Bold').text('BILDBODY', 80, 50);
     doc.fillColor('#FFFFFF').fontSize(60).text('30 TAGE', 80, 360);
@@ -65,7 +66,9 @@ export default async function handler(req, res) {
       const dayData = weekData.days[(i - 1) % 7];
       doc.addPage();
       const isLeft = i % 2 === 0;
-      const img = dayImages[i % 3];
+      
+      // Вибираємо картинку з доступних по колу
+      const img = availableImages.length > 0 ? availableImages[(i - 1) % availableImages.length] : null;
 
       if (img) {
         doc.save().rect(isLeft ? 0 : 421, 0, 421, 595).clip();
@@ -85,7 +88,7 @@ export default async function handler(req, res) {
       doc.fillColor('#1A1A2E').fontSize(12).font('Helvetica').text(dayData.workout, x, 430, { width: 340 });
     }
 
-    // --- ФІНАЛЬНА СТОРІНКА ---
+    // --- ФІНАЛ ---
     doc.addPage().rect(0, 0, 842, 595).fill('#1A1A2E');
     doc.fillColor('#E8454A').fontSize(80).font('Helvetica-Bold').text('DANKE!', 0, 200, { align: 'center' });
     doc.fillColor('#FFFFFF').fontSize(20).font('Helvetica').text('Viel Erfolg auf deinem Weg! Wir glauben an dich.', 0, 300, { align: 'center' });
@@ -94,7 +97,6 @@ export default async function handler(req, res) {
     doc.end();
     const pdfBuffer = await pdfPromise;
 
-    // --- ЛИСТ ---
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
@@ -106,11 +108,11 @@ export default async function handler(req, res) {
       subject: `✅ Dein Plan ist fertig, ${customerName}`,
       html: `
         <div style="font-family: Arial; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
-          <div style="background-color: #E8454A; padding: 40px; text-align: center;"><h1 style="color: white; margin: 0; letter-spacing: 2px;">BILDBODY</h1></div>
+          <div style="background: #E8454A; padding: 40px; text-align: center;"><h1 style="color: white; margin: 0; letter-spacing: 2px;">BILDBODY</h1></div>
           <div style="padding: 40px; color: #333;">
             <h2>Hallo ${customerName}! 👋</h2>
             <p>Dein Plan ist im Anhang.</p>
-            <div style="background-color: #f0fdf4; border-left: 4px solid #10B981; padding: 20px; margin: 20px 0;">✅ <strong>PDF-Plan im Anhang</strong></div>
+            <div style="background: #f0fdf4; border-left: 4px solid #10B981; padding: 20px; margin: 20px 0;">✅ <strong>PDF-Plan im Anhang</strong></div>
           </div>
         </div>`,
       attachments: [
