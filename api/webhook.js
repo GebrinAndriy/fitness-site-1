@@ -51,12 +51,12 @@ export default async function handler(req, res) {
       } catch (e) { return null; }
     }
 
-    // Паралельний запуск всього
+    // Паралельний запуск
     const [message, coverImg, img1, img2] = await Promise.all([
       client.messages.create({
-        model: 'claude-3-haiku-20240307',
+        model: 'claude-haiku-4-5-20251001', // Використовую вашу модель
         max_tokens: 3500,
-        messages: [{ role: 'user', content: `Erstelle einen 30-TAGE-ERNÄHRUNGSPLAN für: ${gender}, Ziel: ${goal}. NUR JSON: {"days": [{"day": 1, "diet": "...", "workout": "..."}]}. Deutsch.` }],
+        messages: [{ role: 'user', content: `Erstelle einen 30-TAGE-PLAN für: ${gender}, Ziel: ${goal}. NUR JSON: {"days": [{"day": 1, "diet": "...", "workout": "..."}]}. Deutsch.` }],
       }),
       getSafeImage('workout'),
       getSafeImage('healthy'),
@@ -66,6 +66,8 @@ export default async function handler(req, res) {
     const planText = message.content[0].text.trim();
     const jsonStart = planText.indexOf('{');
     const jsonEnd = planText.lastIndexOf('}') + 1;
+    if (jsonStart === -1) throw new Error("No JSON found in AI response");
+    
     const planData = JSON.parse(planText.substring(jsonStart, jsonEnd));
     const dayImages = [img1, img2];
 
@@ -93,8 +95,8 @@ export default async function handler(req, res) {
       
       const textX = isLeft ? 461 : 40;
       doc.fillColor('#E8454A').fontSize(40).font('Arial-Bold').text(`TAG ${day.day}`, textX, 60);
-      doc.fillColor('#1A1A2E').fontSize(14).font('Arial').text(day.diet, textX, 150, { width: 340 });
-      doc.text(`WORKOUT: ${day.workout}`, textX, 400, { width: 340 });
+      doc.fillColor('#1A1A2E').fontSize(14).font('Arial').text(day.diet || "...", textX, 150, { width: 340 });
+      doc.text(`WORKOUT: ${day.workout || "..."}`, textX, 400, { width: 340 });
     });
 
     doc.end();
@@ -109,7 +111,7 @@ export default async function handler(req, res) {
       from: `"BildBody" <${process.env.EMAIL_USER}>`,
       to: customerEmail,
       subject: `✅ Dein Plan ist fertig, ${customerName}`,
-      html: `<p>Hallo ${customerName}, dein Plan ist da!</p>`,
+      html: `<p>Hallo ${customerName}, dein Plan ist fertig!</p>`,
       attachments: [
         { filename: `Plan_${customerName}.pdf`, content: pdfBuffer },
         { filename: 'Premium_Guide.pdf', path: join(process.cwd(), 'diet.pdf') }
