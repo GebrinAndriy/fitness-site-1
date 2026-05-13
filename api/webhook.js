@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     const event = req.body;
-    const isTest = req.headers['x-test-mode'] === 'true' || event.id === 'evt_test_webhook';
+    const isTest = req.headers['x-test-mode'] === 'true' || event.id?.startsWith('evt_');
     
     if (!isTest && event.type !== 'checkout.session.completed') {
       return res.status(200).json({ ok: true, skipped: true });
@@ -41,10 +41,8 @@ export default async function handler(req, res) {
     const gender = Array.isArray(quizData) ? (quizData[0] || 'person') : 'person';
     const goal = Array.isArray(quizData) ? (quizData[2] || 'Weight Loss') : 'Weight Loss';
 
-    // --- ПАРАЛЕЛЬНИЙ ЗАПУСК ШІ ТА КАРТИНОК ---
+    // Anthropic Client
     const client = new Anthropic({ apiKey });
-    const prompt = `Erstelle einen 30-TAGE-PLAN für: ${gender}, Ziel: ${goal}. 
-    NUR JSON: {"days": [{"day": 1, "diet": "...", "workout": "..."}]}. Sprache: Deutsch.`;
 
     async function getSafeImage(keyword) {
       try {
@@ -53,22 +51,25 @@ export default async function handler(req, res) {
       } catch (e) { return null; }
     }
 
-    // Запускаємо все одночасно, щоб вкластися в 10 секунд
+    // Паралельний запуск всього
     const [message, coverImg, img1, img2] = await Promise.all([
       client.messages.create({
         model: 'claude-3-haiku-20240307',
         max_tokens: 3500,
-        messages: [{ role: 'user', content: prompt }],
+        messages: [{ role: 'user', content: `Erstelle einen 30-TAGE-ERNÄHRUNGSPLAN für: ${gender}, Ziel: ${goal}. NUR JSON: {"days": [{"day": 1, "diet": "...", "workout": "..."}]}. Deutsch.` }],
       }),
       getSafeImage('workout'),
       getSafeImage('healthy'),
       getSafeImage('gym')
     ]);
 
-    const planData = JSON.parse(message.content[0].text.trim());
+    const planText = message.content[0].text.trim();
+    const jsonStart = planText.indexOf('{');
+    const jsonEnd = planText.lastIndexOf('}') + 1;
+    const planData = JSON.parse(planText.substring(jsonStart, jsonEnd));
     const dayImages = [img1, img2];
 
-    // PDF Generation (Дуже швидка)
+    // PDF
     const doc = new PDFDocument({ margin: 0, size: [842, 595] });
     let buffers = [];
     doc.on('data', buffers.push.bind(buffers));
@@ -80,18 +81,15 @@ export default async function handler(req, res) {
       doc.font('Arial');
     } catch (e) { doc.font('Helvetica'); }
 
-    // Cover
     if (coverImg) doc.image(coverImg, 0, 0, { width: 842, height: 595 });
     doc.rect(0, 0, 842, 595).fillColor('#000000').fillOpacity(0.5).fill();
     doc.fillOpacity(1).fillColor('#FFFFFF').fontSize(50).font('Arial-Bold').text('30-TAGE PLAN', 0, 240, { align: 'center' });
 
-    // Days
     planData.days.forEach((day, idx) => {
       doc.addPage();
       const isLeft = idx % 2 === 0;
       const img = dayImages[idx % 2];
-      if (isLeft && img) doc.image(img, 0, 0, { width: 421, height: 595 });
-      if (!isLeft && img) doc.image(img, 421, 0, { width: 421, height: 595 });
+      if (img) doc.image(img, isLeft ? 0 : 421, 0, { width: 421, height: 595 });
       
       const textX = isLeft ? 461 : 40;
       doc.fillColor('#E8454A').fontSize(40).font('Arial-Bold').text(`TAG ${day.day}`, textX, 60);
@@ -102,7 +100,6 @@ export default async function handler(req, res) {
     doc.end();
     const pdfBuffer = await pdfPromise;
 
-    // Email
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
@@ -112,18 +109,17 @@ export default async function handler(req, res) {
       from: `"BildBody" <${process.env.EMAIL_USER}>`,
       to: customerEmail,
       subject: `✅ Dein Plan ist fertig, ${customerName}`,
-      html: `<p>Hallo ${customerName}, hier є твій план!</p>`,
+      html: `<p>Hallo ${customerName}, dein Plan ist da!</p>`,
       attachments: [
         { filename: `Plan_${customerName}.pdf`, content: pdfBuffer },
         { filename: 'Premium_Guide.pdf', path: join(process.cwd(), 'diet.pdf') }
       ]
     });
 
-    // ТІЛЬКИ ТЕПЕР ВІДПОВІДАЄМО STRIPE
     return res.status(200).json({ ok: true, sent: true });
 
   } catch (err) {
-    console.error("WEBHOOK ERROR:", err);
+    console.error("CRITICAL ERROR:", err);
     return res.status(500).json({ error: err.message });
   }
 }
