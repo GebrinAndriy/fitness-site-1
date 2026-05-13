@@ -20,25 +20,25 @@ export default async function handler(req, res) {
 
     async function getImg(id) {
       try {
-        const url = `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=600&q=60`;
+        const url = `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=800&q=70`;
         const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
         return r.ok ? Buffer.from(await r.arrayBuffer()) : null;
       } catch (e) { return null; }
     }
 
-    // Завантажуємо 6 спортивних фото (1 cover + 5 content)
+    // Завантажуємо 6 найстабільніших спортивних фото
     const [message, iC, i1, i2, i3, i4, i5] = await Promise.all([
       client.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 1500,
-        messages: [{ role: 'user', content: `Erstelle einen 7-Tage Fitness-Zyklus für ${customerName}. NUR TRAINING. KEINE DIÄT. JSON: {"days": [{"day": 1, "workout": "Detaillierte Übungen", "focus": "z.B. Brust & Trizeps"}]}. Deutsch.` }],
+        messages: [{ role: 'user', content: `7-Tage Trainingszyklus für ${customerName}. NUR TRAINING. JSON: {"days": [{"day": 1, "workout": "Übungen", "focus": "Muskelgruppe"}]}. Deutsch.` }],
       }),
       getImg('1534438327276-14e5300c3a48'), // Cover
-      getImg('1517836357463-d25dfeac3438'), // Gym 1
-      getImg('1506126613408-eca07ce68773'), // Yoga/Stretch
-      getImg('1534367507873-d2b7e2435942'), // Crossfit
-      getImg('1476489501387-59aeb927a72d'), // Run
-      getImg('1536922246235-903726f97632')  // Weights
+      getImg('1517836357463-d25dfeac3438'), // Gym
+      getImg('1571019613454-1cb2f99b2d8b'), // Workout
+      getImg('1506126613408-eca07ce68773'), // Stretch
+      getImg('1540497077202-7c8a3999166f'), // Weights
+      getImg('1434596954653-2da4f841c3fb')  // Female Fitness
     ]);
 
     const weekData = JSON.parse(message.content[0].text.trim().substring(message.content[0].text.indexOf('{'), message.content[0].text.lastIndexOf('}') + 1));
@@ -78,18 +78,18 @@ export default async function handler(req, res) {
       const x = isLeft ? 461 : 40;
       doc.fillColor('#E8454A').fontSize(110).font('Helvetica-Bold').fillOpacity(0.06).text(`${i}`, x, 40);
       doc.fillOpacity(1).fontSize(42).text(`TAG ${i}`, x, 85);
-      
       doc.fillColor('#1A1A2E').fontSize(18).font('Helvetica-Bold').text('FOKUS', x, 165);
       doc.fontSize(14).font('Helvetica').text(dayData.focus, x, 195, { width: 340 });
-      
       doc.fillColor('#10B981').fontSize(18).font('Helvetica-Bold').text('TRAININGSEINHEIT', x, 280);
-      doc.fillColor('#1A1A2E').fontSize(14).font('Helvetica').text(dayData.workout, x, 315, { width: 340, lineGap: 6 });
+      doc.fillColor('#1A1A2E').fontSize(13).font('Helvetica').text(dayData.workout, x, 315, { width: 340, lineGap: 6 });
     }
 
-    // --- THANK YOU ---
+    // --- THANK YOU (З мотивацією) ---
     doc.addPage().rect(0, 0, 842, 595).fill('#1A1A2E');
-    doc.fillColor('#E8454A').fontSize(80).font('Helvetica-Bold').text('DANKE!', 0, 200, { align: 'center' });
-    doc.fillColor('#FFFFFF').fontSize(24).font('Helvetica-Bold').text('BILDBODY', 0, 500, { align: 'center' });
+    doc.fillColor('#E8454A').fontSize(80).font('Helvetica-Bold').text('DANKE!', 0, 180, { align: 'center' });
+    doc.fillColor('#FFFFFF').fontSize(22).font('Helvetica').text('Deine Transformation hat gerade erst begonnen.', 0, 280, { align: 'center' });
+    doc.fontSize(18).text('Bleib fokussiert, bleib stark und glaube an den Prozess.', 0, 320, { align: 'center' });
+    doc.fontSize(24).font('Helvetica-Bold').text('BILDBODY', 0, 500, { align: 'center' });
 
     doc.end();
     const pdfBuffer = await pdfPromise;
