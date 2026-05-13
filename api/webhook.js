@@ -16,7 +16,9 @@ export default async function handler(req, res) {
     const customerName = session.customer_details?.name || 'Customer';
 
     const apiKey = (process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || "").trim();
-    if (!apiKey) return res.status(500).json({ error: "No API Key" });
+    if (!apiKey || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) return res.status(500).json({ error: "Env Error" });
+
+    const client = new Anthropic({ apiKey });
 
     // --- ПАРАЛЕЛЬНЕ ЗАВАНТАЖЕННЯ: ШІ + 6 ФОТО ---
     async function getImg(id) {
@@ -51,7 +53,7 @@ export default async function handler(req, res) {
 
     doc.font('Helvetica');
 
-    // --- ОБКЛАДИНКА ---
+    // --- ОБКЛАДИНКА (З назвою компанії та текстом) ---
     if (coverImg) doc.image(coverImg, 0, 0, { width: 842, height: 595 });
     doc.rect(0, 0, 842, 595).fillColor('#000000').fillOpacity(0.4).fill();
     doc.fillOpacity(1).fillColor('#E8454A').fontSize(24).font('Helvetica-Bold').text('BILDBODY', 80, 50);
@@ -60,7 +62,7 @@ export default async function handler(req, res) {
     doc.fontSize(14).text('Dein Weg zu einem gesünderen und stärkeren Ich beginnt heute.', 80, 465, { width: 400 });
     doc.fontSize(16).font('Helvetica-Bold').text(`EXKLUSIV FÜR ${customerName.toUpperCase()}`, 80, 510);
 
-    // --- 30 СТОРІНОК ---
+    // --- 30 СТОРІНОК (Правильні пропорції) ---
     for (let i = 1; i <= 30; i++) {
       const dayData = weekData.days[(i - 1) % 7];
       doc.addPage();
@@ -68,9 +70,8 @@ export default async function handler(req, res) {
       const img = dayImages[i % 5];
 
       if (img) {
-        // Використовуємо пропорційне завантаження (cover style)
         doc.save().rect(isLeft ? 0 : 421, 0, 421, 595).clip();
-        doc.image(img, isLeft ? -100 : 321, 0, { height: 595 }); // Центруємо
+        doc.image(img, isLeft ? -100 : 321, 0, { height: 595 });
         doc.restore();
       }
 
@@ -106,7 +107,7 @@ export default async function handler(req, res) {
       <div style="background-color: #E8454A; padding: 40px; text-align: center;"><h1 style="color: white; margin: 0; letter-spacing: 2px;">BILDBODY</h1></div>
       <div style="padding: 40px; color: #333;">
         <h2>Hallo ${customerName}! 👋</h2>
-        <p>Dein individueller 30-Tage Plan ist im Anhang.</p>
+        <p>Wir haben deinen individuellen 30-Tage Plan erstellt.</p>
         <div style="background-color: #f0fdf4; border-left: 4px solid #10B981; padding: 20px; margin: 25px 0;">
           <strong style="color: #166534;">✅ Dein PDF-Plan ist im Anhang!</strong>
         </div>
