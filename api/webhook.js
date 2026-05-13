@@ -4,37 +4,26 @@ import nodemailer from 'nodemailer';
 import fetch from 'node-fetch';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import fs from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const logFile = join(process.cwd(), 'debug.log');
-
-function log(msg) {
-  const timestamp = new Date().toISOString();
-  fs.appendFileSync(logFile, `[${timestamp}] ${msg}\n`);
-}
 
 export default async function handler(req, res) {
   try {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     const event = req.body;
-    const isTest = req.headers['x-test-mode'] === 'true';
-
-    if (!isTest && event.type !== 'checkout.session.completed') {
-      return res.status(200).json({ ok: true, skipped: true });
-    }
-
     const session = event.data?.object || event.data;
+    if (!session) return res.status(400).json({ error: 'No session' });
+
     const customerEmail = session.customer_details?.email || session.customer_email || session.user_email || session.email;
     const customerName = session.customer_details?.name || session.user_name || 'there';
 
-    log(`Webhook received for ${customerEmail}`);
+    // 1. ВІДПОВІДАЄМО STRIPE НЕГАЙНО
     res.status(200).json({ ok: true, status: 'Processing' });
 
+    // 2. ФОНОВА ОБРОБКА
     (async () => {
       try {
-        log('Starting background task...');
         let quizData = {};
         const clientRef = session.client_reference_id || session.custom_data?.data;
         if (clientRef) {
@@ -47,19 +36,16 @@ export default async function handler(req, res) {
         }
 
         const apiKey = (process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || "").trim();
-        if (!apiKey || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-          log('ERROR: Missing environment variables');
-          return;
-        }
+        if (!apiKey || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) return;
 
         const gender = Array.isArray(quizData) ? (quizData[0] || 'person') : 'person';
         const goal = Array.isArray(quizData) ? (quizData[2] || 'Weight Loss') : 'Weight Loss';
 
-        log('Requesting Claude AI (30-day plan)...');
+        // Claude AI
         const client = new Anthropic({ apiKey });
         const prompt = `Erstelle einen detaillierten 30-TAGE-ERNÄHRUNGSPLAN für: Geschlecht ${gender}, Ziel: ${goal}. 
         Antworte NUR mit validem JSON. Das JSON muss genau 30 Tage im Array "days" enthalten.
-        Format: {"summary": "...", "days": [{"day": 1, "diet": "Frühstück: ..., Mittag: ..., Abend: ...", "workout": "..."}], "tips": ["...", "..."]}
+        Format: {"summary": "...", "days": [{"day": 1, "diet": "Frühstück, Mittag, Abendessen", "workout": "..."}], "tips": ["...", "..."]}
         Sprache: Deutsch.`;
 
         const message = await client.messages.create({
@@ -68,18 +54,15 @@ export default async function handler(req, res) {
           messages: [{ role: 'user', content: prompt }],
         });
 
-        log('Claude AI responded. Parsing JSON...');
         const planData = JSON.parse(message.content[0].text.trim());
-        log(`JSON parsed successfully. Days generated: ${planData.days?.length}`);
 
-        // Generate PDF
-        log('Starting PDF generation...');
+        // PDF Generation
         const doc = new PDFDocument({ margin: 0, size: [842, 595] });
         try {
           doc.registerFont('Arial', join(process.cwd(), 'arial.ttf'));
           doc.registerFont('Arial-Bold', join(process.cwd(), 'arialbd.ttf'));
           doc.font('Arial');
-        } catch (e) { log('Font warning: Arial not found, using Helvetica'); doc.font('Helvetica'); }
+        } catch (e) { doc.font('Helvetica'); }
 
         let buffers = [];
         doc.on('data', buffers.push.bind(buffers));
@@ -127,7 +110,6 @@ export default async function handler(req, res) {
 
         doc.end();
         const pdfBuffer = await pdfPromise;
-        log('PDF generated. Sending email...');
 
         const transporter = nodemailer.createTransport({
           service: 'gmail',
@@ -138,19 +120,17 @@ export default async function handler(req, res) {
           from: `"BildBody" <${process.env.EMAIL_USER}>`,
           to: customerEmail,
           subject: `✅ Dein 30-Tage Plan ist fertig, ${customerName}`,
-          html: `<p>Hallo ${customerName}, hier ist dein Plan!</p>`,
+          html: `<p>Hallo ${customerName}, dein Plan ist da!</p>`,
           attachments: [
             { filename: `Plan_${customerName}.pdf`, content: pdfBuffer },
             { filename: 'Premium_Guide.pdf', path: join(process.cwd(), 'diet.pdf') }
           ]
         });
-        log(`SUCCESS: Email sent to ${customerEmail}`);
-      } catch (err) {
-        log(`CRITICAL BG ERROR: ${err.message}\n${err.stack}`);
+      } catch (bgErr) {
+        console.error("BG Error:", bgErr);
       }
     })();
   } catch (err) {
-    log(`TOP LEVEL ERROR: ${err.message}`);
     return res.status(500).json({ error: err.message });
   }
 }
