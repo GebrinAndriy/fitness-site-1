@@ -1,16 +1,17 @@
 import Anthropic from '@anthropic-ai/sdk';
 import PDFDocument from 'pdfkit';
 import nodemailer from 'nodemailer';
-import fetch from 'node-fetch';
+// node-fetch removed because it's built-in in Node 18+
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  try {
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Method not allowed' });
+    }
 
   const event = req.body;
   const isTest = req.headers['x-test-mode'] === 'true';
@@ -174,4 +175,8 @@ export default async function handler(req, res) {
       console.error('Background error:', err);
     }
   })();
+  } catch (initialErr) {
+    console.error("CRITICAL WEBHOOK STARTUP ERROR:", initialErr);
+    return res.status(500).json({ error: initialErr.message });
+  }
 }
