@@ -1,7 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import PDFDocument from 'pdfkit';
 import nodemailer from 'nodemailer';
-import fetch from 'node-fetch';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -12,16 +11,21 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     const event = req.body;
-    const session = event.data?.object || event.data;
-    if (!session) return res.status(400).json({ error: 'No session' });
+    const isTest = req.headers['x-test-mode'] === 'true' || event.id === 'evt_test_webhook';
+    
+    // We only care about success payments
+    if (!isTest && event.type !== 'checkout.session.completed') {
+      return res.status(200).json({ ok: true, skipped: true });
+    }
 
+    const session = event.data?.object || event.data;
     const customerEmail = session.customer_details?.email || session.customer_email || session.user_email || session.email;
     const customerName = session.customer_details?.name || session.user_name || 'there';
 
-    // 1. ВІДПОВІДАЄМО STRIPE НЕГАЙНО
+    // 1. RESPOND TO STRIPE IMMEDIATELY
     res.status(200).json({ ok: true, status: 'Processing' });
 
-    // 2. ФОНОВА ОБРОБКА
+    // 2. BACKGROUND TASK
     (async () => {
       try {
         let quizData = {};
@@ -43,20 +47,20 @@ export default async function handler(req, res) {
 
         // Claude AI
         const client = new Anthropic({ apiKey });
-        const prompt = `Erstelle einen detaillierten 30-TAGE-ERNÄHRUNGSPLAN für: Geschlecht ${gender}, Ziel: ${goal}. 
-        Antworte NUR mit validem JSON. Das JSON muss genau 30 Tage im Array "days" enthalten.
-        Format: {"summary": "...", "days": [{"day": 1, "diet": "Frühstück, Mittag, Abendessen", "workout": "..."}], "tips": ["...", "..."]}
+        const prompt = `Erstelle einen detaillierten 30-TAGE-ERNÄHRUNGSPLAN für: Geschlecht ${gender}, Alter: ..., Ziel: ${goal}. 
+        Antworte NUR mit validem JSON. Das JSON muss genau 30 Tage enthalten.
+        Format: {"summary": "...", "days": [{"day": 1, "diet": "Frühstück, Mittag, Abend", "workout": "..."}]}
         Sprache: Deutsch.`;
 
         const message = await client.messages.create({
           model: 'claude-3-haiku-20240307',
-          max_tokens: 4096,
+          max_tokens: 4000,
           messages: [{ role: 'user', content: prompt }],
         });
 
         const planData = JSON.parse(message.content[0].text.trim());
 
-        // PDF Generation
+        // PDF
         const doc = new PDFDocument({ margin: 0, size: [842, 595] });
         try {
           doc.registerFont('Arial', join(process.cwd(), 'arial.ttf'));
@@ -70,27 +74,25 @@ export default async function handler(req, res) {
 
         async function getSafeImage(keyword) {
           try {
-            const response = await fetch(`https://source.unsplash.com/800x600/?fitness,${keyword}`);
-            return response.ok ? Buffer.from(await response.arrayBuffer()) : null;
+            const r = await fetch(`https://source.unsplash.com/800x600/?fitness,${keyword}`);
+            return r.ok ? Buffer.from(await r.arrayBuffer()) : null;
           } catch (e) { return null; }
         }
 
         const coverImg = await getSafeImage('workout');
-        const dayImages = await Promise.all([
-          getSafeImage('healthy,food'), getSafeImage('gym'), getSafeImage('vegetables'), getSafeImage('body')
-        ]);
+        const dayImages = await Promise.all([getSafeImage('food'), getSafeImage('gym')]);
 
-        // Slide 1
+        // Cover
         if (coverImg) doc.image(coverImg, 0, 0, { width: 842, height: 595 });
         doc.rect(0, 0, 842, 595).fillColor('#000000').fillOpacity(0.5).fill();
-        doc.fillOpacity(1).fillColor('#FFFFFF').fontSize(50).font('Arial-Bold').text('30-TAGE TRANSFORMATION', 0, 240, { align: 'center' });
+        doc.fillOpacity(1).fillColor('#FFFFFF').fontSize(50).font('Arial-Bold').text('30-TAGE PLAN', 0, 240, { align: 'center' });
         doc.fontSize(24).text(`FÜR ${customerName.toUpperCase()}`, { align: 'center' });
 
-        // Days
+        // Days (Checkerboard)
         planData.days.forEach((day, idx) => {
           doc.addPage();
           const isLeft = idx % 2 === 0;
-          const img = dayImages[idx % dayImages.length];
+          const img = dayImages[idx % 2];
           if (isLeft) {
             if (img) doc.image(img, 0, 0, { width: 421, height: 595 });
             doc.rect(421, 0, 421, 595).fill('#FFFFFF');
@@ -120,14 +122,14 @@ export default async function handler(req, res) {
           from: `"BildBody" <${process.env.EMAIL_USER}>`,
           to: customerEmail,
           subject: `✅ Dein 30-Tage Plan ist fertig, ${customerName}`,
-          html: `<p>Hallo ${customerName}, dein Plan ist da!</p>`,
+          html: `<p>Hallo ${customerName}, dein Plan ist fertig!</p>`,
           attachments: [
             { filename: `Plan_${customerName}.pdf`, content: pdfBuffer },
             { filename: 'Premium_Guide.pdf', path: join(process.cwd(), 'diet.pdf') }
           ]
         });
-      } catch (bgErr) {
-        console.error("BG Error:", bgErr);
+      } catch (err) {
+        console.error("BG Error:", err);
       }
     })();
   } catch (err) {
