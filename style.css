@@ -723,6 +723,19 @@ button {
   opacity: 0.5;
 }
 
+.bmi-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  left: 0%;
+  z-index: 2;
+}
+
 .bmi-bubble {
   position: absolute;
   top: -38px;

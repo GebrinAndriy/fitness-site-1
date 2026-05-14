@@ -72,6 +72,13 @@ function show(idx) {
     botbar.style.display = 'none';
     buildPlanGoal(); startTimer();
     setTimeout(initSlider, 600);
+    setTimeout(() => {
+      const m = document.getElementById('bmiMarker');
+      if (m && m.dataset.targetPct) {
+        m.style.transition = 'left 1.5s cubic-bezier(0.25, 1, 0.5, 1)';
+        m.style.left = m.dataset.targetPct + '%';
+      }
+    }, 100);
   } else if (idx === 'Success') {
     topbar.classList.remove('vis'); offerBar.classList.remove('vis');
     botbar.style.display = 'none';
@@ -220,12 +227,9 @@ function calcBMI() {
   let pct = ((bmi - 15) / (40 - 15)) * 100;
   pct = Math.max(0, Math.min(100, pct));
   if (m) {
+    m.dataset.targetPct = pct;
     m.style.transition = 'none';
     m.style.left = '0%';
-    setTimeout(() => {
-      m.style.transition = 'left 1.5s cubic-bezier(0.25, 1, 0.5, 1)';
-      m.style.left = pct + '%';
-    }, 50);
   }
 
   const wb = document.getElementById('bmiWarningBox');
