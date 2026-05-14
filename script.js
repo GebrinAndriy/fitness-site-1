@@ -40,7 +40,7 @@ function show(idx) {
   const targetId = map[idx] !== undefined ? map[idx] : 'scr' + idx;
   const target = document.getElementById(targetId);
   if (target) target.classList.add('on');
-  
+
   cur = idx;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -72,13 +72,7 @@ function show(idx) {
     botbar.style.display = 'none';
     buildPlanGoal(); startTimer();
     setTimeout(initSlider, 600);
-    setTimeout(() => {
-      const m = document.getElementById('bmiMarker');
-      if (m && m.dataset.targetPct) {
-        m.style.transition = 'left 1.5s cubic-bezier(0.25, 1, 0.5, 1)';
-        m.style.left = m.dataset.targetPct + '%';
-      }
-    }, 100);
+    setTimeout(calcBMI, 100);
   } else if (idx === 'Success') {
     topbar.classList.remove('vis'); offerBar.classList.remove('vis');
     botbar.style.display = 'none';
@@ -103,10 +97,10 @@ function refreshBtn(q) {
 function handleMain() {
   if (mainBtn.disabled) return;
   if (cur === -1) { show(0); return; }
-  
+
   // Prevent double-taps/click-throughs
   mainBtn.disabled = true;
-  
+
   setTimeout(() => {
     if (cur >= 0 && cur < TOTAL) {
       if (cur === 5) A[5] = document.getElementById('inpW').value + ' ' + document.getElementById('uW').textContent;
@@ -129,21 +123,21 @@ function handleMain() {
 
 function goBack() { if (cur > -1) show(cur - 1); }
 
-function pickCard(c, q) { 
-  c.closest('.pgrid').querySelectorAll('.pcard').forEach(x => x.classList.remove('sel')); 
-  c.classList.add('sel'); 
-  A[q] = c.dataset.v; 
-  
+function pickCard(c, q) {
+  c.closest('.pgrid').querySelectorAll('.pcard').forEach(x => x.classList.remove('sel'));
+  c.classList.add('sel');
+  A[q] = c.dataset.v;
+
   if (q === 0) {
     updateGenderUI(A[q]);
   }
-  
-  refreshBtn(q); 
+
+  refreshBtn(q);
 }
 
 function updateGenderUI(gender) {
   const isMale = gender === 'Männlich';
-  
+
   // Swap images
   document.querySelectorAll('.dyn-img').forEach(img => {
     if (isMale && img.dataset.maleSrc) {
@@ -202,10 +196,10 @@ function checkAllergyInput() {
 
 function togChk(w, q, event) {
   if (event) event.stopPropagation();
-  w.classList.toggle('sel'); 
+  w.classList.toggle('sel');
   const btn = w.querySelector('.lopt');
   if (btn) btn.classList.toggle('sel');
-  
+
   if (!A[q]) A[q] = [];
   const v = btn ? btn.dataset.v : '';
   const i = A[q].indexOf(v);
@@ -227,16 +221,19 @@ function calcBMI() {
   let pct = ((bmi - 15) / (40 - 15)) * 100;
   pct = Math.max(0, Math.min(100, pct));
   if (m) {
-    m.dataset.targetPct = pct;
     m.style.transition = 'none';
     m.style.left = '0%';
+    setTimeout(() => {
+      m.style.transition = 'left 1.5s cubic-bezier(0.25, 1, 0.5, 1)';
+      m.style.left = pct + '%';
+    }, 50);
   }
 
   const wb = document.getElementById('bmiWarningBox');
   const wi = document.getElementById('bmiWarningIco');
   const wt = document.getElementById('bmiWarningTtl');
   const wx = document.getElementById('bmiWarningTxt');
-  
+
   const isMale = A[0] === 'Male';
 
   if (bmi < 18.5) {
@@ -247,9 +244,9 @@ function calcBMI() {
     wt.textContent = 'Gesunder BMI!'; wx.textContent = 'Dein Gewicht liegt im Normalbereich. Gute Arbeit!';
   } else {
     wb.className = 'bmi-box'; wi.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
-    wt.textContent = 'Risiken bei ungesundem BMI:'; 
-    wx.textContent = isMale ? 'Hormonelle Ungleichgewichte, verringertes Testosteron, erhöhtes Risiko für Herz-Kreislauf-Erkrankungen, Typ-2-Diabetes, Gelenkschmerzen' 
-                            : 'Hormonelle Ungleichgewichte, unregelmäßiger Menstruationszyklus, erhöhtes Risiko für Herz-Kreislauf-Erkrankungen, Typ-2-Diabetes, Haut- und Haarprobleme';
+    wt.textContent = 'Risiken bei ungesundem BMI:';
+    wx.textContent = isMale ? 'Hormonelle Ungleichgewichte, verringertes Testosteron, erhöhtes Risiko für Herz-Kreislauf-Erkrankungen, Typ-2-Diabetes, Gelenkschmerzen'
+      : 'Hormonelle Ungleichgewichte, unregelmäßiger Menstruationszyklus, erhöhtes Risiko für Herz-Kreislauf-Erkrankungen, Typ-2-Diabetes, Haut- und Haarprobleme';
   }
 
   document.getElementById('bmiBodyType').textContent = A[3] || 'Nicht angegeben';
@@ -323,7 +320,7 @@ function togFaq(q) {
 function scrollToPay() {
   const p = document.getElementById('payTarget');
   if (p) p.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  
+
   // Extract only the fields needed by webhook to keep client_reference_id under 200 chars
   const essentialData = {
     2: A[2] || '',
@@ -332,7 +329,7 @@ function scrollToPay() {
     8: A[8] || ''
   };
   const clientRef = encodeURIComponent(JSON.stringify(essentialData));
-  
+
   const links = document.querySelectorAll('.stripe-button');
   links.forEach(link => {
     const baseUrl = link.getAttribute('href').split('?')[0];
@@ -434,17 +431,17 @@ async function testEmailDelivery() {
   const email = A.email || prompt("Bitte gib deine E-Mail-Adresse ein, um den Testplan zu erhalten:");
   const name = prompt("Bitte gib deinen Namen für den Test ein:", "Kunde") || "Kunde";
   if (!email) return;
-  
+
   // Show loading screen
-  show("TestLoading"); 
-  
+  show("TestLoading");
+
   try {
     const response = await fetch('/api/webhook', {
       method: 'POST',
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
         'x-event-name': 'order_created',
-        'x-test-mode': 'true' 
+        'x-test-mode': 'true'
       },
       body: JSON.stringify({
         data: {
@@ -458,7 +455,7 @@ async function testEmailDelivery() {
         }
       })
     });
-    
+
     const result = await response.json();
     if (response.ok) {
       show('Success');
