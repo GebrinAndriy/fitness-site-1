@@ -61,9 +61,8 @@ export default async function handler(req, res) {
       const img = getLocalImg(i); // Беремо фото по номеру дня (1..30)
 
       if (img) {
-        doc.save().rect(isLeft ? 0 : 421, 0, 421, 595).clip();
-        doc.image(img, isLeft ? -100 : 321, 0, { height: 595 });
-        doc.restore();
+        // Використовуємо 'cover', щоб фото повністю заповнювало область без білих смуг
+        doc.image(img, isLeft ? 0 : 421, 0, { cover: [421, 595] });
       }
 
       doc.rect(isLeft ? 421 : 0, 0, 421, 595).fill('#FFFFFF');
@@ -108,7 +107,7 @@ export default async function handler(req, res) {
         </div>`,
       attachments: [
         { filename: `Plan_${customerName}.pdf`, content: pdfBuffer },
-        { filename: 'Premium_Guide.pdf', path: join(process.cwd(), 'diet.pdf') }
+        { filename: 'Premium_Guide.pdf', path: join(process.cwd(), 'BildBody_Diet.pdf') }
       ]
     });
 
