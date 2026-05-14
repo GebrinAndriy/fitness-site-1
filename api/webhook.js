@@ -107,7 +107,7 @@ export default async function handler(req, res) {
         </div>`,
       attachments: [
         { filename: `Plan_${customerName}.pdf`, content: pdfBuffer },
-        { filename: 'Premium_Guide.pdf', path: join(process.cwd(), 'BildBody_Diet.pdf') }
+        { filename: 'Premium_Guide.pdf', path: join(process.cwd(), 'BildBodyDietPlan.pdf') }
       ]
     });
 
