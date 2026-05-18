@@ -12,6 +12,12 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     const event = req.body;
+    
+    // Ігноруємо всі події, окрім успішної оплати
+    if (event.type && event.type !== 'checkout.session.completed') {
+      return res.status(200).json({ ok: true, message: 'Event ignored' });
+    }
+
     const session = event.data?.object || event.data;
     const customerEmail = session.customer_details?.email || session.customer_email || 'lakerboss228@gmail.com';
     const customerName = session.customer_details?.name || 'Customer';
