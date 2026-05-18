@@ -136,9 +136,8 @@ function pickCard(c, q) {
 }
 
 function updateGenderUI(gender) {
-  const isMale = gender === 'Männlich';
-
-  // Swap images
+  const isMale = gender === 'Male';
+   // Swap images
   document.querySelectorAll('.dyn-img').forEach(img => {
     if (isMale && img.dataset.maleSrc) {
       img.src = img.dataset.maleSrc;
