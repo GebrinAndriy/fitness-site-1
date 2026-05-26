@@ -53,7 +53,7 @@ export default async function handler(req, res) {
     const coverImg = getLocalImg(1);
     if (coverImg) doc.image(coverImg, 0, 0, { width: 842, height: 595 });
     doc.rect(0, 0, 842, 595).fillColor('#000000').fillOpacity(0.4).fill();
-    doc.fillOpacity(1).fillColor('#E8454A').fontSize(24).font('Helvetica-Bold').text('BILDBODY', 80, 50);
+    doc.fillOpacity(1).fillColor('#E8454A').fontSize(24).font('Helvetica-Bold').text('BUILDBODY', 80, 50);
     doc.fillColor('#FFFFFF').fontSize(60).text('30 TAGE', 80, 360);
     doc.fontSize(28).font('Helvetica').text('TRAINING STRATEGIE', 80, 420);
     doc.fontSize(16).font('Helvetica-Bold').text(`EXKLUSIV FÜR ${customerName.toUpperCase()}`, 80, 510);
@@ -88,7 +88,7 @@ export default async function handler(req, res) {
     doc.fillColor('#E8454A').fontSize(80).font('Helvetica-Bold').text('DANKE!', 0, 180, { align: 'center' });
     doc.fillColor('#FFFFFF').fontSize(22).font('Helvetica').text('Deine Transformation hat gerade erst begonnen.', 0, 280, { align: 'center' });
     doc.fontSize(18).text('Bleib fokussiert, bleib stark und glaube an den Prozess.', 0, 320, { align: 'center' });
-    doc.fontSize(24).font('Helvetica-Bold').text('BILDBODY', 0, 500, { align: 'center' });
+    doc.fontSize(24).font('Helvetica-Bold').text('BUILDBODY', 0, 500, { align: 'center' });
 
     doc.end();
     const pdfBuffer = await pdfPromise;
@@ -99,12 +99,12 @@ export default async function handler(req, res) {
     });
 
     await transporter.sendMail({
-      from: `"BildBody" <${process.env.EMAIL_USER}>`,
+      from: `"BuildBody" <${process.env.EMAIL_USER}>`,
       to: customerEmail,
       subject: `✅ Dein Trainingsplan ist fertig, ${customerName}`,
       html: `
         <div style="font-family: Arial; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
-          <div style="background: #E8454A; padding: 40px; text-align: center;"><h1 style="color: white; margin: 0; letter-spacing: 2px;">BILDBODY</h1></div>
+          <div style="background: #E8454A; padding: 40px; text-align: center;"><h1 style="color: white; margin: 0; letter-spacing: 2px;">BUILDBODY</h1></div>
           <div style="padding: 40px; color: #333;">
             <h2>Hallo ${customerName}! 👋</h2>
             <p>Dein Trainingsplan ist bereit.</p>
@@ -113,7 +113,7 @@ export default async function handler(req, res) {
         </div>`,
       attachments: [
         { filename: `Plan_${customerName}.pdf`, content: pdfBuffer },
-        { filename: 'Premium_Guide.pdf', path: join(process.cwd(), 'BildBodyDietPlan.pdf') }
+        { filename: 'Premium_Guide.pdf', path: join(process.cwd(), 'BuildBodyDietPlan.pdf') }
       ]
     });
 
